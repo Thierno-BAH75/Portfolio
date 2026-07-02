@@ -1,0 +1,93 @@
+npm verbose cli /usr/local/bin/node /usr/local/bin/npm
+npm info using npm@11.6.2
+npm info using node@v24.13.0
+npm verbose title npm install
+npm verbose argv "install" "--loglevel" "verbose"
+npm verbose logfile logs-max:10 dir:/Users/thierno/.npm/_logs/2026-03-13T00_34_07_991Z-
+npm verbose logfile /Users/thierno/.npm/_logs/2026-03-13T00_34_07_991Z-debug-0.log
+npm http fetch GET 200 https://registry.npmjs.org/@tailwindcss%2foxide-android-arm64 98ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@tailwindcss%2foxide-darwin-x64 209ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@tailwindcss%2foxide-freebsd-x64 553ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@tailwindcss%2foxide-linux-arm-gnueabihf 42ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@tailwindcss%2foxide-linux-arm64-gnu 45ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@tailwindcss%2foxide-linux-arm64-musl 44ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@tailwindcss%2foxide-linux-x64-gnu 47ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@tailwindcss%2foxide-linux-x64-musl 519ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@tailwindcss%2foxide-wasm32-wasi 222ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@tailwindcss%2foxide-win32-arm64-msvc 44ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@tailwindcss%2foxide-win32-x64-msvc 50ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@next%2fswc-darwin-x64 300ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@next%2fswc-linux-arm64-gnu 48ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@next%2fswc-linux-arm64-musl 47ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@next%2fswc-linux-x64-gnu 230ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@next%2fswc-linux-x64-musl 142ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@next%2fswc-win32-arm64-msvc 53ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@next%2fswc-win32-x64-msvc 55ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@unrs%2fresolver-binding-win32-x64-msvc 38ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@unrs%2fresolver-binding-win32-arm64-msvc 263ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@unrs%2fresolver-binding-win32-ia32-msvc 349ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@unrs%2fresolver-binding-linux-x64-gnu 205ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@unrs%2fresolver-binding-linux-x64-musl 43ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@unrs%2fresolver-binding-freebsd-x64 43ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@unrs%2fresolver-binding-android-arm64 38ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@unrs%2fresolver-binding-linux-arm64-gnu 191ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@unrs%2fresolver-binding-linux-arm64-musl 517ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@unrs%2fresolver-binding-android-arm-eabi 41ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@unrs%2fresolver-binding-linux-arm-gnueabihf 128ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@unrs%2fresolver-binding-linux-arm-musleabihf 57ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@unrs%2fresolver-binding-linux-ppc64-gnu 42ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@unrs%2fresolver-binding-linux-riscv64-gnu 41ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@unrs%2fresolver-binding-linux-riscv64-musl 33ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@unrs%2fresolver-binding-linux-s390x-gnu 43ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@unrs%2fresolver-binding-darwin-x64 49ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@unrs%2fresolver-binding-wasm32-wasi 43ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@napi-rs%2fwasm-runtime 42ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@tybys%2fwasm-util 133ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/lightningcss-darwin-x64 31ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/lightningcss-linux-x64-gnu 34ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/lightningcss-win32-x64-msvc 32ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/lightningcss-win32-arm64-msvc 29ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/lightningcss-linux-arm64-gnu 27ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/lightningcss-linux-arm-gnueabihf 30ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/lightningcss-linux-arm64-musl 34ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/lightningcss-linux-x64-musl 27ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/lightningcss-freebsd-x64 31ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/lightningcss-android-arm64 33ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-darwin-x64 57ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-libvips-darwin-x64 125ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-libvips-linux-arm 47ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-libvips-linux-arm64 52ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-libvips-linux-ppc64 40ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-libvips-linux-riscv64 41ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-libvips-linux-s390x 52ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-libvips-linux-x64 45ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-libvips-linuxmusl-arm64 41ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-libvips-linuxmusl-x64 40ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-linux-arm 37ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-linux-arm64 125ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-linux-ppc64 41ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-linux-riscv64 42ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-linux-s390x 44ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-linux-x64 41ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-linuxmusl-arm64 38ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-linuxmusl-x64 47ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-wasm32 35ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-win32-arm64 48ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-win32-ia32 43ms (cache revalidated)
+npm http fetch GET 200 https://registry.npmjs.org/@img%2fsharp-win32-x64 123ms (cache revalidated)
+npm http cache @tybys/wasm-util@https://registry.npmjs.org/@tybys/wasm-util/-/wasm-util-0.10.1.tgz 0ms (cache hit)
+npm http cache @napi-rs/wasm-runtime@https://registry.npmjs.org/@napi-rs/wasm-runtime/-/wasm-runtime-0.2.12.tgz 0ms (cache hit)
+npm http fetch POST 200 https://registry.npmjs.org/-/npm/v1/security/advisories/bulk 221ms
+
+added 2 packages, and audited 885 packages in 8s
+
+151 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+npm verbose cwd /Users/thierno/Desktop/Dossier-2026/portfolio/Portfolio-portfolio-refonte
+npm verbose os Darwin 25.3.0
+npm verbose node v24.13.0
+npm verbose npm  v11.6.2
+npm verbose exit 0
+npm info ok

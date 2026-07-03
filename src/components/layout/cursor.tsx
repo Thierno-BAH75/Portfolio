@@ -1,86 +1,65 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, useSpring } from "framer-motion";
-import { useMousePosition } from "@/hooks";
+import { useEffect } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 
+const CLICKABLE_SELECTOR =
+  'a, button, [role="button"], input, textarea, .cursor-pointer';
+
+// Point qui suit la souris + anneau retardé (spring) qui grossit sur les
+// éléments cliquables. Position et scale passent uniquement par des motion
+// values → aucun re-render React par mousemove. L'activation (pointeur fin,
+// motion non réduit) et le masquage du curseur natif sont gérés en CSS
+// (globals.css, classe .custom-cursor) : sur tactile ou reduced-motion le
+// composant reste monté mais invisible et le curseur natif est conservé.
 export function CustomCursor() {
-  const { x, y } = useMousePosition();
-  const [isHovering, setIsHovering] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const x = useMotionValue(-100);
+  const y = useMotionValue(-100);
 
-  const springConfig = { damping: 25, stiffness: 300 };
-  const cursorX = useSpring(x, springConfig);
-  const cursorY = useSpring(y, springConfig);
+  // L'anneau traîne derrière le point
+  const ringX = useSpring(x, { stiffness: 250, damping: 25 });
+  const ringY = useSpring(y, { stiffness: 250, damping: 25 });
+
+  const targetScale = useMotionValue(1);
+  const ringScale = useSpring(targetScale, { stiffness: 300, damping: 22 });
 
   useEffect(() => {
-    // Ne pas afficher sur mobile/touch
-    const isTouchDevice =
-      "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    if (isTouchDevice) return;
-
-    setIsVisible(true);
-
-    const handleMouseEnter = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (
-        target.tagName === "A" ||
-        target.tagName === "BUTTON" ||
-        target.closest("a") ||
-        target.closest("button") ||
-        target.classList.contains("cursor-hover")
-      ) {
-        setIsHovering(true);
-      }
+    const move = (e: MouseEvent) => {
+      x.set(e.clientX);
+      y.set(e.clientY);
+    };
+    const over = (e: MouseEvent) => {
+      const target = e.target instanceof Element ? e.target : null;
+      targetScale.set(target?.closest(CLICKABLE_SELECTOR) ? 2.5 : 1);
+    };
+    const leave = () => {
+      x.set(-100);
+      y.set(-100);
     };
 
-    const handleMouseLeave = () => {
-      setIsHovering(false);
-    };
-
-    document.addEventListener("mouseover", handleMouseEnter);
-    document.addEventListener("mouseout", handleMouseLeave);
+    window.addEventListener("mousemove", move, { passive: true });
+    window.addEventListener("mouseover", over, { passive: true });
+    document.documentElement.addEventListener("mouseleave", leave);
 
     return () => {
-      document.removeEventListener("mouseover", handleMouseEnter);
-      document.removeEventListener("mouseout", handleMouseLeave);
+      window.removeEventListener("mousemove", move);
+      window.removeEventListener("mouseover", over);
+      document.documentElement.removeEventListener("mouseleave", leave);
     };
-  }, []);
-
-  if (!isVisible) return null;
+  }, [x, y, targetScale]);
 
   return (
-    <>
-      {/* Main cursor */}
+    <div className="custom-cursor" aria-hidden="true">
+      {/* Point central — suit la souris sans délai */}
       <motion.div
-        className="fixed top-0 left-0 w-4 h-4 bg-primary rounded-full pointer-events-none z-[9999] mix-blend-difference"
-        style={{
-          x: cursorX,
-          y: cursorY,
-          translateX: "-50%",
-          translateY: "-50%",
-        }}
-        animate={{
-          scale: isHovering ? 2.5 : 1,
-        }}
-        transition={{ duration: 0.2 }}
+        className="fixed top-0 left-0 z-[9999] w-2 h-2 -ml-1 -mt-1 rounded-full bg-white pointer-events-none mix-blend-difference"
+        style={{ x, y }}
       />
-
-      {/* Trailing cursor */}
+      {/* Anneau — léger retard, scale 2.5 sur les cliquables */}
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 border-2 border-primary/50 rounded-full pointer-events-none z-[9998]"
-        style={{
-          x: cursorX,
-          y: cursorY,
-          translateX: "-50%",
-          translateY: "-50%",
-        }}
-        animate={{
-          scale: isHovering ? 1.5 : 1,
-          opacity: isHovering ? 0 : 1,
-        }}
-        transition={{ duration: 0.3 }}
+        className="fixed top-0 left-0 z-[9999] w-10 h-10 -ml-5 -mt-5 rounded-full border-2 border-white pointer-events-none mix-blend-difference"
+        style={{ x: ringX, y: ringY, scale: ringScale }}
       />
-    </>
+    </div>
   );
 }

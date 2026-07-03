@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform, Variants } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import { ArrowRight, ChevronDown, Download } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Floating } from "@/components/animations";
@@ -199,20 +199,6 @@ export function Hero() {
                   Voir mes projets
                   <ArrowRight className="h-4 w-4" />
                 </Link>
-              </Button>
-            </motion.div>
-
-            {/* Cyan — Mon CV */}
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                size="lg"
-                className="w-full sm:w-auto min-w-[180px] bg-cyan-600 hover:bg-cyan-500 text-white shadow-lg hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]"
-                asChild
-              >
-                <a href="/CV_Alternance_BAH-Thierno_2026.pdf" target="_blank" rel="noopener noreferrer">
-                  <Download className="h-4 w-4" />
-                  Mon CV
-                </a>
               </Button>
             </motion.div>
 

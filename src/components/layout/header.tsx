@@ -136,9 +136,12 @@ export function Header() {
       )}
     >
       <nav className="w-full px-2 sm:px-4">
-        <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Logo — collé à gauche */}
-          <Link href="/" className="flex items-center pl-1">
+        {/* Logo à gauche / nav centrée / actions à droite.
+            [1fr_auto_1fr] : les colonnes latérales s'équilibrent,
+            la nav reste au centre exact du header. */}
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center h-16 lg:h-20">
+          {/* Logo — colonne gauche */}
+          <Link href="/" className="flex items-center pl-1 justify-self-start">
             <motion.span
               className="text-xl lg:text-2xl font-bold gradient-text"
               whileHover={{ scale: 1.05 }}
@@ -148,8 +151,8 @@ export function Header() {
             </motion.span>
           </Link>
 
-          {/* Desktop — nav + badge + toggle + bouton collés à droite */}
-          <div className="hidden lg:flex items-center gap-1 pr-1">
+          {/* Nav — colonne centrale */}
+          <div className="hidden xl:flex items-center gap-1 justify-center">
             {navItems.map((item) => {
               const active = isItemActive(item.href);
               return (
@@ -175,7 +178,11 @@ export function Header() {
                 </Link>
               );
             })}
-            <AvailabilityBadge className="flex ml-2" short />
+          </div>
+
+          {/* Actions — colonne droite */}
+          <div className="hidden xl:flex items-center gap-1 pr-1 justify-self-end">
+            <AvailabilityBadge className="flex" short />
             <ThemeToggle />
             <SocialIcons />
             <Button
@@ -187,8 +194,8 @@ export function Header() {
             </Button>
           </div>
 
-          {/* Mobile — toggle + burger collés à droite */}
-          <div className="flex lg:hidden items-center gap-1 pr-1">
+          {/* Tablette/mobile — toggle + burger à droite */}
+          <div className="flex xl:hidden items-center gap-1 pr-1 col-start-3 row-start-1 justify-self-end">
             <ThemeToggle />
             <button
               className="p-2 text-foreground"
@@ -209,7 +216,7 @@ export function Header() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="lg:hidden bg-background/95 backdrop-blur-lg border-b border-border"
+            className="xl:hidden bg-background/95 backdrop-blur-lg border-b border-border"
           >
             <div className="container mx-auto px-4 py-4 space-y-2">
               <motion.div

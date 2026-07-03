@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Floating, GlowOnHover } from "@/components/animations";
 import { personalInfo, socialLinks } from "@/data/experience";
+import { TechMarquee } from "./tech-marquee";
 
 // Charger le composant 3D dynamiquement pour éviter les erreurs SSR
 const FloatingShapes = dynamic(
@@ -284,9 +285,9 @@ export function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator — remonté au-dessus du bandeau technos */}
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden sm:block"
+        className="absolute bottom-24 left-1/2 -translate-x-1/2 hidden sm:block"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.5, duration: 0.5 }}
@@ -303,6 +304,9 @@ export function Hero() {
           </motion.button>
         </Floating>
       </motion.div>
+
+      {/* Bandeau technologies */}
+      <TechMarquee />
     </section>
   );
 }

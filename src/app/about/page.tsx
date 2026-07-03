@@ -1,18 +1,6 @@
-import { Metadata } from "next";
-import { About, Skills, Experience } from "@/components/sections";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "À propos",
-  description:
-    "Découvrez mon parcours, mes compétences et mon expérience en tant que développeur Full Stack.",
-};
-
+// La section À propos vit sur la home (architecture « vitrine à ancres »)
 export default function AboutPage() {
-  return (
-    <div className="pt-20">
-      <About />
-      <Skills />
-      <Experience />
-    </div>
-  );
+  redirect("/#about");
 }

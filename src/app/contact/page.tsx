@@ -1,16 +1,6 @@
-import { Metadata } from "next";
-import { Contact } from "@/components/sections";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    "Contactez-moi pour discuter de vos projets web. Je suis disponible pour des missions freelance et des collaborations.",
-};
-
+// La section Contact vit sur la home (architecture « vitrine à ancres »)
 export default function ContactPage() {
-  return (
-    <div className="pt-20">
-      <Contact />
-    </div>
-  );
+  redirect("/#contact");
 }

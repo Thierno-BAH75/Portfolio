@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -9,9 +10,42 @@ import { navItems, personalInfo } from "@/data/experience";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./theme-toggle";
 
+// Sections de la home suivies par le scroll-spy (ordre du DOM)
+const SPY_SECTION_IDS = ["accueil", "about", "experience", "contact"];
+
+function AvailabilityBadge({
+  className,
+  onClick,
+}: {
+  className?: string;
+  onClick?: () => void;
+}) {
+  if (!personalInfo.available) return null;
+
+  return (
+    <Link
+      href="/#contact"
+      onClick={onClick}
+      className={cn(
+        "items-center gap-2 px-3 py-1.5 rounded-full border border-green-500/30 bg-green-500/10 text-xs font-medium text-green-500 hover:bg-green-500/20 transition-colors whitespace-nowrap",
+        className
+      )}
+    >
+      <span className="relative flex h-2 w-2">
+        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" />
+        <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+      </span>
+      Disponible · Alternance
+    </Link>
+  );
+}
+
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
+  const visibleSections = useRef<Record<string, boolean>>({});
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,6 +55,44 @@ export function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Scroll-spy : uniquement sur la home. Pas de reset hors home :
+  // isItemActive ignore activeSection dès que pathname !== "/".
+  useEffect(() => {
+    if (pathname !== "/") return;
+
+    const sections = SPY_SECTION_IDS.map((id) =>
+      document.getElementById(id)
+    ).filter((el): el is HTMLElement => el !== null);
+
+    if (sections.length === 0) return;
+
+    visibleSections.current = {};
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          visibleSections.current[entry.target.id] = entry.isIntersecting;
+        }
+        const current = SPY_SECTION_IDS.find(
+          (id) => visibleSections.current[id]
+        );
+        setActiveSection(current ?? null);
+      },
+      // Bande horizontale entre 20% et 30% du viewport : la section qui la
+      // traverse est considérée active (compense aussi le header fixe)
+      { rootMargin: "-20% 0px -70% 0px" }
+    );
+
+    sections.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [pathname]);
+
+  const isItemActive = (href: string) => {
+    if (href.startsWith("/#")) {
+      return pathname === "/" && activeSection === href.slice(2);
+    }
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
 
   return (
     <header
@@ -44,28 +116,41 @@ export function Header() {
             </motion.span>
           </Link>
 
-          {/* Desktop — nav + toggle + bouton collés à droite */}
+          {/* Desktop — nav + badge + toggle + bouton collés à droite */}
           <div className="hidden lg:flex items-center gap-1 pr-1">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="relative px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors group"
-              >
-                {item.label}
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const active = isItemActive(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "relative px-3 py-2 text-sm font-medium transition-colors group",
+                    active
+                      ? "text-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {item.label}
+                  <span
+                    className={cn(
+                      "absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-violet-500 to-cyan-400 transition-transform origin-left",
+                      active
+                        ? "scale-x-100"
+                        : "scale-x-0 group-hover:scale-x-100"
+                    )}
+                  />
+                </Link>
+              );
+            })}
+            <AvailabilityBadge className="flex ml-2" />
             <ThemeToggle />
-            <Button variant="glow" size="sm" asChild>
-              <Link href="/contact">Me contacter</Link>
-            </Button>
             <Button
               size="sm"
-              className="bg-gradient-to-r from-violet-600 to-cyan-500 hover:from-violet-700 hover:to-cyan-600 text-white border-0 shadow-lg hover:shadow-[0_0_16px_rgba(139,92,246,0.4)]"
+              className="bg-gradient-to-r from-violet-600 to-cyan-500 hover:from-violet-500 hover:to-cyan-400 text-white shadow-lg hover:shadow-[0_0_16px_rgba(139,92,246,0.4)]"
               asChild
             >
-              <Link href="/admin">Admin</Link>
+              <Link href="/#contact">Me contacter</Link>
             </Button>
           </div>
 
@@ -94,6 +179,16 @@ export function Header() {
             className="lg:hidden bg-background/95 backdrop-blur-lg border-b border-border"
           >
             <div className="container mx-auto px-4 py-4 space-y-2">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="px-4 pb-2"
+              >
+                <AvailabilityBadge
+                  className="inline-flex"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                />
+              </motion.div>
               {navItems.map((item, index) => (
                 <motion.div
                   key={item.href}
@@ -103,7 +198,12 @@ export function Header() {
                 >
                   <Link
                     href={item.href}
-                    className="block px-4 py-3 text-lg font-medium text-foreground hover:bg-muted rounded-lg transition-colors"
+                    className={cn(
+                      "block px-4 py-3 text-lg font-medium rounded-lg transition-colors",
+                      isItemActive(item.href)
+                        ? "text-foreground bg-muted"
+                        : "text-foreground hover:bg-muted"
+                    )}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {item.label}
@@ -116,8 +216,16 @@ export function Header() {
                 transition={{ delay: navItems.length * 0.1 }}
                 className="pt-4"
               >
-                <Button variant="glow" className="w-full" asChild>
-                  <Link href="/contact">Me contacter</Link>
+                <Button
+                  className="w-full bg-gradient-to-r from-violet-600 to-cyan-500 hover:from-violet-500 hover:to-cyan-400 text-white shadow-lg"
+                  asChild
+                >
+                  <Link
+                    href="/#contact"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Me contacter
+                  </Link>
                 </Button>
               </motion.div>
             </div>

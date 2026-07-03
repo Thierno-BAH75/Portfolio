@@ -89,10 +89,24 @@ export function Footer() {
 
         {/* Bottom */}
         <div className="mt-12 pt-8 border-t border-border">
-          <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground">
               &copy; {currentYear} {personalInfo.name}. Tous droits réservés.
             </p>
+            <div className="flex items-center gap-4 text-xs text-muted-foreground/70">
+              <Link
+                href="/formations"
+                className="hover:text-foreground transition-colors"
+              >
+                Formations
+              </Link>
+              <Link
+                href="/admin"
+                className="hover:text-foreground transition-colors"
+              >
+                Admin
+              </Link>
+            </div>
             <p className="text-sm text-muted-foreground flex items-center">
               Fait avec <Heart size={14} className="mx-1 text-red-500" /> et
               beaucoup de café

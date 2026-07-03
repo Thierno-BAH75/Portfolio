@@ -181,15 +181,14 @@ export const socialLinks: SocialLink[] = [
   },
 ];
 
+// Ancres en "/#id" (et non "#id") pour fonctionner depuis /veille ou /projects
 export const navItems: NavItem[] = [
-  { label: "Accueil", href: "/" },
-  { label: "À propos", href: "#about" },
+  { label: "Accueil", href: "/#accueil" },
+  { label: "À propos", href: "/#about" },
+  { label: "Parcours", href: "/#experience" },
   { label: "Projets", href: "/projects" },
-  { label: "Parcours", href: "/experience" },
   { label: "Veille", href: "/veille" },
-  { label: "Form.", href: "/formations" },
-  { label: "Outils", href: "/outils" },
-  { label: "Contact", href: "/contact" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export const personalInfo = {

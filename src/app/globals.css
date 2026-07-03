@@ -206,6 +206,19 @@ body {
 }
 
 /* ========================================
+   ANCRES & SCROLL (header fixe)
+   ======================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Décale la cible d'ancre sous le header fixe (h-16 / lg:h-20) */
+section[id] {
+  scroll-margin-top: 6rem;
+}
+
+/* ========================================
    REDUCED MOTION
    ======================================== */
 
@@ -216,5 +229,9 @@ body {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
   }
 }

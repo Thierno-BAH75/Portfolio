@@ -117,6 +117,7 @@ export function Hero() {
   return (
     <section
       ref={containerRef}
+      id="accueil"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* 3D Background - Hidden on mobile for performance */}
@@ -237,7 +238,7 @@ export function Hero() {
                 className="w-full sm:w-auto min-w-[180px] bg-violet-600 hover:bg-violet-500 text-white shadow-lg hover:shadow-[0_0_20px_rgba(139,92,246,0.4)]"
                 asChild
               >
-                <Link href="/contact">Me contacter</Link>
+                <Link href="/#contact">Me contacter</Link>
               </Button>
             </motion.div>
           </motion.div>

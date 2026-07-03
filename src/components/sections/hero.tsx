@@ -5,12 +5,11 @@ import { motion, useScroll, useTransform, Variants } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import { Github, Linkedin, Mail, ArrowRight, ChevronDown, Download } from "lucide-react";
+import { ArrowRight, ChevronDown, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
-import { Floating, GlowOnHover } from "@/components/animations";
-import { personalInfo, socialLinks } from "@/data/experience";
+import { Floating } from "@/components/animations";
+import { personalInfo } from "@/data/experience";
 import { TechMarquee } from "./tech-marquee";
 
 // Charger le composant 3D dynamiquement pour éviter les erreurs SSR
@@ -18,12 +17,6 @@ const FloatingShapes = dynamic(
   () => import("@/components/3d/floating-shapes").then((mod) => mod.FloatingShapes),
   { ssr: false }
 );
-
-const iconMap: Record<string, React.ReactNode> = {
-  github: <Github size={18} />,
-  linkedin: <Linkedin size={18} />,
-  mail: <Mail size={18} />,
-};
 
 // Animation variants
 const containerVariants: Variants = {
@@ -176,7 +169,7 @@ export function Hero() {
 
           {/* Availability Badge */}
           {personalInfo.available && (
-            <motion.div variants={itemVariants} className="mb-6 sm:mb-8">
+            <motion.div variants={itemVariants} className="mb-10 sm:mb-12">
               <Badge
                 variant="outline"
                 className="px-4 py-2 text-sm border-green-500/30 bg-green-500/10 text-green-500 hover:bg-green-500/20"
@@ -190,18 +183,10 @@ export function Hero() {
             </motion.div>
           )}
 
-          {/* Tagline */}
-          <motion.p
-            variants={itemVariants}
-            className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-8 sm:mb-10 px-4 text-justify"
-          >
-            {personalInfo.tagline}
-          </motion.p>
-
           {/* CTA Buttons */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10 sm:mb-12"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             {/* Dégradé violet→cyan — Voir mes projets */}
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -243,46 +228,6 @@ export function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* Social Links */}
-          <motion.div
-            variants={itemVariants}
-            className="flex items-center justify-center gap-3"
-          >
-            {socialLinks
-              .filter((s) => s.icon !== "mail")
-              .map((social, index) => {
-                const glowColor =
-                  social.icon === "github"
-                    ? "rgba(139, 92, 246, 0.5)"
-                    : "rgba(34, 211, 238, 0.5)";
-                const hoverTextColor =
-                  social.icon === "github" ? "hover:text-violet-400" : "hover:text-cyan-400";
-                const hoverBorder =
-                  social.icon === "github" ? "hover:border-violet-400" : "hover:border-cyan-400";
-                return (
-                  <GlowOnHover key={social.name} glowColor={glowColor}>
-                    <Card
-                      className={`p-0 border-border/50 bg-background/50 backdrop-blur-sm ${hoverBorder} hover:bg-primary/5 transition-all`}
-                    >
-                      <motion.a
-                        href={social.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`flex items-center justify-center w-11 h-11 text-muted-foreground ${hoverTextColor} transition-colors`}
-                        whileHover={{ scale: 1.15, rotate: 5 }}
-                        whileTap={{ scale: 0.95 }}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 1 + index * 0.1 }}
-                        aria-label={social.name}
-                      >
-                        {iconMap[social.icon]}
-                      </motion.a>
-                    </Card>
-                  </GlowOnHover>
-                );
-              })}
-          </motion.div>
         </motion.div>
       </motion.div>
 

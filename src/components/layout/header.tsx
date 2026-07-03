@@ -4,21 +4,53 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Github, Linkedin } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { navItems, personalInfo } from "@/data/experience";
+import { navItems, personalInfo, socialLinks } from "@/data/experience";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./theme-toggle";
 
 // Sections de la home suivies par le scroll-spy (ordre du DOM)
 const SPY_SECTION_IDS = ["accueil", "about", "experience", "contact"];
 
+function SocialIcons({ size = 18 }: { size?: number }) {
+  return (
+    <>
+      {socialLinks
+        .filter((social) => social.icon === "github" || social.icon === "linkedin")
+        .map((social) => (
+          <a
+            key={social.name}
+            href={social.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={social.name}
+            className={cn(
+              "p-2 text-muted-foreground transition-colors",
+              social.icon === "github"
+                ? "hover:text-violet-400"
+                : "hover:text-cyan-400"
+            )}
+          >
+            {social.icon === "github" ? (
+              <Github size={size} />
+            ) : (
+              <Linkedin size={size} />
+            )}
+          </a>
+        ))}
+    </>
+  );
+}
+
 function AvailabilityBadge({
   className,
   onClick,
+  short = false,
 }: {
   className?: string;
   onClick?: () => void;
+  short?: boolean;
 }) {
   if (!personalInfo.available) return null;
 
@@ -35,7 +67,7 @@ function AvailabilityBadge({
         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" />
         <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
       </span>
-      Disponible · Alternance
+      {short ? "Disponible" : "Disponible · Alternance"}
     </Link>
   );
 }
@@ -143,8 +175,9 @@ export function Header() {
                 </Link>
               );
             })}
-            <AvailabilityBadge className="flex ml-2" />
+            <AvailabilityBadge className="flex ml-2" short />
             <ThemeToggle />
+            <SocialIcons />
             <Button
               size="sm"
               className="bg-gradient-to-r from-violet-600 to-cyan-500 hover:from-violet-500 hover:to-cyan-400 text-white shadow-lg hover:shadow-[0_0_16px_rgba(139,92,246,0.4)]"
@@ -227,6 +260,14 @@ export function Header() {
                     Me contacter
                   </Link>
                 </Button>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: (navItems.length + 1) * 0.1 }}
+                className="flex items-center justify-center gap-4 pt-3"
+              >
+                <SocialIcons size={20} />
               </motion.div>
             </div>
           </motion.div>

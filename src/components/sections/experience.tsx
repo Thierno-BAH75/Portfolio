@@ -9,6 +9,7 @@ import {
   MapPin,
   Award,
   ChevronDown,
+  Sparkles,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { education, experiences, certifications } from "@/data/experience";
@@ -137,10 +138,18 @@ function EducationCard({ edu, index }: { edu: Education; index: number }) {
         </div>
         <h4 className="text-lg font-semibold leading-snug">{edu.degree}</h4>
         <p className="text-violet-400 font-medium text-sm mt-1">{edu.school}</p>
-        <p className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
-          <MapPin size={13} />
-          {edu.location}
-        </p>
+        {edu.location && (
+          <p className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
+            <MapPin size={13} />
+            {edu.location}
+          </p>
+        )}
+        {edu.note && (
+          <p className="flex items-center gap-1.5 text-xs font-semibold text-amber-400 mt-2">
+            <Sparkles size={13} className="shrink-0" />
+            {edu.note}
+          </p>
+        )}
         {edu.description && (
           <p className="text-sm text-muted-foreground mt-3">{edu.description}</p>
         )}

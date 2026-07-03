@@ -80,6 +80,17 @@ export const experiences: Experience[] = [
 
 export const education: Education[] = [
   {
+    id: "5",
+    degree: "Master 2 IRS option Cybersécurité",
+    school: "Université Paris-Saclay — Groupe AFORP",
+    startDate: "2026",
+    endDate: "2027",
+    description:
+      "Ingénierie des Réseaux et Systèmes option Cybersécurité, en partenariat avec l'Université Paris-Saclay. Formation par apprentissage orientée sécurité des infrastructures, cyber-défense, audits, tests d'intrusion et gestion de crise.",
+    status: "admitted",
+    note: "Recherche d'alternance · dès sept. 2026",
+  },
+  {
     id: "1",
     degree: "Master IRS option Cybersécurité",
     school: "UVSQ - Université de Versailles Saint-Quentin-en-Yvelines",

@@ -63,11 +63,12 @@ export interface Education {
   id: string;
   degree: string;
   school: string;
-  location: string;
+  location?: string;
   startDate: string;
   endDate: string;
   description?: string;
   status?: "validated" | "ongoing" | "admitted";
+  note?: string; // mise en avant (ex. recherche d'alternance)
 }
 
 export interface SocialLink {

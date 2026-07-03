@@ -95,12 +95,6 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-4 text-xs text-muted-foreground/70">
               <Link
-                href="/formations"
-                className="hover:text-foreground transition-colors"
-              >
-                Formations
-              </Link>
-              <Link
                 href="/admin"
                 className="hover:text-foreground transition-colors"
               >

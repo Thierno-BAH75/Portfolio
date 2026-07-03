@@ -67,6 +67,7 @@ export interface Education {
   startDate: string;
   endDate: string;
   description?: string;
+  status?: "validated" | "ongoing" | "admitted";
 }
 
 export interface SocialLink {

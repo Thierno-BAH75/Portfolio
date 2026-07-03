@@ -87,6 +87,7 @@ export const education: Education[] = [
     startDate: "2025",
     endDate: "2026",
     description: "Ingénierie des Réseaux et Systèmes, spécialisation Cybersécurité.",
+    status: "ongoing",
   },
   {
     id: "2",
@@ -96,6 +97,7 @@ export const education: Education[] = [
     startDate: "2024",
     endDate: "2025",
     description: "Administration Systèmes & Réseaux et Cybersécurité. Conception d'infrastructures sécurisées, gestion des identités et certificats.",
+    status: "validated",
   },
   {
     id: "3",
@@ -105,6 +107,7 @@ export const education: Education[] = [
     startDate: "2023",
     endDate: "2024",
     description: "Métiers des Réseaux Informatiques et Télécommunications. Virtualisation, conteneurisation, Cloud Security, DevSecOps.",
+    status: "validated",
   },
   {
     id: "4",
@@ -114,6 +117,7 @@ export const education: Education[] = [
     startDate: "2021",
     endDate: "2023",
     description: "Solutions d'Infrastructure, Systèmes et Réseaux. Certifications CISCO CCNAv7 et ANSSI MOOC.",
+    status: "validated",
   },
 ];
 

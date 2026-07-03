@@ -3,6 +3,7 @@
 import { useRef, Suspense, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, Variants } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import dynamic from "next/dynamic";
 import { Github, Linkedin, Mail, ArrowRight, ChevronDown, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -149,6 +150,20 @@ export function Hero() {
           animate="visible"
           className="max-w-4xl mx-auto text-center"
         >
+          {/* Avatar */}
+          <motion.div variants={itemVariants} className="mb-8 flex justify-center">
+            <div className="rounded-full p-[3px] bg-gradient-to-r from-violet-500 to-cyan-400 shadow-[0_0_35px_rgba(139,92,246,0.35)]">
+              <Image
+                src="/thierno-bah.jpeg"
+                alt="Thierno BAH"
+                width={130}
+                height={130}
+                priority
+                className="w-[130px] h-[130px] rounded-full object-cover"
+              />
+            </div>
+          </motion.div>
+
           {/* Title — looping typewriter */}
           <motion.h1
             variants={itemVariants}
@@ -186,11 +201,11 @@ export function Hero() {
             variants={itemVariants}
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10 sm:mb-12"
           >
-            {/* Bleu — Voir mes projets */}
+            {/* Dégradé violet→cyan — Voir mes projets */}
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
                 size="lg"
-                className="w-full sm:w-auto min-w-[180px] bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-[0_0_20px_rgba(37,99,235,0.4)]"
+                className="w-full sm:w-auto min-w-[180px] bg-gradient-to-r from-violet-600 to-cyan-500 hover:from-violet-500 hover:to-cyan-400 text-white shadow-lg hover:shadow-[0_0_20px_rgba(139,92,246,0.45)]"
                 asChild
               >
                 <Link href="/projects">
@@ -200,11 +215,11 @@ export function Hero() {
               </Button>
             </motion.div>
 
-            {/* Cyan/vert sobre — Mon CV */}
+            {/* Cyan — Mon CV */}
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
                 size="lg"
-                className="w-full sm:w-auto min-w-[180px] bg-cyan-700 hover:bg-cyan-800 text-white shadow-lg hover:shadow-[0_0_20px_rgba(14,116,144,0.4)]"
+                className="w-full sm:w-auto min-w-[180px] bg-cyan-600 hover:bg-cyan-500 text-white shadow-lg hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]"
                 asChild
               >
                 <a href="/CV_Alternance_BAH-Thierno_2026.pdf" target="_blank" rel="noopener noreferrer">
@@ -214,11 +229,11 @@ export function Hero() {
               </Button>
             </motion.div>
 
-            {/* Violet sobre — Me contacter */}
+            {/* Violet — Me contacter */}
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
                 size="lg"
-                className="w-full sm:w-auto min-w-[180px] bg-violet-700 hover:bg-violet-800 text-white shadow-lg hover:shadow-[0_0_20px_rgba(109,40,217,0.4)]"
+                className="w-full sm:w-auto min-w-[180px] bg-violet-600 hover:bg-violet-500 text-white shadow-lg hover:shadow-[0_0_20px_rgba(139,92,246,0.4)]"
                 asChild
               >
                 <Link href="/contact">Me contacter</Link>
@@ -236,12 +251,12 @@ export function Hero() {
               .map((social, index) => {
                 const glowColor =
                   social.icon === "github"
-                    ? "rgba(59, 130, 246, 0.5)"
-                    : "rgba(6, 182, 212, 0.5)";
+                    ? "rgba(139, 92, 246, 0.5)"
+                    : "rgba(34, 211, 238, 0.5)";
                 const hoverTextColor =
-                  social.icon === "github" ? "hover:text-blue-400" : "hover:text-cyan-400";
+                  social.icon === "github" ? "hover:text-violet-400" : "hover:text-cyan-400";
                 const hoverBorder =
-                  social.icon === "github" ? "hover:border-blue-400" : "hover:border-cyan-400";
+                  social.icon === "github" ? "hover:border-violet-400" : "hover:border-cyan-400";
                 return (
                   <GlowOnHover key={social.name} glowColor={glowColor}>
                     <Card

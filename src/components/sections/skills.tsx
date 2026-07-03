@@ -1,12 +1,14 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Shield, Network, Server, Cloud, Wrench, Code, LucideIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { HoverCard3D, StaggerChildren, StaggerItem } from "@/components/animations";
-import { skillsByCategory } from "@/data/skills";
+import { Counter, HoverCard3D, StaggerChildren, StaggerItem } from "@/components/animations";
+import { skills, skillsByCategory } from "@/data/skills";
+import { projects } from "@/data/projects";
+import { certifications } from "@/data/experience";
 
 interface CategoryConfig {
   label: string;
@@ -54,7 +56,16 @@ const categoryConfig: Record<string, CategoryConfig> = {
   },
 };
 
+const stats = [
+  { value: projects.length, suffix: "", label: "Projets réalisés" },
+  { value: certifications.length, suffix: "", label: "Certifications" },
+  { value: 3, suffix: "+", label: "Années d'expérience" },
+  { value: skills.length, suffix: "", label: "Technologies maîtrisées" },
+];
+
 export function Skills() {
+  const reduceMotion = useReducedMotion();
+
   return (
     <section className="py-16 sm:py-20 lg:py-32" id="skills">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -77,6 +88,27 @@ export function Skills() {
             et administrer vos infrastructures.
           </p>
         </motion.div>
+
+        {/* Stats */}
+        <StaggerChildren
+          className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto mb-12 lg:mb-16"
+          staggerDelay={0.1}
+        >
+          {stats.map((stat) => (
+            <StaggerItem key={stat.label}>
+              <div className="h-full rounded-xl border border-border/60 bg-background/50 px-4 py-6 text-center">
+                <div className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-violet-500 to-cyan-400 bg-clip-text text-transparent">
+                  {reduceMotion ? (
+                    <span>{stat.value}{stat.suffix}</span>
+                  ) : (
+                    <Counter to={stat.value} suffix={stat.suffix} />
+                  )}
+                </div>
+                <p className="text-sm text-muted-foreground mt-2">{stat.label}</p>
+              </div>
+            </StaggerItem>
+          ))}
+        </StaggerChildren>
 
         {/* Skills Grid - 2 colonnes avec animations */}
         <StaggerChildren

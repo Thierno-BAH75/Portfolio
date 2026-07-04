@@ -7,13 +7,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Github, Linkedin } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { navItems, personalInfo, socialLinks } from "@/data/experience";
-import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./theme-toggle";
 import { useI18n, setLocale } from "@/i18n";
 import type { Locale } from "@/types";
 
 // Sections de la home suivies par le scroll-spy (ordre du DOM)
 const SPY_SECTION_IDS = ["accueil", "about", "experience", "contact"];
+
+// Séparateur vertical fin entre les groupes d'actions
+function VSeparator() {
+  return <span aria-hidden="true" className="h-5 w-px bg-border/40" />;
+}
 
 function SocialIcons({ size = 18 }: { size?: number }) {
   return (
@@ -63,7 +67,8 @@ function AvailabilityBadge({
       href="/#contact"
       onClick={onClick}
       className={cn(
-        "items-center gap-2 px-3 py-1.5 rounded-full border border-green-500/30 bg-green-500/10 text-xs font-medium text-green-500 hover:bg-green-500/20 transition-colors whitespace-nowrap",
+        // Seul CTA du header : hover affirmé (fond, bordure, halo)
+        "items-center gap-2 px-3 py-1.5 rounded-full border border-green-500/30 bg-green-500/10 text-xs font-medium text-green-500 whitespace-nowrap transition-all hover:bg-green-500/25 hover:border-green-500/60 hover:shadow-[0_0_12px_rgba(34,197,94,0.3)]",
         className
       )}
     >
@@ -115,7 +120,7 @@ export function Header() {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const visibleSections = useRef<Record<string, boolean>>({});
   const pathname = usePathname();
-  const { t, tx } = useI18n();
+  const { tx } = useI18n();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -218,23 +223,19 @@ export function Header() {
             })}
           </div>
 
-          {/* Actions — colonne droite */}
-          <div className="hidden xl:flex items-center gap-1 pr-1 justify-self-end">
-            <AvailabilityBadge className="flex" short />
-            <LangToggle className="ml-1" />
+          {/* Actions — colonne droite : langue · thème | réseaux | badge CTA */}
+          <div className="hidden xl:flex items-center gap-2 pr-1 justify-self-end">
+            <LangToggle />
             <ThemeToggle />
+            <VSeparator />
             <SocialIcons />
-            <Button
-              size="sm"
-              className="bg-gradient-to-r from-violet-600 to-cyan-500 hover:from-violet-500 hover:to-cyan-400 text-white shadow-lg hover:shadow-[0_0_16px_rgba(139,92,246,0.4)]"
-              asChild
-            >
-              <Link href="/#contact">{t.header.contact}</Link>
-            </Button>
+            <VSeparator />
+            <AvailabilityBadge className="flex" short />
           </div>
 
-          {/* Tablette/mobile — toggle + burger à droite */}
+          {/* Tablette/mobile — langue + thème + burger à droite */}
           <div className="flex xl:hidden items-center gap-1 pr-1 col-start-3 row-start-1 justify-self-end">
+            <LangToggle />
             <ThemeToggle />
             <button
               className="p-2 text-foreground"
@@ -261,13 +262,12 @@ export function Header() {
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="px-4 pb-2 flex items-center gap-3"
+                className="px-4 pb-2"
               >
                 <AvailabilityBadge
                   className="inline-flex"
                   onClick={() => setIsMobileMenuOpen(false)}
                 />
-                <LangToggle />
               </motion.div>
               {navItems.map((item, index) => (
                 <motion.div
@@ -294,24 +294,6 @@ export function Header() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: navItems.length * 0.1 }}
-                className="pt-4"
-              >
-                <Button
-                  className="w-full bg-gradient-to-r from-violet-600 to-cyan-500 hover:from-violet-500 hover:to-cyan-400 text-white shadow-lg"
-                  asChild
-                >
-                  <Link
-                    href="/#contact"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {t.header.contact}
-                  </Link>
-                </Button>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: (navItems.length + 1) * 0.1 }}
                 className="flex items-center justify-center gap-4 pt-3"
               >
                 <SocialIcons size={20} />

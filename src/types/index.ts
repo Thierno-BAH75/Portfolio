@@ -75,6 +75,7 @@ export interface Education {
   description?: Localized;
   status?: "validated" | "ongoing" | "admitted";
   note?: Localized; // mise en avant (ex. recherche d'alternance)
+  level?: Localized; // niveau de diplôme (ex. Bac+5)
 }
 
 export interface Certification {

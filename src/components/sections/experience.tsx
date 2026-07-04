@@ -103,9 +103,17 @@ function EducationCard({ edu, index }: { edu: Education; index: number }) {
       <TimelineDot />
       <div className="bg-card border border-border rounded-xl p-5 hover:border-violet-500/50 transition-colors">
         <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-          <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
-            <Calendar size={14} />
-            {edu.startDate} – {edu.endDate}
+          <span className="flex flex-wrap items-center gap-2">
+            <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
+              <Calendar size={14} />
+              {edu.startDate} – {edu.endDate}
+            </span>
+            {/* Niveau de diplôme : mention discrète à côté de la période */}
+            {edu.level && (
+              <span className="text-[11px] font-medium px-2 py-0.5 rounded-full border border-border/70 bg-muted/40 text-muted-foreground">
+                {tx(edu.level)}
+              </span>
+            )}
           </span>
           {edu.status && (
             <span

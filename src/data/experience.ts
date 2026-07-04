@@ -221,22 +221,10 @@ export const education: Education[] = [
       fr: "Recherche d'alternance · dès sept. 2026",
       en: "Seeking a work-study contract · from Sept 2026",
     },
-  },
-  {
-    id: "1",
-    degree: {
-      fr: "Master IRS option Cybersécurité",
-      en: "Master's in Network & Systems Engineering (IRS) — Cybersecurity track",
+    level: {
+      fr: "Bac+5",
+      en: "Master's degree (5-yr)",
     },
-    school: "UVSQ - Université de Versailles Saint-Quentin-en-Yvelines",
-    location: "Versailles, France",
-    startDate: "2025",
-    endDate: "2026",
-    description: {
-      fr: "Ingénierie des Réseaux et Systèmes, spécialisation Cybersécurité.",
-      en: "Network & Systems Engineering, specializing in Cybersecurity.",
-    },
-    status: "ongoing",
   },
   {
     id: "2",
@@ -253,6 +241,10 @@ export const education: Education[] = [
       en: "Systems & Network Administration and Cybersecurity. Design of secure infrastructures, identity and certificate management.",
     },
     status: "validated",
+    level: {
+      fr: "Bac+4 — validé",
+      en: "4-yr degree — completed",
+    },
   },
   {
     id: "3",
@@ -269,6 +261,10 @@ export const education: Education[] = [
       en: "IT Networks and Telecommunications. Virtualization, containerization, cloud security, DevSecOps.",
     },
     status: "validated",
+    level: {
+      fr: "Bac+3",
+      en: "Bachelor's degree",
+    },
   },
   {
     id: "4",
@@ -285,6 +281,10 @@ export const education: Education[] = [
       en: "Infrastructure, Systems & Networks solutions. Cisco CCNAv7 and ANSSI MOOC certifications.",
     },
     status: "validated",
+    level: {
+      fr: "Bac+2",
+      en: "2-yr technical degree",
+    },
   },
 ];
 

@@ -1,56 +1,13 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { Shield, Network, Server, Cloud, Wrench, Code, LucideIcon } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Counter, HoverCard3D, StaggerChildren, StaggerItem } from "@/components/animations";
+import { Counter, StaggerChildren, StaggerItem } from "@/components/animations";
 import { skills, skillsByCategory } from "@/data/skills";
 import { projects } from "@/data/projects";
 import { certifications } from "@/data/experience";
 import { useI18n } from "@/i18n";
 
 type CategoryKey = keyof typeof skillsByCategory;
-
-interface CategoryConfig {
-  icon: LucideIcon;
-  color: string;
-  bgColor: string;
-}
-
-const categoryConfig: Record<CategoryKey, CategoryConfig> = {
-  security: {
-    icon: Shield,
-    color: "text-red-500",
-    bgColor: "bg-red-500/10",
-  },
-  network: {
-    icon: Network,
-    color: "text-blue-500",
-    bgColor: "bg-blue-500/10",
-  },
-  systems: {
-    icon: Server,
-    color: "text-purple-500",
-    bgColor: "bg-purple-500/10",
-  },
-  cloud: {
-    icon: Cloud,
-    color: "text-green-500",
-    bgColor: "bg-green-500/10",
-  },
-  tools: {
-    icon: Wrench,
-    color: "text-amber-500",
-    bgColor: "bg-amber-500/10",
-  },
-  scripting: {
-    icon: Code,
-    color: "text-pink-500",
-    bgColor: "bg-pink-500/10",
-  },
-};
 
 const stats = [
   { value: projects.length, suffix: "", labelKey: "projects" as const },
@@ -73,9 +30,9 @@ export function Skills() {
           viewport={{ once: true }}
           className="text-center mb-12 lg:mb-16"
         >
-          <Badge variant="outline" className="mb-4">
-            {t.skills.badge}
-          </Badge>
+          <p className="text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground mb-4">
+            {t.skills.eyebrow}
+          </p>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
             {t.skills.titleStart}{" "}
             <span className="gradient-text">{t.skills.titleGradient}</span>
@@ -106,61 +63,33 @@ export function Skills() {
           ))}
         </StaggerChildren>
 
-        {/* Skills Grid - 2 colonnes avec animations */}
+        {/* Stack — cartes par catégorie, volontairement épurées :
+            pas d'icône, pas de barre, pas de pourcentage */}
         <StaggerChildren
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto"
-          staggerDelay={0.1}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto"
+          staggerDelay={0.08}
         >
-          {(Object.entries(skillsByCategory) as [CategoryKey, typeof skills][]).map(([category, skills]) => {
-            const config = categoryConfig[category];
-            const Icon = config.icon;
-
-            return (
+          {(Object.entries(skillsByCategory) as [CategoryKey, typeof skills][]).map(
+            ([category, categorySkills]) => (
               <StaggerItem key={category}>
-                <HoverCard3D intensity={5}>
-                  <Card className="h-full hover:border-primary/50 transition-colors">
-                    <CardHeader className="pb-4">
-                      <CardTitle className="flex items-center gap-3 text-base font-semibold">
-                        <motion.div
-                          className={`p-2 rounded-lg ${config.bgColor}`}
-                          whileHover={{ scale: 1.1, rotate: 5 }}
-                          transition={{ type: "spring", stiffness: 400 }}
-                        >
-                          <Icon className={`w-4 h-4 ${config.color}`} />
-                        </motion.div>
-                        {t.skills.categories[category]}
-                        <Badge variant="secondary" className="ml-auto text-xs font-normal">
-                          {skills.length}
-                        </Badge>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="pt-0">
-                      <div className="space-y-4">
-                        {skills.map((skill, skillIndex) => (
-                          <motion.div
-                            key={skill.name}
-                            initial={{ opacity: 0, x: -10 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: skillIndex * 0.05 }}
-                            className="space-y-1.5 group"
-                          >
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm group-hover:text-primary transition-colors">
-                                {skill.name}
-                              </span>
-                              <span className="text-xs text-muted-foreground">{skill.level}%</span>
-                            </div>
-                            <Progress value={skill.level} className="h-1.5" />
-                          </motion.div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </HoverCard3D>
+                <div className="h-full rounded-2xl border border-border/60 bg-card p-6 hover:border-violet-500/40 transition-colors">
+                  <h3 className="font-semibold mb-4">
+                    {t.skills.categories[category]}
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {categorySkills.map((skill) => (
+                      <span
+                        key={skill.name}
+                        className="rounded-lg border border-border/60 bg-transparent px-3 py-1 text-sm text-muted-foreground hover:border-cyan-400/50 hover:text-cyan-300 transition-colors"
+                      >
+                        {skill.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </StaggerItem>
-            );
-          })}
+            )
+          )}
         </StaggerChildren>
       </div>
     </section>

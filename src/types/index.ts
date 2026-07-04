@@ -37,7 +37,6 @@ export type ProjectCategory =
 export interface Skill {
   name: string;
   icon: string;
-  level: number; // 0-100
   category: SkillCategory;
 }
 

@@ -58,7 +58,7 @@ const fr = {
     },
   },
   skills: {
-    badge: "Compétences",
+    eyebrow: "Stack technique",
     titleStart: "Mon expertise",
     titleGradient: "technique",
     subtitle:
@@ -288,7 +288,7 @@ const en: DeepDict<typeof fr> = {
     },
   },
   skills: {
-    badge: "Skills",
+    eyebrow: "Tech stack",
     titleStart: "My technical",
     titleGradient: "expertise",
     subtitle:

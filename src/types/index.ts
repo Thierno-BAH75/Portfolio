@@ -61,6 +61,7 @@ export interface Experience {
   current: boolean;
   description: Localized;
   achievements: Localized<string[]>;
+  impact?: Localized; // ligne de résultat affichée en bas de carte (zone dépliée)
   technologies: string[];
 }
 

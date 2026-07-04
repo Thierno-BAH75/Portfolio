@@ -197,23 +197,36 @@ function ExperienceCard({
           <>
             <AnimatePresence initial={false}>
               {expanded && (
-                <motion.ul
-                  className="space-y-1.5 text-sm overflow-hidden"
+                <motion.div
+                  className="overflow-hidden"
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: reduce ? 0 : 0.3 }}
                 >
-                  {hidden.map((achievement) => (
-                    <li
-                      key={achievement}
-                      className="flex items-start gap-2 text-muted-foreground first:mt-1.5"
-                    >
-                      <span className="text-cyan-400 mt-0.5">•</span>
-                      <span>{achievement}</span>
-                    </li>
-                  ))}
-                </motion.ul>
+                  <ul className="mt-1.5 space-y-1.5 text-sm">
+                    {hidden.map((achievement) => (
+                      <li
+                        key={achievement}
+                        className="flex items-start gap-2 text-muted-foreground"
+                      >
+                        <span className="text-cyan-400 mt-0.5">•</span>
+                        <span>{achievement}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  {/* Ligne de résultat, mise à part des puces par un filet fin */}
+                  {exp.impact && (
+                    <p className="mt-3 pt-3 border-t border-border/60 flex items-start gap-2 text-sm font-medium">
+                      <span className="text-violet-400 mt-0.5" aria-hidden="true">
+                        →
+                      </span>
+                      <span className="bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
+                        {tx(exp.impact)}
+                      </span>
+                    </p>
+                  )}
+                </motion.div>
               )}
             </AnimatePresence>
             <button

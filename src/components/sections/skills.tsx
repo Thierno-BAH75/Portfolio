@@ -58,7 +58,7 @@ function setSpotlight(e: MouseEvent<HTMLDivElement>) {
 
 export function Skills() {
   const reduceMotion = useReducedMotion();
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   return (
     <section className="py-16 sm:py-20 lg:py-32" id="skills">
@@ -163,15 +163,19 @@ export function Skills() {
                     {t.skills.categories[category]}
                   </h3>
                   <div className="relative flex flex-wrap gap-2">
-                    {categorySkills.map((skill) => (
-                      <motion.span
-                        key={skill.name}
-                        variants={reduceMotion ? undefined : chipVariants}
-                        className="rounded-lg border border-border/60 bg-transparent px-3 py-1 text-sm text-muted-foreground hover:border-cyan-400/50 hover:text-cyan-300 transition-colors"
-                      >
-                        {skill.name}
-                      </motion.span>
-                    ))}
+                    {categorySkills.map((skill) => {
+                      const name =
+                        typeof skill.name === "string" ? skill.name : skill.name[locale];
+                      return (
+                        <motion.span
+                          key={typeof skill.name === "string" ? skill.name : skill.name.fr}
+                          variants={reduceMotion ? undefined : chipVariants}
+                          className="rounded-lg border border-border/60 bg-transparent px-3 py-1 text-sm text-muted-foreground hover:border-cyan-400/50 hover:text-cyan-300 transition-colors"
+                        >
+                          {name}
+                        </motion.span>
+                      );
+                    })}
                   </div>
                 </div>
               </motion.div>

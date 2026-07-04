@@ -32,6 +32,31 @@ export const skills: Skill[] = [
     icon: "shield",
     category: "security",
   },
+  {
+    name: "Apache Guacamole (PAM)",
+    icon: "shield",
+    category: "security",
+  },
+  {
+    name: "ELK",
+    icon: "shield",
+    category: "security",
+  },
+  {
+    name: "ISO 27001",
+    icon: "shield",
+    category: "security",
+  },
+  {
+    name: { fr: "RGPD", en: "GDPR" },
+    icon: "shield",
+    category: "security",
+  },
+  {
+    name: "MITRE ATT&CK",
+    icon: "shield",
+    category: "security",
+  },
 
   // Réseaux
   {
@@ -61,6 +86,36 @@ export const skills: Skill[] = [
   },
   {
     name: "TCP/IP",
+    icon: "network",
+    category: "network",
+  },
+  {
+    name: "DNS",
+    icon: "network",
+    category: "network",
+  },
+  {
+    name: "DHCP",
+    icon: "network",
+    category: "network",
+  },
+  {
+    name: "SNMP",
+    icon: "network",
+    category: "network",
+  },
+  {
+    name: "NAT/PAT",
+    icon: "network",
+    category: "network",
+  },
+  {
+    name: "Stacking & LAG",
+    icon: "network",
+    category: "network",
+  },
+  {
+    name: "Netgear",
     icon: "network",
     category: "network",
   },
@@ -101,6 +156,26 @@ export const skills: Skill[] = [
     icon: "server",
     category: "systems",
   },
+  {
+    name: "GPO",
+    icon: "server",
+    category: "systems",
+  },
+  {
+    name: "macOS",
+    icon: "server",
+    category: "systems",
+  },
+  {
+    name: "RAID / iDRAC",
+    icon: "server",
+    category: "systems",
+  },
+  {
+    name: "NAS",
+    icon: "server",
+    category: "systems",
+  },
 
   // Cloud & DevSecOps
   {
@@ -128,6 +203,16 @@ export const skills: Skill[] = [
     icon: "cloud",
     category: "cloud",
   },
+  {
+    name: "CI/CD",
+    icon: "cloud",
+    category: "cloud",
+  },
+  {
+    name: "Git",
+    icon: "cloud",
+    category: "cloud",
+  },
 
   // Outils de supervision
   {
@@ -151,7 +236,17 @@ export const skills: Skill[] = [
     category: "tools",
   },
   {
-    name: "Git",
+    name: "PRTG",
+    icon: "tool",
+    category: "tools",
+  },
+  {
+    name: "Clarilog",
+    icon: "tool",
+    category: "tools",
+  },
+  {
+    name: "DameWare",
     icon: "tool",
     category: "tools",
   },
@@ -169,6 +264,11 @@ export const skills: Skill[] = [
   },
   {
     name: "Python",
+    icon: "code",
+    category: "scripting",
+  },
+  {
+    name: "SQL",
     icon: "code",
     category: "scripting",
   },

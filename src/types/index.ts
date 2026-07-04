@@ -35,7 +35,8 @@ export type ProjectCategory =
   | "network";
 
 export interface Skill {
-  name: string;
+  // Localized pour les rares noms qui changent selon la langue (ex. RGPD/GDPR)
+  name: string | Localized;
   icon: string;
   category: SkillCategory;
 }

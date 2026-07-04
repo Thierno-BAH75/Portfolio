@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/animations";
 import { projects } from "@/data/projects";
 import type { Project } from "@/types";
+import { useI18n } from "@/i18n";
 
 /* ── Métadonnées catégorie ──────────────────────────────── */
 const categoryMeta: Record<string, { gradient: string }> = {
@@ -21,12 +22,12 @@ const categoryMeta: Record<string, { gradient: string }> = {
 
 /* ── Groupes de technologies ────────────────────────────── */
 const techGroups = [
-  { label: "Réseau",        items: ["pfSense", "VLANs", "LAG", "SFP+", "Netgear"] },
-  { label: "Système",       items: ["Proxmox", "Hyper-V", "Windows Server", "Ubuntu Server", "iDRAC", "RAID 10"] },
-  { label: "Supervision",   items: ["Zabbix", "Grafana", "SNMP", "IPMI", "Slack API"] },
-  { label: "Sécurité",      items: ["Active Directory", "GPO", "pfSense", "VPN"] },
-  { label: "Automatisation",items: ["Python", "Bash", "PowerShell", "MySQL"] },
-] as const;
+  { labelKey: "network" as const,    items: ["pfSense", "VLANs", "LAG", "SFP+", "Netgear"] },
+  { labelKey: "system" as const,     items: ["Proxmox", "Hyper-V", "Windows Server", "Ubuntu Server", "iDRAC", "RAID 10"] },
+  { labelKey: "monitoring" as const, items: ["Zabbix", "Grafana", "SNMP", "IPMI", "Slack API"] },
+  { labelKey: "security" as const,   items: ["Active Directory", "GPO", "pfSense", "VPN"] },
+  { labelKey: "automation" as const, items: ["Python", "Bash", "PowerShell", "MySQL"] },
+];
 
 type SortOption = "featured" | "recent" | "name";
 
@@ -42,6 +43,7 @@ function CascadeFilter({
   const [hoveredGroup, setHoveredGroup] = useState<string | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const groupTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { t } = useI18n();
 
   const clearClose = () => { if (closeTimer.current) clearTimeout(closeTimer.current); };
   const scheduleClose = () => {
@@ -52,7 +54,7 @@ function CascadeFilter({
     groupTimer.current = setTimeout(() => setHoveredGroup(label), 60);
   };
 
-  const label = value || "Toutes les catégories";
+  const label = value || t.projects.page.allCategories;
 
   return (
     <div
@@ -97,24 +99,24 @@ function CascadeFilter({
           >
             {techGroups.map((group) => (
               <div
-                key={group.label}
+                key={group.labelKey}
                 className="relative"
-                onMouseEnter={() => { clearClose(); scheduleGroup(group.label); }}
+                onMouseEnter={() => { clearClose(); scheduleGroup(group.labelKey); }}
               >
                 <button
                   className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm transition-colors ${
-                    hoveredGroup === group.label
+                    hoveredGroup === group.labelKey
                       ? "bg-violet-500/15 text-violet-300"
                       : "text-foreground hover:bg-muted/50"
                   }`}
                 >
-                  {group.label}
+                  {t.projects.page.techGroups[group.labelKey]}
                   <ChevronRight size={13} className="text-muted-foreground flex-shrink-0" />
                 </button>
 
                 {/* Sous-menu — rendu dans le flux pour rester dans les bounds hover */}
                 <AnimatePresence>
-                  {hoveredGroup === group.label && (
+                  {hoveredGroup === group.labelKey && (
                     <motion.div
                       initial={{ opacity: 0, x: -6 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -153,6 +155,7 @@ function CascadeFilter({
 /* ── Carte projet ───────────────────────────────────────── */
 function ProjectCard({ project }: { project: Project }) {
   const meta = categoryMeta[project.category] ?? categoryMeta.infrastructure;
+  const { t, tx } = useI18n();
 
   return (
     <motion.div
@@ -174,7 +177,7 @@ function ProjectCard({ project }: { project: Project }) {
           }} />
           {project.featured && (
             <span className="absolute top-3 right-3 inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gradient-to-r from-violet-600 to-cyan-500 text-white shadow">
-              <Star size={9} /> Mis en avant
+              <Star size={9} /> {t.projects.featured}
             </span>
           )}
         </div>
@@ -182,15 +185,15 @@ function ProjectCard({ project }: { project: Project }) {
         {/* Contenu */}
         <div className="flex flex-col flex-1 p-5 gap-3">
           <Badge variant="outline" className="w-fit text-[10px] border-violet-500/30 bg-violet-500/10 text-violet-300 capitalize">
-            {project.category}
+            {t.projects.categories[project.category]}
           </Badge>
 
           <h2 className="font-bold text-base text-foreground leading-snug line-clamp-2">
-            {project.title}
+            {tx(project.title)}
           </h2>
 
           <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3 flex-1">
-            {project.description}
+            {tx(project.description)}
           </p>
 
           <div className="flex flex-wrap gap-1.5">
@@ -210,7 +213,7 @@ function ProjectCard({ project }: { project: Project }) {
             href={`/projects/${project.slug}`}
             className="mt-1 flex items-center justify-center gap-2 w-full py-2 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-semibold shadow hover:shadow-[0_0_16px_rgba(6,182,212,0.4)] transition-all"
           >
-            <Eye size={14} /> Détails
+            <Eye size={14} /> {t.projects.details}
           </Link>
         </div>
       </div>
@@ -223,6 +226,7 @@ export default function ProjectsPage() {
   const [activeTech, setActiveTech] = useState<string>("");
   const [sortOption, setSortOption] = useState<SortOption>("featured");
   const [search, setSearch] = useState("");
+  const { t, tx, locale } = useI18n();
 
   const filtered = useMemo(() => {
     let result = projects;
@@ -230,18 +234,18 @@ export default function ProjectsPage() {
     // Filtre technologie par groupe
     if (activeTech) {
       result = result.filter((p) =>
-        p.technologies.some((t) => t === activeTech)
+        p.technologies.some((tech) => tech === activeTech)
       );
     }
 
-    // Filtre recherche
+    // Filtre recherche — dans la langue active
     if (search.trim()) {
       const q = search.toLowerCase();
       result = result.filter(
         (p) =>
-          p.title.toLowerCase().includes(q) ||
-          p.description.toLowerCase().includes(q) ||
-          p.technologies.some((t) => t.toLowerCase().includes(q))
+          tx(p.title).toLowerCase().includes(q) ||
+          tx(p.description).toLowerCase().includes(q) ||
+          p.technologies.some((tech) => tech.toLowerCase().includes(q))
       );
     }
 
@@ -251,11 +255,13 @@ export default function ProjectsPage() {
     } else if (sortOption === "recent") {
       result = [...result].sort((a, b) => b.date.localeCompare(a.date));
     } else if (sortOption === "name") {
-      result = [...result].sort((a, b) => a.title.localeCompare(b.title));
+      result = [...result].sort((a, b) =>
+        tx(a.title).localeCompare(tx(b.title), locale)
+      );
     }
 
     return result;
-  }, [activeTech, sortOption, search]);
+  }, [activeTech, sortOption, search, tx, locale]);
 
   return (
     <div className="relative pt-20 pb-20 overflow-hidden">
@@ -352,7 +358,7 @@ export default function ProjectsPage() {
               <div className="flex items-center gap-2 flex-shrink-0">
                 <span className="dot-p-left w-3 h-3 rounded-full flex-shrink-0" />
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-violet-500 to-cyan-400 bg-clip-text text-transparent whitespace-nowrap">
-                  Mes Projets
+                  {t.projects.title}
                 </h1>
                 <span className="dot-p-right w-3 h-3 rounded-full flex-shrink-0" />
               </div>
@@ -363,7 +369,7 @@ export default function ProjectsPage() {
             </div>
 
             <p className="text-muted-foreground text-sm max-w-xl mx-auto">
-              Réalisations en sécurité réseau, infrastructure et supervision de systèmes.
+              {t.projects.page.subtitle}
             </p>
           </div>
         </FadeIn>
@@ -374,7 +380,7 @@ export default function ProjectsPage() {
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Rechercher un projet..."
+              placeholder={t.projects.page.searchPlaceholder}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-10 pr-4 py-3 rounded-xl border border-border/50 bg-card text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-cyan-500 focus:shadow-[0_0_0_1px_rgba(6,182,212,0.3),0_0_12px_rgba(6,182,212,0.15)] transition-all duration-200"
@@ -387,7 +393,7 @@ export default function ProjectsPage() {
           <div className="flex items-center justify-center gap-3 max-w-3xl mx-auto mb-8 flex-wrap">
             <div className="flex items-center gap-1.5 text-cyan-400">
               <SlidersHorizontal className="w-4 h-4" />
-              <span className="text-sm font-medium">Filtres :</span>
+              <span className="text-sm font-medium">{t.projects.page.filters}</span>
             </div>
 
             {/* Filtre en cascade */}
@@ -400,9 +406,9 @@ export default function ProjectsPage() {
                 onChange={(e) => setSortOption(e.target.value as SortOption)}
                 className="appearance-none pl-3.5 pr-8 py-2 rounded-lg border border-border/50 bg-card text-sm text-foreground focus:outline-none focus:border-violet-500/60 hover:border-border/80 transition-all cursor-pointer min-w-[170px]"
               >
-                <option value="featured">⭐ Favoris</option>
-                <option value="recent">Plus récent</option>
-                <option value="name">Nom (A-Z)</option>
+                <option value="featured">{t.projects.page.sortFeatured}</option>
+                <option value="recent">{t.projects.page.sortRecent}</option>
+                <option value="name">{t.projects.page.sortName}</option>
               </select>
               <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
             </div>
@@ -413,7 +419,8 @@ export default function ProjectsPage() {
         <div className="flex items-center justify-center gap-2 mb-8">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-violet-600/20 to-cyan-500/20 border border-violet-500/30 text-violet-300">
             <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-violet-500 to-cyan-400" />
-            {filtered.length} projet{filtered.length !== 1 ? "s" : ""} trouvé{filtered.length !== 1 ? "s" : ""}
+            {filtered.length}{" "}
+            {filtered.length !== 1 ? t.projects.page.foundPlural : t.projects.page.found}
           </span>
         </div>
 
@@ -433,7 +440,7 @@ export default function ProjectsPage() {
               exit={{ opacity: 0 }}
               className="text-center py-16"
             >
-              <p className="text-muted-foreground text-sm">Aucun projet trouvé.</p>
+              <p className="text-muted-foreground text-sm">{t.projects.page.none}</p>
             </motion.div>
           )}
         </AnimatePresence>

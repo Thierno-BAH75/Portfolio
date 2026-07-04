@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Github, Linkedin, Twitter, Mail, Heart } from "lucide-react";
 import { personalInfo, socialLinks, navItems } from "@/data/experience";
 import { FadeIn } from "@/components/animations";
+import { useI18n } from "@/i18n";
 
 const iconMap: Record<string, React.ReactNode> = {
   github: <Github size={20} />,
@@ -15,6 +16,7 @@ const iconMap: Record<string, React.ReactNode> = {
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const { t, tx } = useI18n();
 
   return (
     <footer className="bg-muted/50 border-t border-border">
@@ -29,7 +31,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-muted-foreground max-w-xs">
-              {personalInfo.tagline}
+              {tx(personalInfo.tagline)}
             </p>
             {/* Social Links */}
             <div className="flex items-center space-x-4 pt-2">
@@ -53,7 +55,7 @@ export function Footer() {
           {/* Navigation */}
           <FadeIn direction="up" delay={0.1} className="space-y-4">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">
-              Navigation
+              {t.footer.navigation}
             </h3>
             <ul className="space-y-2">
               {navItems.map((item) => (
@@ -62,7 +64,7 @@ export function Footer() {
                     href={item.href}
                     className="text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    {item.label}
+                    {tx(item.label)}
                   </Link>
                 </li>
               ))}
@@ -72,15 +74,15 @@ export function Footer() {
           {/* Contact */}
           <FadeIn direction="up" delay={0.2} className="space-y-4">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">
-              Contact
+              {t.footer.contact}
             </h3>
             <div className="space-y-2 text-muted-foreground">
               <p>{personalInfo.email}</p>
-              <p>{personalInfo.location}</p>
+              <p>{tx(personalInfo.location)}</p>
               {personalInfo.available && (
                 <p className="flex items-center space-x-2">
                   <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                  <span>Disponible pour des projets</span>
+                  <span>{t.footer.availableProjects}</span>
                 </p>
               )}
             </div>
@@ -91,19 +93,20 @@ export function Footer() {
         <div className="mt-12 pt-8 border-t border-border">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground">
-              &copy; {currentYear} {personalInfo.name}. Tous droits réservés.
+              &copy; {currentYear} {personalInfo.name}. {t.footer.rights}
             </p>
             <div className="flex items-center gap-4 text-xs text-muted-foreground/70">
               <Link
                 href="/admin"
                 className="hover:text-foreground transition-colors"
               >
-                Admin
+                {t.footer.admin}
               </Link>
             </div>
             <p className="text-sm text-muted-foreground flex items-center">
-              Fait avec <Heart size={14} className="mx-1 text-red-500" /> et
-              beaucoup de café
+              {t.footer.madeWithPrefix}{" "}
+              <Heart size={14} className="mx-1 text-red-500" />{" "}
+              {t.footer.madeWithSuffix}
             </p>
           </div>
         </div>

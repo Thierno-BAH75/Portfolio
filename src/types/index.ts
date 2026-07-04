@@ -2,12 +2,17 @@
 // Types - Portfolio Thierno BAH
 // ========================================
 
+// i18n : tout champ traduisible porte les deux langues —
+// oublier une traduction est une erreur de compilation.
+export type Locale = "fr" | "en";
+export type Localized<T = string> = Record<Locale, T>;
+
 export interface Project {
   id: string;
   slug: string;
-  title: string;
-  description: string;
-  longDescription?: string;
+  title: Localized;
+  description: Localized;
+  longDescription?: Localized;
   image: string;
   images?: string[];
   technologies: string[];
@@ -46,7 +51,7 @@ export type SkillCategory =
 
 export interface Experience {
   id: string;
-  title: string;
+  title: Localized;
   company: string;
   companyLogo?: string;
   location: string;
@@ -54,21 +59,29 @@ export interface Experience {
   startDate: string;
   endDate?: string;
   current: boolean;
-  description: string;
-  achievements: string[];
+  description: Localized;
+  achievements: Localized<string[]>;
   technologies: string[];
 }
 
 export interface Education {
   id: string;
-  degree: string;
+  degree: Localized;
   school: string;
   location?: string;
   startDate: string;
   endDate: string;
-  description?: string;
+  description?: Localized;
   status?: "validated" | "ongoing" | "admitted";
-  note?: string; // mise en avant (ex. recherche d'alternance)
+  note?: Localized; // mise en avant (ex. recherche d'alternance)
+}
+
+export interface Certification {
+  name: Localized;
+  issuer: string;
+  date: string;
+  expiry?: string;
+  icon: string;
 }
 
 export interface SocialLink {
@@ -78,7 +91,7 @@ export interface SocialLink {
 }
 
 export interface NavItem {
-  label: string;
+  label: Localized;
   href: string;
 }
 

@@ -1,0 +1,409 @@
+import type { Locale } from "@/types";
+
+// ============================================================
+// Dictionnaire UI — le français est la source de vérité.
+// `en` est contraint par le type dérivé de `fr` : une clé
+// manquante ou en trop est une erreur de compilation.
+// ============================================================
+
+const fr = {
+  langSwitch: "Changer de langue",
+  header: {
+    availableShort: "Disponible",
+    availableFull: "Disponible · Alternance",
+    contact: "Me contacter",
+  },
+  hero: {
+    titles: [
+      "Ingénieur Sécurité Réseau & Système",
+      "Administrateur Infrastructure",
+      "Spécialiste Supervision & Automatisation",
+    ],
+    viewProjects: "Voir mes projets",
+    contact: "Me contacter",
+    scroll: "Scroll",
+  },
+  about: {
+    title: "À propos",
+    intro:
+      "Futur étudiant en Master IRS spécialité Cybersécurité, orienté supervision et sécurité des infrastructures. Compétences en administration systèmes & réseaux (Active Directory, VLANs, VPN), virtualisation (Proxmox, VMware, Hyper-V) et automatisation (Python, Bash, PowerShell) pour administrer et sécuriser des environnements critiques.",
+    cards: {
+      security: "Cybersécurité",
+      systems: "Systèmes & Réseaux",
+      automation: "Automatisation & Supervision",
+    },
+  },
+  skills: {
+    badge: "Compétences",
+    titleStart: "Mon expertise",
+    titleGradient: "technique",
+    subtitle:
+      "Les technologies et outils que je maîtrise pour sécuriser et administrer vos infrastructures.",
+    stats: {
+      projects: "Projets réalisés",
+      certifications: "Certifications",
+      years: "Années d'expérience",
+      technologies: "Technologies maîtrisées",
+    },
+    categories: {
+      security: "Sécurité",
+      network: "Réseaux",
+      systems: "Systèmes",
+      cloud: "Cloud & DevSecOps",
+      tools: "Supervision",
+      scripting: "Scripting",
+    },
+  },
+  projects: {
+    title: "Mes Projets",
+    sectionSubtitle:
+      "Une sélection de mes meilleurs projets en sécurité réseau et administration système.",
+    viewAll: "Voir tous les projets",
+    details: "Détails",
+    featured: "Mis en avant",
+    categories: {
+      security: "Sécurité",
+      infrastructure: "Infrastructure",
+      monitoring: "Supervision",
+      network: "Réseaux",
+      cloud: "Cloud",
+      automation: "Automation",
+    },
+    page: {
+      subtitle:
+        "Réalisations en sécurité réseau, infrastructure et supervision de systèmes.",
+      searchPlaceholder: "Rechercher un projet...",
+      filters: "Filtres :",
+      allCategories: "Toutes les catégories",
+      sortFeatured: "⭐ Favoris",
+      sortRecent: "Plus récent",
+      sortName: "Nom (A-Z)",
+      found: "projet trouvé",
+      foundPlural: "projets trouvés",
+      none: "Aucun projet trouvé.",
+      techGroups: {
+        network: "Réseau",
+        system: "Système",
+        monitoring: "Supervision",
+        security: "Sécurité",
+        automation: "Automatisation",
+      },
+    },
+    detail: {
+      back: "Retour aux projets",
+      about: "À propos du projet",
+      technologies: "Technologies utilisées",
+      challenges: "Défis et solutions",
+      challengesText:
+        "Ce projet m'a permis de relever plusieurs défis techniques intéressants, notamment en matière de performance, d'expérience utilisateur et d'architecture logicielle.",
+      viewSite: "Voir le site",
+      sourceCode: "Code source",
+    },
+  },
+  experience: {
+    badge: "Formation & Expérience",
+    titleStart: "Mon",
+    titleGradient: "parcours",
+    subtitle:
+      "Formation académique d'un côté, expérience professionnelle de l'autre — deux fils d'un même parcours.",
+    school: "Scolaire",
+    professional: "Professionnel",
+    certifications: "Certifications",
+    present: "Présent",
+    current: "Actuel",
+    seeMore: "Voir plus",
+    seeLess: "Voir moins",
+    status: {
+      validated: "Validé",
+      ongoing: "En cours",
+      admitted: "Admis",
+    },
+    types: {
+      fulltime: "CDI",
+      parttime: "Temps partiel",
+      freelance: "Freelance",
+      internship: "Stage",
+    },
+  },
+  contact: {
+    eyebrow: "Contact",
+    titleStart: "Travaillons",
+    titleGradient: "ensemble",
+    subtitle:
+      "Vous avez un projet en tête ? N'hésitez pas à me contacter. Je serai ravi de discuter de vos idées.",
+    infoTitle: "Informations de contact",
+    emailLabel: "Email",
+    locationLabel: "Localisation",
+    availableBanner: "Disponible pour de nouveaux projets",
+    availabilityTitle: "Disponibilité",
+    monFri: "Lundi – Vendredi",
+    saturday: "Samedi",
+    sunday: "Dimanche",
+    hoursWeek: "9h00 – 18h00",
+    hoursSat: "10h00 – 16h00",
+    closed: "Fermé",
+    responseGuarantee: "Réponse sous 24h garantie",
+    form: {
+      name: "Nom",
+      namePlaceholder: "Votre nom",
+      email: "Email",
+      emailPlaceholder: "votre@email.com",
+      subject: "Sujet",
+      subjectPlaceholder: "Le sujet de votre message",
+      message: "Message",
+      messagePlaceholder: "Décrivez votre projet ou votre message...",
+      send: "Envoyer le message",
+      sending: "Envoi en cours...",
+      successTitle: "Message envoyé !",
+      successText:
+        "Merci pour votre message. Je vous répondrai dans les plus brefs délais.",
+    },
+    errors: {
+      name: "Le nom doit contenir au moins 2 caractères",
+      email: "Email invalide",
+      subject: "Le sujet doit contenir au moins 5 caractères",
+      message: "Le message doit contenir au moins 10 caractères",
+    },
+  },
+  footer: {
+    navigation: "Navigation",
+    contact: "Contact",
+    availableProjects: "Disponible pour des projets",
+    rights: "Tous droits réservés.",
+    madeWithPrefix: "Fait avec",
+    madeWithSuffix: "et beaucoup de café",
+    admin: "Admin",
+  },
+  veille: {
+    title: "Veille Techno",
+    subtitleIntro:
+      "Actualités, vulnérabilités et menaces en temps réel dans les domaines",
+    and: "et",
+    domainSecurity: "Cybersécurité",
+    domainNetworks: "Réseaux",
+    domainInfra: "Infrastructure",
+    searchPlaceholder: "Rechercher un article, une vulnérabilité, un outil...",
+    refresh: "Actualiser",
+    article: "article",
+    articles: "articles",
+    newSingular: "nouvel article disponible",
+    newPlural: "nouveaux articles disponibles",
+    error:
+      "Impossible de récupérer les flux RSS. Vérifiez votre connexion ou réessayez.",
+    emptyTitle: "Aucun article trouvé",
+    emptyHint: "Modifiez vos filtres ou actualisez les flux.",
+    justNow: "à l'instant",
+    oneMinAgo: "il y a 1 min",
+    minutesAgoPrefix: "il y a ",
+    minutesAgoSuffix: " min",
+    sourcesNote:
+      "Sources : ANSSI · NIST NVD · Krebs on Security · Cisco Blog · Cloudflare · AWS Security · Microsoft Azure · Red Hat · Linux Foundation — flux RSS mis à jour toutes les 5 min",
+  },
+};
+
+// Toute feuille est string ou string[] ; toute clé de `fr` doit exister dans `en`
+type DeepDict<T> = {
+  [K in keyof T]: T[K] extends string
+    ? string
+    : T[K] extends string[]
+      ? string[]
+      : DeepDict<T[K]>;
+};
+
+export type Dictionary = typeof fr;
+
+const en: DeepDict<typeof fr> = {
+  langSwitch: "Switch language",
+  header: {
+    availableShort: "Available",
+    availableFull: "Available · Work-study",
+    contact: "Get in touch",
+  },
+  hero: {
+    titles: [
+      "Network & Systems Security Engineer",
+      "Infrastructure Administrator",
+      "Monitoring & Automation Specialist",
+    ],
+    viewProjects: "View my projects",
+    contact: "Get in touch",
+    scroll: "Scroll",
+  },
+  about: {
+    title: "About",
+    intro:
+      "Incoming Master's student in Network & Systems Engineering (IRS), Cybersecurity track, with a focus on monitoring and infrastructure security. Skilled in systems & network administration (Active Directory, VLANs, VPN), virtualization (Proxmox, VMware, Hyper-V) and automation (Python, Bash, PowerShell) to run and secure critical environments.",
+    cards: {
+      security: "Cybersecurity",
+      systems: "Systems & Networks",
+      automation: "Automation & Monitoring",
+    },
+  },
+  skills: {
+    badge: "Skills",
+    titleStart: "My technical",
+    titleGradient: "expertise",
+    subtitle:
+      "The technologies and tools I rely on to secure and manage your infrastructure.",
+    stats: {
+      projects: "Projects delivered",
+      certifications: "Certifications",
+      years: "Years of experience",
+      technologies: "Technologies mastered",
+    },
+    categories: {
+      security: "Security",
+      network: "Networking",
+      systems: "Systems",
+      cloud: "Cloud & DevSecOps",
+      tools: "Monitoring",
+      scripting: "Scripting",
+    },
+  },
+  projects: {
+    title: "My Projects",
+    sectionSubtitle:
+      "A selection of my best work in network security and systems administration.",
+    viewAll: "View all projects",
+    details: "Details",
+    featured: "Featured",
+    categories: {
+      security: "Security",
+      infrastructure: "Infrastructure",
+      monitoring: "Monitoring",
+      network: "Networking",
+      cloud: "Cloud",
+      automation: "Automation",
+    },
+    page: {
+      subtitle:
+        "Projects in network security, infrastructure and systems monitoring.",
+      searchPlaceholder: "Search projects...",
+      filters: "Filters:",
+      allCategories: "All categories",
+      sortFeatured: "⭐ Featured",
+      sortRecent: "Most recent",
+      sortName: "Name (A-Z)",
+      found: "project found",
+      foundPlural: "projects found",
+      none: "No projects found.",
+      techGroups: {
+        network: "Networking",
+        system: "Systems",
+        monitoring: "Monitoring",
+        security: "Security",
+        automation: "Automation",
+      },
+    },
+    detail: {
+      back: "Back to projects",
+      about: "About the project",
+      technologies: "Technologies used",
+      challenges: "Challenges & solutions",
+      challengesText:
+        "This project allowed me to tackle several interesting technical challenges, particularly around performance, user experience and software architecture.",
+      viewSite: "Visit site",
+      sourceCode: "Source code",
+    },
+  },
+  experience: {
+    badge: "Education & Experience",
+    titleStart: "My",
+    titleGradient: "background",
+    subtitle:
+      "Academic training on one side, professional experience on the other — two threads of the same journey.",
+    school: "Education",
+    professional: "Professional",
+    certifications: "Certifications",
+    present: "Present",
+    current: "Current",
+    seeMore: "Show more",
+    seeLess: "Show less",
+    status: {
+      validated: "Completed",
+      ongoing: "In progress",
+      admitted: "Admitted",
+    },
+    types: {
+      fulltime: "Full-time",
+      parttime: "Part-time",
+      freelance: "Freelance",
+      internship: "Internship",
+    },
+  },
+  contact: {
+    eyebrow: "Contact",
+    titleStart: "Let's work",
+    titleGradient: "together",
+    subtitle:
+      "Have a project in mind? Feel free to reach out — I'd be happy to discuss your ideas.",
+    infoTitle: "Contact information",
+    emailLabel: "Email",
+    locationLabel: "Location",
+    availableBanner: "Available for new projects",
+    availabilityTitle: "Availability",
+    monFri: "Monday – Friday",
+    saturday: "Saturday",
+    sunday: "Sunday",
+    hoursWeek: "9:00 AM – 6:00 PM",
+    hoursSat: "10:00 AM – 4:00 PM",
+    closed: "Closed",
+    responseGuarantee: "Guaranteed response within 24 hours",
+    form: {
+      name: "Name",
+      namePlaceholder: "Your name",
+      email: "Email",
+      emailPlaceholder: "your@email.com",
+      subject: "Subject",
+      subjectPlaceholder: "What is your message about?",
+      message: "Message",
+      messagePlaceholder: "Tell me about your project or message...",
+      send: "Send message",
+      sending: "Sending...",
+      successTitle: "Message sent!",
+      successText:
+        "Thank you for your message. I'll get back to you as soon as possible.",
+    },
+    errors: {
+      name: "Name must be at least 2 characters",
+      email: "Invalid email address",
+      subject: "Subject must be at least 5 characters",
+      message: "Message must be at least 10 characters",
+    },
+  },
+  footer: {
+    navigation: "Navigation",
+    contact: "Contact",
+    availableProjects: "Available for projects",
+    rights: "All rights reserved.",
+    madeWithPrefix: "Made with",
+    madeWithSuffix: "and lots of coffee",
+    admin: "Admin",
+  },
+  veille: {
+    title: "Tech Watch",
+    subtitleIntro:
+      "Real-time news, vulnerabilities and threats across",
+    and: "and",
+    domainSecurity: "Cybersecurity",
+    domainNetworks: "Networks",
+    domainInfra: "Infrastructure",
+    searchPlaceholder: "Search articles, vulnerabilities, tools...",
+    refresh: "Refresh",
+    article: "article",
+    articles: "articles",
+    newSingular: "new article available",
+    newPlural: "new articles available",
+    error: "Unable to fetch RSS feeds. Check your connection and try again.",
+    emptyTitle: "No articles found",
+    emptyHint: "Adjust your filters or refresh the feeds.",
+    justNow: "just now",
+    oneMinAgo: "1 min ago",
+    minutesAgoPrefix: "",
+    minutesAgoSuffix: " min ago",
+    sourcesNote:
+      "Sources: ANSSI · NIST NVD · Krebs on Security · Cisco Blog · Cloudflare · AWS Security · Microsoft Azure · Red Hat · Linux Foundation — RSS feeds refreshed every 5 min",
+  },
+};
+
+export const dictionaries: Record<Locale, Dictionary> = { fr, en };

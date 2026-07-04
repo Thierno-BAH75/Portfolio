@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { FadeIn, StaggerChildren, StaggerItem } from "@/components/animations";
 import { featuredProjects } from "@/data/projects";
 import type { Project } from "@/types";
+import { useI18n } from "@/i18n";
 
 const categoryMeta: Record<string, { icon: React.ReactNode; gradient: string }> = {
   security:       { icon: <Shield size={32} />,   gradient: "from-violet-900/60 to-violet-700/30" },
@@ -19,6 +20,7 @@ const categoryMeta: Record<string, { icon: React.ReactNode; gradient: string }> 
 
 function ProjectCard({ project }: { project: Project }) {
   const meta = categoryMeta[project.category] ?? categoryMeta.infrastructure;
+  const { t, tx } = useI18n();
 
   return (
     <motion.div
@@ -41,7 +43,7 @@ function ProjectCard({ project }: { project: Project }) {
           {/* Badge "Mis en avant" */}
           {project.featured && (
             <span className="absolute top-3 right-3 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gradient-to-r from-violet-600 to-cyan-500 text-white shadow">
-              Mis en avant
+              {t.projects.featured}
             </span>
           )}
         </div>
@@ -50,17 +52,17 @@ function ProjectCard({ project }: { project: Project }) {
         <div className="flex flex-col flex-1 p-5 gap-3">
           {/* Catégorie */}
           <Badge variant="outline" className="w-fit text-[10px] border-violet-500/30 bg-violet-500/10 text-violet-300 capitalize">
-            {project.category}
+            {t.projects.categories[project.category]}
           </Badge>
 
           {/* Titre */}
           <h3 className="font-bold text-base text-foreground leading-snug line-clamp-2">
-            {project.title}
+            {tx(project.title)}
           </h3>
 
           {/* Description */}
           <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3 flex-1">
-            {project.description}
+            {tx(project.description)}
           </p>
 
           {/* Badges technos */}
@@ -83,7 +85,7 @@ function ProjectCard({ project }: { project: Project }) {
             className="mt-1 flex items-center justify-center gap-2 w-full py-2 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-semibold shadow hover:shadow-[0_0_16px_rgba(6,182,212,0.4)] transition-all"
           >
             <Eye size={14} />
-            Détails
+            {t.projects.details}
           </Link>
         </div>
       </div>
@@ -92,6 +94,8 @@ function ProjectCard({ project }: { project: Project }) {
 }
 
 export function Projects() {
+  const { t } = useI18n();
+
   return (
     <section className="py-20 lg:py-32 bg-muted/30" id="projects">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -118,7 +122,7 @@ export function Projects() {
                 style={{ background: "linear-gradient(to right, transparent, #8b5cf6)" }}
               />
               <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-violet-500 to-cyan-400 bg-clip-text text-transparent whitespace-nowrap">
-                Mes Projets
+                {t.projects.title}
               </h2>
               <span
                 className="line-cyan-s h-px w-10 rounded-full"
@@ -127,7 +131,7 @@ export function Projects() {
             </div>
             <div className="text-lg mb-2">🚀</div>
             <p className="text-muted-foreground mt-1 max-w-xl text-sm">
-              Une sélection de mes meilleurs projets en sécurité réseau et administration système.
+              {t.projects.sectionSubtitle}
             </p>
           </FadeIn>
 
@@ -136,7 +140,7 @@ export function Projects() {
               href="/projects"
               className="mt-4 sm:mt-0 inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border/60 text-sm text-muted-foreground hover:text-foreground hover:border-violet-500/50 transition-all"
             >
-              Voir tous les projets
+              {t.projects.viewAll}
               <ArrowRight size={15} />
             </Link>
           </FadeIn>

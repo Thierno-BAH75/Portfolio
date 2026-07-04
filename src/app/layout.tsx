@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/footer";
 import { CustomCursor } from "@/components/layout/cursor";
 import { Preloader } from "@/components/layout/preloader";
 import { ScrollProgress } from "@/components/animations/scroll-progress";
+import { LanguageSync } from "@/i18n";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -113,6 +114,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}
       >
         <Providers>
+          {/* <html lang> suit la langue active (défaut : fr) */}
+          <LanguageSync />
+
           {/* Preloader */}
           <Preloader />
 

@@ -14,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 import type { RSSArticle } from "@/app/api/rss/route";
+import { useI18n } from "@/i18n";
 
 const LS_KEY = "veille_settings";
 interface VeilleSettings { autoRefresh: boolean; interval: number }
@@ -238,6 +239,7 @@ function SkeletonCard() {
    Page
 ───────────────────────────────────────────────────────────────── */
 export default function VeillePage() {
+  const { t } = useI18n();
   const [articles, setArticles] = useState<RSSArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -309,9 +311,9 @@ export default function VeillePage() {
   function lastUpdatedLabel(): string {
     if (!lastUpdatedAt) return "";
     const diff = Math.floor((Date.now() - lastUpdatedAt.getTime()) / 60_000);
-    if (diff < 1) return "à l'instant";
-    if (diff === 1) return "il y a 1 min";
-    return `il y a ${diff} min`;
+    if (diff < 1) return t.veille.justNow;
+    if (diff === 1) return t.veille.oneMinAgo;
+    return `${t.veille.minutesAgoPrefix}${diff}${t.veille.minutesAgoSuffix}`;
   }
 
   const filtered = useMemo(() => {
@@ -406,16 +408,17 @@ export default function VeillePage() {
           <div className="flex items-center justify-center gap-3 mb-3">
             <span className="dot-pv-left w-3 h-3 rounded-full flex-shrink-0" />
             <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-violet-500 to-cyan-400 bg-clip-text text-transparent">
-              Veille Techno
+              {t.veille.title}
             </h1>
             <span className="dot-pv-right w-3 h-3 rounded-full flex-shrink-0" />
           </div>
 
           <p className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-            Actualités, vulnérabilités et menaces en temps réel dans les domaines{" "}
-            <span className="text-violet-400 font-medium">Cybersécurité</span>,{" "}
-            <span className="text-cyan-400 font-medium">Réseaux</span> et{" "}
-            <span className="text-blue-400 font-medium">Infrastructure</span>
+            {t.veille.subtitleIntro}{" "}
+            <span className="text-violet-400 font-medium">{t.veille.domainSecurity}</span>,{" "}
+            <span className="text-cyan-400 font-medium">{t.veille.domainNetworks}</span>{" "}
+            {t.veille.and}{" "}
+            <span className="text-blue-400 font-medium">{t.veille.domainInfra}</span>
           </p>
         </motion.div>
 
@@ -433,7 +436,7 @@ export default function VeillePage() {
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Rechercher un article, une vulnérabilité, un outil..."
+              placeholder={t.veille.searchPlaceholder}
               className="w-full pl-9 pr-4 py-2.5 rounded-lg border border-border/60 bg-background/70 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-violet-500/60 focus:ring-1 focus:ring-violet-500/30 transition-all backdrop-blur-sm"
             />
           </div>
@@ -451,7 +454,7 @@ export default function VeillePage() {
                 className="flex items-center gap-2 px-3 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-700 disabled:opacity-60 text-white text-sm font-semibold shadow hover:shadow-[0_0_16px_rgba(6,182,212,0.4)] transition-all"
               >
                 <RefreshCw size={14} className={loading ? "spin" : ""} />
-                Actualiser
+                {t.veille.refresh}
               </button>
               {lastUpdatedAt && (
                 <span className="flex items-center gap-1 text-[10px] text-muted-foreground/60 pl-1">
@@ -467,7 +470,8 @@ export default function VeillePage() {
             {/* Article counter */}
             <div className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-violet-600/20 to-cyan-500/20 border border-violet-500/30 text-xs font-semibold text-violet-300">
               <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-              {loading ? "…" : filtered.length} article{filtered.length !== 1 ? "s" : ""}
+              {loading ? "…" : filtered.length}{" "}
+              {filtered.length !== 1 ? t.veille.articles : t.veille.article}
             </div>
           </div>
         </motion.div>
@@ -483,8 +487,8 @@ export default function VeillePage() {
               className="flex items-center gap-3 px-4 py-3 mb-5 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-300 text-sm"
             >
               <Bell size={15} className="shrink-0 animate-pulse" />
-              <span>
-                <span className="font-semibold">{newCount} nouvel{newCount > 1 ? "s" : ""} article{newCount > 1 ? "s" : ""}</span> disponible{newCount > 1 ? "s" : ""}
+              <span className="font-semibold">
+                {newCount} {newCount > 1 ? t.veille.newPlural : t.veille.newSingular}
               </span>
               <button
                 onClick={() => setShowNotif(false)}
@@ -504,7 +508,7 @@ export default function VeillePage() {
             className="flex items-center gap-3 p-4 mb-6 rounded-xl border border-orange-500/30 bg-orange-500/10 text-orange-300 text-sm"
           >
             <AlertTriangle size={16} className="shrink-0" />
-            Impossible de récupérer les flux RSS. Vérifiez votre connexion ou réessayez.
+            {t.veille.error}
           </motion.div>
         )}
 
@@ -520,8 +524,8 @@ export default function VeillePage() {
             className="text-center py-24 text-muted-foreground"
           >
             <Search size={40} className="mx-auto mb-4 opacity-30" />
-            <p className="text-lg font-medium">Aucun article trouvé</p>
-            <p className="text-sm mt-1">Modifiez vos filtres ou actualisez les flux.</p>
+            <p className="text-lg font-medium">{t.veille.emptyTitle}</p>
+            <p className="text-sm mt-1">{t.veille.emptyHint}</p>
           </motion.div>
         ) : (
           <motion.div
@@ -544,7 +548,7 @@ export default function VeillePage() {
             transition={{ delay: 0.5 }}
             className="text-center text-xs text-muted-foreground/50 mt-10"
           >
-            Sources : ANSSI · NIST NVD · Krebs on Security · Cisco Blog · Cloudflare · AWS Security · Microsoft Azure · Red Hat · Linux Foundation — flux RSS mis à jour toutes les 5 min
+            {t.veille.sourcesNote}
           </motion.p>
         )}
 

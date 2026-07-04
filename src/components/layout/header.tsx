@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 import { navItems, personalInfo, socialLinks } from "@/data/experience";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./theme-toggle";
+import { useI18n, setLocale } from "@/i18n";
+import type { Locale } from "@/types";
 
 // Sections de la home suivies par le scroll-spy (ordre du DOM)
 const SPY_SECTION_IDS = ["accueil", "about", "experience", "contact"];
@@ -52,6 +54,8 @@ function AvailabilityBadge({
   onClick?: () => void;
   short?: boolean;
 }) {
+  const { t } = useI18n();
+
   if (!personalInfo.available) return null;
 
   return (
@@ -67,8 +71,41 @@ function AvailabilityBadge({
         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" />
         <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
       </span>
-      {short ? "Disponible" : "Disponible · Alternance"}
+      {short ? t.header.availableShort : t.header.availableFull}
     </Link>
+  );
+}
+
+// Bouton FR/EN — bascule instantanée, choix persisté en localStorage
+function LangToggle({ className }: { className?: string }) {
+  const { locale, t } = useI18n();
+
+  return (
+    <div
+      role="group"
+      aria-label={t.langSwitch}
+      className={cn(
+        "flex items-center rounded-full border border-border/60 p-0.5 text-[11px] font-semibold",
+        className
+      )}
+    >
+      {(["fr", "en"] as Locale[]).map((l) => (
+        <button
+          key={l}
+          type="button"
+          onClick={() => setLocale(l)}
+          aria-pressed={locale === l}
+          className={cn(
+            "px-2 py-0.5 rounded-full uppercase transition-colors",
+            locale === l
+              ? "bg-gradient-to-r from-violet-600 to-cyan-500 text-white"
+              : "text-muted-foreground hover:text-foreground"
+          )}
+        >
+          {l}
+        </button>
+      ))}
+    </div>
   );
 }
 
@@ -78,6 +115,7 @@ export function Header() {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const visibleSections = useRef<Record<string, boolean>>({});
   const pathname = usePathname();
+  const { t, tx } = useI18n();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -166,7 +204,7 @@ export function Header() {
                       : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  {item.label}
+                  {tx(item.label)}
                   <span
                     className={cn(
                       "absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-violet-500 to-cyan-400 transition-transform origin-left",
@@ -183,6 +221,7 @@ export function Header() {
           {/* Actions — colonne droite */}
           <div className="hidden xl:flex items-center gap-1 pr-1 justify-self-end">
             <AvailabilityBadge className="flex" short />
+            <LangToggle className="ml-1" />
             <ThemeToggle />
             <SocialIcons />
             <Button
@@ -190,7 +229,7 @@ export function Header() {
               className="bg-gradient-to-r from-violet-600 to-cyan-500 hover:from-violet-500 hover:to-cyan-400 text-white shadow-lg hover:shadow-[0_0_16px_rgba(139,92,246,0.4)]"
               asChild
             >
-              <Link href="/#contact">Me contacter</Link>
+              <Link href="/#contact">{t.header.contact}</Link>
             </Button>
           </div>
 
@@ -222,12 +261,13 @@ export function Header() {
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="px-4 pb-2"
+                className="px-4 pb-2 flex items-center gap-3"
               >
                 <AvailabilityBadge
                   className="inline-flex"
                   onClick={() => setIsMobileMenuOpen(false)}
                 />
+                <LangToggle />
               </motion.div>
               {navItems.map((item, index) => (
                 <motion.div
@@ -246,7 +286,7 @@ export function Header() {
                     )}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    {item.label}
+                    {tx(item.label)}
                   </Link>
                 </motion.div>
               ))}
@@ -264,7 +304,7 @@ export function Header() {
                     href="/#contact"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    Me contacter
+                    {t.header.contact}
                   </Link>
                 </Button>
               </motion.div>

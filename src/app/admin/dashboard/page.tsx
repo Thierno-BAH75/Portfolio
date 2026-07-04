@@ -11,7 +11,22 @@ import { projects as initialProjects } from "@/data/projects";
 import type { Project, ProjectCategory } from "@/types";
 
 /* ── Types ─────────────────────────────────────────────── */
-type FormState = Omit<Project, "id" | "slug" | "image" | "links">;
+// L'admin (démo locale) édite les projets aplatis en français —
+// les champs Localized {fr, en} des data sont résolus en .fr à l'init
+type AdminProject = Omit<Project, "title" | "description" | "longDescription"> & {
+  title: string;
+  description: string;
+  longDescription?: string;
+};
+
+const adminProjects: AdminProject[] = initialProjects.map((p) => ({
+  ...p,
+  title: p.title.fr,
+  description: p.description.fr,
+  longDescription: p.longDescription?.fr,
+}));
+
+type FormState = Omit<AdminProject, "id" | "slug" | "image" | "links">;
 
 const EMPTY_FORM: FormState = {
   title: "",
@@ -320,7 +335,7 @@ function VeilleSettingsPanel() {
 
 /* ── Dashboard ──────────────────────────────────────────── */
 export default function AdminDashboardPage() {
-  const [projectList, setProjectList] = useState<Project[]>(initialProjects);
+  const [projectList, setProjectList] = useState<AdminProject[]>(adminProjects);
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -333,7 +348,7 @@ export default function AdminDashboardPage() {
 
   /* Ajouter */
   const handleAdd = (data: FormState) => {
-    const newProject: Project = {
+    const newProject: AdminProject = {
       ...data,
       id: String(Date.now()),
       slug: data.title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""),

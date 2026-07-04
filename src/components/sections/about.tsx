@@ -5,11 +5,12 @@ import { motion } from "framer-motion";
 import { Shield, Network, Terminal } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { personalInfo } from "@/data/experience";
+import { useI18n } from "@/i18n";
 
 const skillCards = [
   {
     icon: Shield,
-    title: "Cybersécurité",
+    titleKey: "security" as const,
     color: "text-violet-400",
     borderHover: "hover:border-violet-500/60",
     glowHover: "hover:shadow-[0_0_28px_rgba(139,92,246,0.35)]",
@@ -17,7 +18,7 @@ const skillCards = [
   },
   {
     icon: Network,
-    title: "Systèmes & Réseaux",
+    titleKey: "systems" as const,
     color: "text-cyan-400",
     borderHover: "hover:border-cyan-500/60",
     glowHover: "hover:shadow-[0_0_28px_rgba(6,182,212,0.35)]",
@@ -25,7 +26,7 @@ const skillCards = [
   },
   {
     icon: Terminal,
-    title: "Automatisation & Supervision",
+    titleKey: "automation" as const,
     color: "text-blue-400",
     borderHover: "hover:border-blue-500/60",
     glowHover: "hover:shadow-[0_0_28px_rgba(59,130,246,0.35)]",
@@ -43,6 +44,8 @@ const cardVariants = {
 };
 
 export function About() {
+  const { t } = useI18n();
+
   return (
     <section className="relative py-16 sm:py-20 lg:py-32 overflow-hidden" id="about">
 
@@ -187,7 +190,7 @@ export function About() {
               <div className="flex items-center gap-2 flex-shrink-0">
                 <span className="dot-left w-3 h-3 rounded-full flex-shrink-0" />
                 <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-violet-500 to-cyan-400 bg-clip-text text-transparent whitespace-nowrap">
-                  À propos
+                  {t.about.title}
                 </h2>
                 <span className="dot-right w-3 h-3 rounded-full flex-shrink-0" />
               </div>
@@ -210,7 +213,7 @@ export function About() {
                 <Card className="border-border/50 bg-background/60 backdrop-blur-sm">
                   <CardContent className="p-5">
                     <p className="text-base sm:text-lg text-muted-foreground leading-relaxed text-justify">
-                      Futur étudiant en Master IRS spécialité Cybersécurité, orienté supervision et sécurité des infrastructures. Compétences en administration systèmes &amp; réseaux (Active Directory, VLANs, VPN), virtualisation (Proxmox, VMware, Hyper-V) et automatisation (Python, Bash, PowerShell) pour administrer et sécuriser des environnements critiques.
+                      {t.about.intro}
                     </p>
                   </CardContent>
                 </Card>
@@ -221,7 +224,7 @@ export function About() {
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
               {skillCards.map((card, i) => (
                 <motion.div
-                  key={card.title}
+                  key={card.titleKey}
                   custom={i}
                   variants={cardVariants}
                   initial="hidden"
@@ -234,7 +237,7 @@ export function About() {
                     <CardContent className="p-5 space-y-4">
                       <div className="flex items-center gap-3">
                         <card.icon className={`w-5 h-5 ${card.color}`} />
-                        <h3 className={`font-semibold text-sm ${card.color}`}>{card.title}</h3>
+                        <h3 className={`font-semibold text-sm ${card.color}`}>{t.about.cards[card.titleKey]}</h3>
                       </div>
                       <ul className="space-y-1.5">
                         {card.items.map((item) => (

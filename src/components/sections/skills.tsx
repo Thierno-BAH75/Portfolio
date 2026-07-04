@@ -9,47 +9,43 @@ import { Counter, HoverCard3D, StaggerChildren, StaggerItem } from "@/components
 import { skills, skillsByCategory } from "@/data/skills";
 import { projects } from "@/data/projects";
 import { certifications } from "@/data/experience";
+import { useI18n } from "@/i18n";
+
+type CategoryKey = keyof typeof skillsByCategory;
 
 interface CategoryConfig {
-  label: string;
   icon: LucideIcon;
   color: string;
   bgColor: string;
 }
 
-const categoryConfig: Record<string, CategoryConfig> = {
+const categoryConfig: Record<CategoryKey, CategoryConfig> = {
   security: {
-    label: "Sécurité",
     icon: Shield,
     color: "text-red-500",
     bgColor: "bg-red-500/10",
   },
   network: {
-    label: "Réseaux",
     icon: Network,
     color: "text-blue-500",
     bgColor: "bg-blue-500/10",
   },
   systems: {
-    label: "Systèmes",
     icon: Server,
     color: "text-purple-500",
     bgColor: "bg-purple-500/10",
   },
   cloud: {
-    label: "Cloud & DevSecOps",
     icon: Cloud,
     color: "text-green-500",
     bgColor: "bg-green-500/10",
   },
   tools: {
-    label: "Supervision",
     icon: Wrench,
     color: "text-amber-500",
     bgColor: "bg-amber-500/10",
   },
   scripting: {
-    label: "Scripting",
     icon: Code,
     color: "text-pink-500",
     bgColor: "bg-pink-500/10",
@@ -57,14 +53,15 @@ const categoryConfig: Record<string, CategoryConfig> = {
 };
 
 const stats = [
-  { value: projects.length, suffix: "", label: "Projets réalisés" },
-  { value: certifications.length, suffix: "", label: "Certifications" },
-  { value: 3, suffix: "+", label: "Années d'expérience" },
-  { value: skills.length, suffix: "", label: "Technologies maîtrisées" },
+  { value: projects.length, suffix: "", labelKey: "projects" as const },
+  { value: certifications.length, suffix: "", labelKey: "certifications" as const },
+  { value: 3, suffix: "+", labelKey: "years" as const },
+  { value: skills.length, suffix: "", labelKey: "technologies" as const },
 ];
 
 export function Skills() {
   const reduceMotion = useReducedMotion();
+  const { t } = useI18n();
 
   return (
     <section className="py-16 sm:py-20 lg:py-32" id="skills">
@@ -77,15 +74,14 @@ export function Skills() {
           className="text-center mb-12 lg:mb-16"
         >
           <Badge variant="outline" className="mb-4">
-            Compétences
+            {t.skills.badge}
           </Badge>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
-            Mon expertise{" "}
-            <span className="gradient-text">technique</span>
+            {t.skills.titleStart}{" "}
+            <span className="gradient-text">{t.skills.titleGradient}</span>
           </h2>
           <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
-            Les technologies et outils que je maîtrise pour sécuriser
-            et administrer vos infrastructures.
+            {t.skills.subtitle}
           </p>
         </motion.div>
 
@@ -95,7 +91,7 @@ export function Skills() {
           staggerDelay={0.1}
         >
           {stats.map((stat) => (
-            <StaggerItem key={stat.label}>
+            <StaggerItem key={stat.labelKey}>
               <div className="h-full rounded-xl border border-border/60 bg-background/50 px-4 py-6 text-center">
                 <div className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-violet-500 to-cyan-400 bg-clip-text text-transparent">
                   {reduceMotion ? (
@@ -104,7 +100,7 @@ export function Skills() {
                     <Counter to={stat.value} suffix={stat.suffix} />
                   )}
                 </div>
-                <p className="text-sm text-muted-foreground mt-2">{stat.label}</p>
+                <p className="text-sm text-muted-foreground mt-2">{t.skills.stats[stat.labelKey]}</p>
               </div>
             </StaggerItem>
           ))}
@@ -115,7 +111,7 @@ export function Skills() {
           className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto"
           staggerDelay={0.1}
         >
-          {Object.entries(skillsByCategory).map(([category, skills]) => {
+          {(Object.entries(skillsByCategory) as [CategoryKey, typeof skills][]).map(([category, skills]) => {
             const config = categoryConfig[category];
             const Icon = config.icon;
 
@@ -132,7 +128,7 @@ export function Skills() {
                         >
                           <Icon className={`w-4 h-4 ${config.color}`} />
                         </motion.div>
-                        {config.label}
+                        {t.skills.categories[category]}
                         <Badge variant="secondary" className="ml-auto text-xs font-normal">
                           {skills.length}
                         </Badge>

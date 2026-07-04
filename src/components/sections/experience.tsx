@@ -15,32 +15,14 @@ import { Badge } from "@/components/ui/badge";
 import { education, experiences, certifications } from "@/data/experience";
 import { formatDate, cn } from "@/lib/utils";
 import type { Education, Experience as ExperienceType } from "@/types";
+import { useI18n } from "@/i18n";
 
 const VISIBLE_ACHIEVEMENTS = 2;
 
-const STATUS_STYLES: Record<
-  NonNullable<Education["status"]>,
-  { label: string; className: string }
-> = {
-  validated: {
-    label: "Validé",
-    className: "border-green-500/30 bg-green-500/10 text-green-500",
-  },
-  ongoing: {
-    label: "En cours",
-    className: "border-cyan-500/30 bg-cyan-500/10 text-cyan-400",
-  },
-  admitted: {
-    label: "Admis",
-    className: "border-violet-500/30 bg-violet-500/10 text-violet-400",
-  },
-};
-
-const TYPE_LABELS: Record<ExperienceType["type"], string> = {
-  fulltime: "CDI",
-  parttime: "Temps partiel",
-  freelance: "Freelance",
-  internship: "Stage",
+const STATUS_CLASSES: Record<NonNullable<Education["status"]>, string> = {
+  validated: "border-green-500/30 bg-green-500/10 text-green-500",
+  ongoing: "border-cyan-500/30 bg-cyan-500/10 text-cyan-400",
+  admitted: "border-violet-500/30 bg-violet-500/10 text-violet-400",
 };
 
 // Apparition au scroll cohérente avec fadeInUp (motion-wrapper), désactivable
@@ -114,7 +96,7 @@ function TimelineDot() {
 
 function EducationCard({ edu, index }: { edu: Education; index: number }) {
   const fade = useFadeProps();
-  const status = edu.status ? STATUS_STYLES[edu.status] : null;
+  const { t, tx } = useI18n();
 
   return (
     <motion.div className="relative" {...fade(index * 0.1)}>
@@ -125,18 +107,18 @@ function EducationCard({ edu, index }: { edu: Education; index: number }) {
             <Calendar size={14} />
             {edu.startDate} – {edu.endDate}
           </span>
-          {status && (
+          {edu.status && (
             <span
               className={cn(
                 "text-[11px] font-medium px-2 py-0.5 rounded-full border",
-                status.className
+                STATUS_CLASSES[edu.status]
               )}
             >
-              {status.label}
+              {t.experience.status[edu.status]}
             </span>
           )}
         </div>
-        <h4 className="text-lg font-semibold leading-snug">{edu.degree}</h4>
+        <h4 className="text-lg font-semibold leading-snug">{tx(edu.degree)}</h4>
         <p className="text-violet-400 font-medium text-sm mt-1">{edu.school}</p>
         {edu.location && (
           <p className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
@@ -147,11 +129,11 @@ function EducationCard({ edu, index }: { edu: Education; index: number }) {
         {edu.note && (
           <p className="flex items-center gap-1.5 text-xs font-semibold text-amber-400 mt-2">
             <Sparkles size={13} className="shrink-0" />
-            {edu.note}
+            {tx(edu.note)}
           </p>
         )}
         {edu.description && (
-          <p className="text-sm text-muted-foreground mt-3">{edu.description}</p>
+          <p className="text-sm text-muted-foreground mt-3">{tx(edu.description)}</p>
         )}
       </div>
     </motion.div>
@@ -167,10 +149,12 @@ function ExperienceCard({
 }) {
   const fade = useFadeProps();
   const reduce = useReducedMotion();
+  const { t, tx, locale } = useI18n();
   const [expanded, setExpanded] = useState(false);
 
-  const visible = exp.achievements.slice(0, VISIBLE_ACHIEVEMENTS);
-  const hidden = exp.achievements.slice(VISIBLE_ACHIEVEMENTS);
+  const achievements = tx(exp.achievements);
+  const visible = achievements.slice(0, VISIBLE_ACHIEVEMENTS);
+  const hidden = achievements.slice(VISIBLE_ACHIEVEMENTS);
 
   return (
     <motion.div className="relative" {...fade(index * 0.1)}>
@@ -179,21 +163,21 @@ function ExperienceCard({
         <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
           <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
             <Calendar size={14} />
-            {formatDate(exp.startDate)} –{" "}
-            {exp.current ? "Présent" : formatDate(exp.endDate!)}
+            {formatDate(exp.startDate, locale)} –{" "}
+            {exp.current ? t.experience.present : formatDate(exp.endDate!, locale)}
           </span>
           <span className="flex items-center gap-2">
             {exp.current && (
               <Badge variant="default" className="text-xs">
-                Actuel
+                {t.experience.current}
               </Badge>
             )}
             <Badge variant="ghost" className="text-xs">
-              {TYPE_LABELS[exp.type]}
+              {t.experience.types[exp.type]}
             </Badge>
           </span>
         </div>
-        <h4 className="text-lg font-semibold leading-snug">{exp.title}</h4>
+        <h4 className="text-lg font-semibold leading-snug">{tx(exp.title)}</h4>
         <p className="text-cyan-400 font-medium text-sm mt-1">{exp.company}</p>
         <p className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
           <MapPin size={13} />
@@ -238,7 +222,7 @@ function ExperienceCard({
               aria-expanded={expanded}
               className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-cyan-400 hover:text-cyan-300 transition-colors"
             >
-              {expanded ? "Voir moins" : `Voir plus (${hidden.length})`}
+              {expanded ? t.experience.seeLess : `${t.experience.seeMore} (${hidden.length})`}
               <ChevronDown
                 size={14}
                 className={cn("transition-transform", expanded && "rotate-180")}
@@ -261,6 +245,7 @@ function ExperienceCard({
 
 export function Experience() {
   const fade = useFadeProps();
+  const { t, tx } = useI18n();
 
   return (
     <section className="py-20 lg:py-32" id="experience">
@@ -268,21 +253,19 @@ export function Experience() {
         {/* Header */}
         <motion.div className="text-center max-w-2xl mx-auto mb-16" {...fade()}>
           <Badge variant="outline" className="mb-4">
-            Formation & Expérience
+            {t.experience.badge}
           </Badge>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
-            Mon <span className="gradient-text">parcours</span>
+            {t.experience.titleStart}{" "}
+            <span className="gradient-text">{t.experience.titleGradient}</span>
           </h2>
-          <p className="text-muted-foreground mt-4">
-            Formation académique d&apos;un côté, expérience professionnelle de
-            l&apos;autre — deux fils d&apos;un même parcours.
-          </p>
+          <p className="text-muted-foreground mt-4">{t.experience.subtitle}</p>
         </motion.div>
 
         {/* Double timeline */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-10 max-w-6xl mx-auto">
           <div>
-            <ColumnHeader icon={GraduationCap} label="Scolaire" />
+            <ColumnHeader icon={GraduationCap} label={t.experience.school} />
             <TimelineShell>
               {education.map((edu, index) => (
                 <EducationCard key={edu.id} edu={edu} index={index} />
@@ -291,7 +274,7 @@ export function Experience() {
           </div>
 
           <div>
-            <ColumnHeader icon={Briefcase} label="Professionnel" />
+            <ColumnHeader icon={Briefcase} label={t.experience.professional} />
             <TimelineShell>
               {experiences.map((exp, index) => (
                 <ExperienceCard key={exp.id} exp={exp} index={index} />
@@ -309,7 +292,7 @@ export function Experience() {
             <div className="flex-1 h-px bg-gradient-to-r from-transparent to-violet-500/40" />
             <span className="flex items-center gap-2 text-lg font-semibold">
               <Award size={18} className="text-violet-400" />
-              Certifications
+              {t.experience.certifications}
             </span>
             <div className="flex-1 h-px bg-gradient-to-l from-transparent to-cyan-500/40" />
           </motion.div>
@@ -317,14 +300,14 @@ export function Experience() {
           <div className="flex flex-wrap justify-center gap-3">
             {certifications.map((cert, index) => (
               <motion.div
-                key={cert.name}
+                key={cert.name.fr}
                 className="flex items-center gap-2.5 rounded-lg border border-border/60 bg-background/50 px-3.5 py-2"
                 {...fade(index * 0.05)}
               >
                 <Award size={16} className="text-cyan-400 shrink-0" />
                 <span className="min-w-0">
                   <span className="block text-sm font-medium leading-tight">
-                    {cert.name}
+                    {tx(cert.name)}
                   </span>
                   <span className="block text-xs text-muted-foreground">
                     {cert.issuer}

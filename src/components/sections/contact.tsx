@@ -5,28 +5,31 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Send, Mail, MapPin, Phone, CheckCircle, Clock } from "lucide-react";
+import { Send, Mail, MapPin, CheckCircle, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { FadeIn, StaggerChildren, StaggerItem, GlowOnHover } from "@/components/animations";
-import { personalInfo, socialLinks } from "@/data/experience";
+import { personalInfo } from "@/data/experience";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/i18n";
+import type { Dictionary } from "@/i18n/dictionaries";
 
-const contactSchema = z.object({
-  name: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
-  email: z.string().email("Email invalide"),
-  subject: z.string().min(5, "Le sujet doit contenir au moins 5 caractères"),
-  message: z
-    .string()
-    .min(10, "Le message doit contenir au moins 10 caractères"),
-});
+// Les messages de validation suivent la langue active
+const makeContactSchema = (messages: Dictionary["contact"]["errors"]) =>
+  z.object({
+    name: z.string().min(2, messages.name),
+    email: z.string().email(messages.email),
+    subject: z.string().min(5, messages.subject),
+    message: z.string().min(10, messages.message),
+  });
 
-type ContactFormData = z.infer<typeof contactSchema>;
+type ContactFormData = z.infer<ReturnType<typeof makeContactSchema>>;
 
 export function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const { t, tx } = useI18n();
 
   const {
     register,
@@ -34,7 +37,7 @@ export function Contact() {
     formState: { errors },
     reset,
   } = useForm<ContactFormData>({
-    resolver: zodResolver(contactSchema),
+    resolver: zodResolver(makeContactSchema(t.contact.errors)),
   });
 
   const onSubmit = async (data: ContactFormData) => {
@@ -58,15 +61,12 @@ export function Contact() {
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <FadeIn>
-            <span className="text-primary font-medium">Contact</span>
+            <span className="text-primary font-medium">{t.contact.eyebrow}</span>
             <h2 className="text-3xl sm:text-4xl font-bold mt-2">
-              Travaillons{" "}
-              <span className="gradient-text">ensemble</span>
+              {t.contact.titleStart}{" "}
+              <span className="gradient-text">{t.contact.titleGradient}</span>
             </h2>
-            <p className="text-muted-foreground mt-4">
-              Vous avez un projet en tête ? N&apos;hésitez pas à me contacter.
-              Je serai ravi de discuter de vos idées.
-            </p>
+            <p className="text-muted-foreground mt-4">{t.contact.subtitle}</p>
           </FadeIn>
         </div>
 
@@ -75,7 +75,7 @@ export function Contact() {
           <FadeIn direction="left" className="lg:col-span-2 space-y-8">
             <div>
               <h3 className="text-xl font-semibold mb-6">
-                Informations de contact
+                {t.contact.infoTitle}
               </h3>
 
               <StaggerChildren className="space-y-4" staggerDelay={0.15}>
@@ -95,7 +95,7 @@ export function Contact() {
                       </motion.div>
                     </GlowOnHover>
                     <div>
-                      <p className="text-sm text-muted-foreground">Email</p>
+                      <p className="text-sm text-muted-foreground">{t.contact.emailLabel}</p>
                       <a
                         href={`mailto:${personalInfo.email}`}
                         className="font-medium hover:text-primary transition-colors"
@@ -122,8 +122,8 @@ export function Contact() {
                       </motion.div>
                     </GlowOnHover>
                     <div>
-                      <p className="text-sm text-muted-foreground">Localisation</p>
-                      <p className="font-medium">{personalInfo.location}</p>
+                      <p className="text-sm text-muted-foreground">{t.contact.locationLabel}</p>
+                      <p className="font-medium">{tx(personalInfo.location)}</p>
                     </div>
                   </motion.div>
                 </StaggerItem>
@@ -147,7 +147,7 @@ export function Contact() {
                     transition={{ duration: 2, repeat: Infinity }}
                   />
                   <span className="text-green-500 font-medium">
-                    Disponible pour de nouveaux projets
+                    {t.contact.availableBanner}
                   </span>
                 </div>
               </motion.div>
@@ -159,14 +159,14 @@ export function Contact() {
                   <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
                     <Clock size={16} />
                   </div>
-                  <h3 className="font-semibold text-foreground">Disponibilité</h3>
+                  <h3 className="font-semibold text-foreground">{t.contact.availabilityTitle}</h3>
                 </div>
 
                 <ul className="space-y-2">
                   {[
-                    { day: "Lundi – Vendredi", hours: "9h00 – 18h00", open: true },
-                    { day: "Samedi", hours: "10h00 – 16h00", open: true },
-                    { day: "Dimanche", hours: "Fermé", open: false },
+                    { day: t.contact.monFri, hours: t.contact.hoursWeek, open: true },
+                    { day: t.contact.saturday, hours: t.contact.hoursSat, open: true },
+                    { day: t.contact.sunday, hours: t.contact.closed, open: false },
                   ].map(({ day, hours, open }) => (
                     <li key={day} className="flex items-center justify-between text-sm">
                       <span className="text-muted-foreground">{day}</span>
@@ -184,7 +184,7 @@ export function Contact() {
                       animate={{ opacity: [1, 0.3, 1] }}
                       transition={{ duration: 1.5, repeat: Infinity }}
                     />
-                    Réponse sous 24h garantie
+                    {t.contact.responseGuarantee}
                   </span>
                 </div>
               </div>
@@ -204,20 +204,19 @@ export function Contact() {
                     <CheckCircle size={32} className="text-green-500" />
                   </div>
                   <h3 className="text-xl font-semibold mb-2">
-                    Message envoyé !
+                    {t.contact.form.successTitle}
                   </h3>
                   <p className="text-muted-foreground">
-                    Merci pour votre message. Je vous répondrai dans les plus
-                    brefs délais.
+                    {t.contact.form.successText}
                   </p>
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <label className="text-sm font-medium">Nom</label>
+                      <label className="text-sm font-medium">{t.contact.form.name}</label>
                       <Input
-                        placeholder="Votre nom"
+                        placeholder={t.contact.form.namePlaceholder}
                         {...register("name")}
                         className={cn(errors.name && "border-red-500")}
                       />
@@ -229,10 +228,10 @@ export function Contact() {
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-sm font-medium">Email</label>
+                      <label className="text-sm font-medium">{t.contact.form.email}</label>
                       <Input
                         type="email"
-                        placeholder="votre@email.com"
+                        placeholder={t.contact.form.emailPlaceholder}
                         {...register("email")}
                         className={cn(errors.email && "border-red-500")}
                       />
@@ -245,9 +244,9 @@ export function Contact() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">Sujet</label>
+                    <label className="text-sm font-medium">{t.contact.form.subject}</label>
                     <Input
-                      placeholder="Le sujet de votre message"
+                      placeholder={t.contact.form.subjectPlaceholder}
                       {...register("subject")}
                       className={cn(errors.subject && "border-red-500")}
                     />
@@ -259,9 +258,9 @@ export function Contact() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">Message</label>
+                    <label className="text-sm font-medium">{t.contact.form.message}</label>
                     <Textarea
-                      placeholder="Décrivez votre projet ou votre message..."
+                      placeholder={t.contact.form.messagePlaceholder}
                       rows={5}
                       {...register("message")}
                       className={cn(errors.message && "border-red-500")}
@@ -291,12 +290,12 @@ export function Contact() {
                             ease: "linear",
                           }}
                         />
-                        Envoi en cours...
+                        {t.contact.form.sending}
                       </>
                     ) : (
                       <>
                         <Send size={18} />
-                        Envoyer le message
+                        {t.contact.form.send}
                       </>
                     )}
                   </Button>

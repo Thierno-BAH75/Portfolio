@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Floating } from "@/components/animations";
 import { personalInfo } from "@/data/experience";
 import { TechMarquee } from "./tech-marquee";
+import { useI18n } from "@/i18n";
 
 // Charger le composant 3D dynamiquement pour éviter les erreurs SSR
 const FloatingShapes = dynamic(
@@ -42,24 +43,18 @@ const itemVariants: Variants = {
   },
 };
 
-const TITLE_VARIANTS = [
-  "Ingénieur Sécurité Réseau & Système",
-  "Administrateur Infrastructure",
-  "Spécialiste Supervision & Automatisation",
-] as const;
-
 const TYPING_SPEED  = 52;
 const ERASING_SPEED = 28;
 const PAUSE_TYPED   = 2000;
 const PAUSE_ERASED  = 350;
 
-function LoopingTypewriter() {
+function LoopingTypewriter({ titles }: { titles: string[] }) {
   const [idx, setIdx]       = useState(0);
   const [count, setCount]   = useState(0);
   const [erasing, setErasing] = useState(false);
 
   useEffect(() => {
-    const text = TITLE_VARIANTS[idx];
+    const text = titles[idx];
 
     if (!erasing && count < text.length) {
       const t = setTimeout(() => setCount((c) => c + 1), TYPING_SPEED);
@@ -76,13 +71,13 @@ function LoopingTypewriter() {
     if (erasing && count === 0) {
       const t = setTimeout(() => {
         setErasing(false);
-        setIdx((i) => (i + 1) % TITLE_VARIANTS.length);
+        setIdx((i) => (i + 1) % titles.length);
       }, PAUSE_ERASED);
       return () => clearTimeout(t);
     }
-  }, [idx, count, erasing]);
+  }, [idx, count, erasing, titles]);
 
-  const text = TITLE_VARIANTS[idx];
+  const text = titles[idx];
 
   return (
     <span className="bg-gradient-to-r from-violet-500 to-cyan-400 bg-clip-text text-transparent">
@@ -98,6 +93,7 @@ function LoopingTypewriter() {
 
 export function Hero() {
   const containerRef = useRef<HTMLElement>(null);
+  const { t, tx, locale } = useI18n();
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
@@ -164,7 +160,7 @@ export function Hero() {
             variants={itemVariants}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 min-h-[1.3em]"
           >
-            <LoopingTypewriter />
+            <LoopingTypewriter key={locale} titles={t.hero.titles} />
           </motion.h1>
 
           {/* Availability Badge */}
@@ -178,7 +174,7 @@ export function Hero() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                 </span>
-                {personalInfo.seeking}
+                {tx(personalInfo.seeking)}
               </Badge>
             </motion.div>
           )}
@@ -196,7 +192,7 @@ export function Hero() {
                 asChild
               >
                 <Link href="/projects">
-                  Voir mes projets
+                  {t.hero.viewProjects}
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
@@ -209,7 +205,7 @@ export function Hero() {
                 className="w-full sm:w-auto min-w-[180px] bg-violet-600 hover:bg-violet-500 text-white shadow-lg hover:shadow-[0_0_20px_rgba(139,92,246,0.4)]"
                 asChild
               >
-                <Link href="/#contact">Me contacter</Link>
+                <Link href="/#contact">{t.hero.contact}</Link>
               </Button>
             </motion.div>
           </motion.div>
@@ -231,7 +227,7 @@ export function Hero() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
-            <span className="text-xs">Scroll</span>
+            <span className="text-xs">{t.hero.scroll}</span>
             <ChevronDown className="w-5 h-5" />
           </motion.button>
         </Floating>

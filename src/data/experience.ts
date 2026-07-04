@@ -9,9 +9,10 @@ export const experiences: Experience[] = [
     },
     company: "AXA (via Neurones IT)",
     location: "Nanterre, Île-de-France",
-    type: "fulltime",
+    type: "contract",
     startDate: "2026-01",
-    current: true,
+    endDate: "2026-06",
+    current: false,
     description: {
       fr: "Support VIP et migration à grande échelle des postes de travail vers le Modern Virtual Desktop au sein d'un grand groupe d'assurance.",
       en: "VIP support and large-scale workstation migration to the Modern Virtual Desktop at a major insurance group.",
@@ -45,8 +46,8 @@ export const experiences: Experience[] = [
     company: "KISS",
     companyLogo: "/logos/kiss.png",
     location: "Gentilly, Île-de-France",
-    type: "fulltime",
-    startDate: "2024-12",
+    type: "apprenticeship",
+    startDate: "2024-11",
     endDate: "2025-12",
     current: false,
     description: {
@@ -55,7 +56,7 @@ export const experiences: Experience[] = [
     },
     achievements: {
       fr: [
-        "Déploiement d'une infrastructure réseau de production : 1 salle serveur, 2 baies, ~10 serveurs Dell — installation, câblage et brassage complets",
+        "Déploiement d'une infrastructure réseau de production : 1 salle serveur, 3 baies, ~10 serveurs Dell — installation, câblage et brassage complets",
         "Supervision centralisée Zabbix (SNMP) sur 100 % de l'infrastructure : ~10 alertes critiques, optimisation CPU/RAM/disque, MTTR réduit d'~30 %",
         "Architectures réseaux multi-sites haute disponibilité (LAN/WAN/VPN) pour les services KHosting : stacks de switchs, LAG",
         "Segmentation en 6+ VLANs avec routage inter-VLAN ; administration LAN, Wi-Fi et VPN",
@@ -67,7 +68,7 @@ export const experiences: Experience[] = [
         "Audits, PoC et maquettes d'infrastructure client (dont refonte complète pour Group BML, déployée en production), documentation technique exploitable",
       ],
       en: [
-        "Deployed a production network infrastructure: 1 server room, 2 racks, ~10 Dell servers — full installation, cabling and patching",
+        "Deployed a production network infrastructure: 1 server room, 3 racks, ~10 Dell servers — full installation, cabling and patching",
         "Centralized Zabbix monitoring (SNMP) across 100% of the infrastructure: ~10 critical alerts, CPU/RAM/disk optimization, MTTR cut by ~30%",
         "Designed multi-site high-availability network architectures (LAN/WAN/VPN) for KHosting services: switch stacks, LAG",
         "Segmented the network into 6+ VLANs with inter-VLAN routing; LAN, Wi-Fi and VPN administration",
@@ -94,7 +95,7 @@ export const experiences: Experience[] = [
     company: "Hôpital Franco-Britannique",
     companyLogo: "/logos/hfb.png",
     location: "Levallois-Perret, Île-de-France",
-    type: "fulltime",
+    type: "apprenticeship",
     startDate: "2023-08",
     endDate: "2024-09",
     current: false,

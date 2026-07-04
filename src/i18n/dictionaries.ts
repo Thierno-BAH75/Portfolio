@@ -147,6 +147,8 @@ const fr = {
       parttime: "Temps partiel",
       freelance: "Freelance",
       internship: "Stage",
+      apprenticeship: "Alternance",
+      contract: "CDD",
     },
   },
   contact: {
@@ -377,6 +379,8 @@ const en: DeepDict<typeof fr> = {
       parttime: "Part-time",
       freelance: "Freelance",
       internship: "Internship",
+      apprenticeship: "Apprenticeship",
+      contract: "Fixed-term",
     },
   },
   contact: {

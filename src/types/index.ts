@@ -55,7 +55,7 @@ export interface Experience {
   company: string;
   companyLogo?: string;
   location: string;
-  type: "fulltime" | "parttime" | "freelance" | "internship";
+  type: "fulltime" | "parttime" | "freelance" | "internship" | "apprenticeship" | "contract";
   startDate: string;
   endDate?: string;
   current: boolean;

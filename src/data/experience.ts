@@ -319,6 +319,7 @@ export const personalInfo = {
     en: "Systems & Network Engineer (4-year degree completed), with 2 years of experience in critical environments (hospital, managed IT services). I design, administer and secure complex infrastructures. Seeking a work-study contract to complete my Master's in Network & Systems Engineering.",
   },
   email: "thierno-abdoul-bah@hotmail.com",
+  phone: "07 83 70 96 40",
   location: {
     fr: "Paris et périphérie",
     en: "Paris area, France",

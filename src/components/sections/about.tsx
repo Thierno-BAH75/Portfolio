@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import {
   MapPin,
   Mail,
+  Phone,
   Download,
   BadgeCheck,
   CalendarClock,
@@ -20,8 +21,8 @@ import { useI18n } from "@/i18n";
 
 const CV_PDF = "/CV_Alternance_BAH-Thierno_2026.pdf";
 
-// Les 4 certifications majeures (le tableau est ordonné par poids)
-const FEATURED_CERTIFICATIONS = certifications.slice(0, 4);
+// Format international pour le lien tel: (07… → +337…)
+const PHONE_HREF = `tel:+33${personalInfo.phone.replace(/\s/g, "").slice(1)}`;
 
 // Apparition au scroll cohérente avec les autres sections, désactivable
 function useFadeProps() {
@@ -222,6 +223,16 @@ export function About() {
                   {personalInfo.email}
                 </span>
               </a>
+              <a
+                href={PHONE_HREF}
+                className="flex items-center gap-2 text-muted-foreground hover:text-violet-400 transition-colors"
+              >
+                <Phone size={15} className="text-violet-400 shrink-0" />
+                {t.about.phoneLabel}
+                <span className="font-medium text-foreground">
+                  {personalInfo.phone}
+                </span>
+              </a>
             </motion.div>
 
             {/* CTA */}
@@ -283,11 +294,11 @@ export function About() {
                     <Award size={15} className="text-violet-400" />
                     {t.about.profile.certifications}
                   </p>
-                  <div className="flex flex-wrap gap-2">
-                    {FEATURED_CERTIFICATIONS.map((cert) => (
+                  <div className="flex flex-wrap gap-1.5">
+                    {certifications.map((cert) => (
                       <span
                         key={cert.name.fr}
-                        className="text-[11px] px-2.5 py-1 rounded-md border border-border/60 bg-background/60 text-muted-foreground"
+                        className="text-[11px] leading-tight px-2.5 py-1 rounded-md border border-border/60 bg-background/60 text-muted-foreground max-w-full break-words"
                       >
                         {tx(cert.name)}
                       </span>

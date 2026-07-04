@@ -37,6 +37,7 @@ const fr = {
     locationLabel: "Localisation",
     locationValue: "Paris, France",
     emailLabel: "E-mail",
+    phoneLabel: "Téléphone",
     downloadCv: "Télécharger mon CV",
     contact: "Me contacter",
     profile: {
@@ -266,6 +267,7 @@ const en: DeepDict<typeof fr> = {
     locationLabel: "Location",
     locationValue: "Paris, France",
     emailLabel: "Email",
+    phoneLabel: "Phone",
     downloadCv: "Download my resume",
     contact: "Get in touch",
     profile: {

@@ -2,7 +2,7 @@
 
 import { useRef, type KeyboardEvent } from "react";
 import { motion } from "framer-motion";
-import { Star } from "lucide-react";
+import { Star, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { Project } from "@/types";
 import { useI18n } from "@/i18n";
@@ -79,6 +79,20 @@ export function ProjectCard({ project, onOpen, animateLayout }: ProjectCardProps
                 <Star size={9} /> {t.projects.featured}
               </span>
             )}
+
+            {/* Voile au survol : dégradé sombre + CTA, ~200ms, instantané si prefers-reduced-motion */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 flex items-end p-4 bg-gradient-to-t from-black/75 via-black/25 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-200 motion-reduce:transition-none"
+            >
+              <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-white">
+                {t.projects.viewProject}
+                <ArrowRight
+                  size={15}
+                  className="transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
+                />
+              </span>
+            </div>
           </div>
 
           {/* Contenu */}

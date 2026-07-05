@@ -84,6 +84,7 @@ const fr = {
       "Une sélection de mes meilleurs projets en sécurité réseau et administration système.",
     viewAll: "Voir tous les projets",
     details: "Détails",
+    viewProject: "Voir le projet",
     featured: "Mis en avant",
     categories: {
       security: "Sécurité",
@@ -325,6 +326,7 @@ const en: DeepDict<typeof fr> = {
       "A selection of my best work in network security and systems administration.",
     viewAll: "View all projects",
     details: "Details",
+    viewProject: "View project",
     featured: "Featured",
     categories: {
       security: "Security",

@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# documents personnels (rapports de stage, etc.) — jamais committés
+/reference/

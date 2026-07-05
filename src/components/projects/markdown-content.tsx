@@ -44,7 +44,7 @@ export function MarkdownContent({ content }: { content: string }) {
       nodes.push(
         <h2
           key={i}
-          className="mt-8 mb-2 text-base font-semibold text-foreground first:mt-0"
+          className="mt-9 mb-3 pb-2 text-lg font-bold text-foreground border-b border-border/50 first:mt-0"
         >
           {line.slice(3)}
         </h2>

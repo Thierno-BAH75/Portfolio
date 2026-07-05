@@ -14,51 +14,55 @@ export const projects: Project[] = [
     },
     longDescription: {
       fr: `## 📋 Contexte du projet
-KISS, ESN spécialisée en infogérance, hébergement et cybersécurité, souhaitait moderniser et consolider son infrastructure interne. L'entreprise héberge des services critiques pour ses propres besoins et pour ceux de ses clients via KHosting, mais reposait jusqu'alors sur un réseau peu structuré et difficile à maintenir. Un datacenter interne sur 3 baies a été conçu et déployé de zéro dans ce contexte.
+KISS (ESN infogérance, hébergement, cybersécurité) a modernisé son réseau interne, jusqu'alors peu structuré, en construisant un datacenter sur 3 baies pour KHosting et ses environnements internes.
 
 ## 🎯 Objectifs
-- Construire un datacenter interne robuste, sécurisé et évolutif sur 3 baies
-- Séparer les environnements clients, production et préproduction via des VLANs dédiés
-- Garantir la haute disponibilité réseau via des switches stackés et des LAGs
-- Documenter intégralement l'architecture pour assurer la continuité opérationnelle
+- Datacenter robuste et évolutif sur 3 baies
+- VLANs dédiés : clients, production, préproduction
+- Haute disponibilité réseau (stacking, LAGs)
+- Documentation complète de l'architecture
 
 ## 🛠️ Technologies utilisées
-Switches Netgear stackés, liens SFP+ 10 Gb, LAGs (agrégation de ports), VLANs, pare-feu pfSense, serveurs Dell PowerEdge R6615, contrôleur PERC H330 Mini, RAID 10, NAS Synology, hyperviseurs Proxmox et Hyper-V.
+Netgear (stacking), SFP+ 10 Gb, LAGs, VLANs, pfSense, Dell PowerEdge R6615, PERC H330 Mini, RAID 10, NAS Synology, Proxmox, Hyper-V
 
 ## 💡 Démarche
-Installation physique des baies, câblage structuré et brassage. Configuration des switches avec stacking (haute disponibilité, bascule automatique), mise en place des VLANs et des LAGs pour l'agrégation de bande passante. Installation des serveurs Dell avec ajout de RAM et SSD, configuration du RAID 10 via le contrôleur PERC H330 Mini, ports iDRAC configurés pour l'administration à distance. Installation et configuration des hyperviseurs Proxmox et Hyper-V, création des premières VMs de services. Rédaction d'une documentation technique complète de l'architecture.
+- Câblage structuré et installation des baies
+- Configuration des switches (stacking, VLANs, LAGs)
+- Serveurs Dell en RAID 10 + iDRAC, hyperviseurs Proxmox/Hyper-V
 
 ## 📊 Résultats
-- Architecture datacenter opérationnelle et documentée pour KISS et KHosting
-- Haute disponibilité réseau assurée par le stacking des switches et bascule automatique
-- Environnements cloisonnés : production, préproduction et clients hébergés bien isolés
-- Infrastructure évolutive posant les bases d'une supervision et d'une gestion centralisée
+- Datacenter opérationnel et documenté
+- Haute disponibilité assurée (bascule automatique)
+- Environnements clients/prod/préprod cloisonnés
+- Base évolutive pour supervision centralisée
 
 ## 🚀 Compétences développées
-Conception d'architecture réseau, câblage structuré, administration de switches (VLANs, LAGs, stacking), configuration de serveurs Dell (RAID 10, iDRAC), virtualisation (Proxmox, Hyper-V), documentation technique d'infrastructure.`,
+Architecture réseau, câblage structuré, VLANs, LAGs, stacking, RAID 10, iDRAC, Proxmox, Hyper-V, documentation technique`,
       en: `## 📋 Project context
-KISS, an IT managed-services company specialising in hosting and cybersecurity, needed to modernise and consolidate its internal infrastructure. The company runs critical services both for its own operations and for its clients through KHosting, but was relying on an unstructured, hard-to-maintain network. A 3-rack in-house datacenter was designed and deployed from scratch.
+KISS (IT managed-services, hosting, cybersecurity) modernised its unstructured internal network, building a 3-rack datacenter for KHosting and its internal environments.
 
 ## 🎯 Objectives
-- Build a robust, secure, and scalable in-house datacenter across 3 racks
-- Isolate client, production, and pre-production environments via dedicated VLANs
-- Ensure network high availability with stacked switches and LAGs
-- Fully document the architecture to ensure operational continuity
+- Robust, scalable 3-rack datacenter
+- Dedicated VLANs: clients, production, pre-production
+- Network high availability (stacking, LAGs)
+- Full architecture documentation
 
 ## 🛠️ Technologies used
-Stacked Netgear switches, 10 Gb SFP+ links, LAGs (link aggregation), VLANs, pfSense firewall, Dell PowerEdge R6615 servers, PERC H330 Mini controller, RAID 10, Synology NAS, Proxmox and Hyper-V hypervisors.
+Netgear (stacking), 10 Gb SFP+, LAGs, VLANs, pfSense, Dell PowerEdge R6615, PERC H330 Mini, RAID 10, Synology NAS, Proxmox, Hyper-V
 
 ## 💡 Approach
-Physical rack installation, structured cabling and patch panel setup. Switch configuration with stacking (high availability, automatic failover), VLAN and LAG setup for bandwidth aggregation. Dell server installation with RAM and SSD upgrades, RAID 10 configuration via the PERC H330 Mini controller, iDRAC ports configured for remote management. Proxmox and Hyper-V installation and configuration, creation of first service VMs. Full technical architecture documentation written.
+- Structured cabling and rack installation
+- Switch configuration (stacking, VLANs, LAGs)
+- Dell servers in RAID 10 + iDRAC, Proxmox/Hyper-V hypervisors
 
 ## 📊 Results
-- Fully operational, documented datacenter for KISS and KHosting
-- Network high availability ensured via switch stacking and automatic failover
-- Isolated environments: production, pre-production and hosted clients properly segmented
-- Scalable infrastructure laying the groundwork for centralised monitoring and management
+- Operational, documented datacenter
+- High availability ensured (automatic failover)
+- Client/prod/pre-prod environments isolated
+- Scalable base for centralised monitoring
 
 ## 🚀 Skills developed
-Network architecture design, structured cabling, switch administration (VLANs, LAGs, stacking), Dell server configuration (RAID 10, iDRAC), virtualisation (Proxmox, Hyper-V), infrastructure technical documentation.`,
+Network architecture, structured cabling, VLANs, LAGs, stacking, RAID 10, iDRAC, Proxmox, Hyper-V, technical documentation`,
     },
     image: "/projects/infrastructure-reseau-kiss.svg",
     architectureDiagram: "/projects/infrastructure-reseau-kiss-architecture.svg",
@@ -100,51 +104,55 @@ Network architecture design, structured cabling, switch administration (VLANs, L
     },
     longDescription: {
       fr: `## 📋 Contexte du projet
-Face à un manque de visibilité sur l'état du SI de KISS, une solution de supervision centralisée a été déployée afin de détecter proactivement les incidents, de piloter les ressources et d'assurer la continuité de service. Cette solution devait couvrir l'ensemble du parc : serveurs Dell, switches, pare-feu et hyperviseurs.
+Face au manque de visibilité sur le SI de KISS, une supervision centralisée Zabbix a été déployée pour couvrir serveurs, réseau et hyperviseurs.
 
 ## 🎯 Objectifs
-- Centraliser la supervision de l'ensemble des équipements IT de KISS
-- Déployer Zabbix en haute disponibilité pour garantir la continuité du monitoring
-- Intégrer des alertes en temps réel (Slack, e-mail) pour accélérer la réponse aux incidents
-- Visualiser l'état du SI via des tableaux de bord Grafana
+- Centraliser la supervision du parc IT
+- Zabbix en haute disponibilité
+- Alertes temps réel (Slack, e-mail)
+- Tableaux de bord Grafana
 
 ## 🛠️ Technologies utilisées
-Zabbix 7.2, Ubuntu Server 24.04, MySQL, NGINX, Zabbix Agent 2, cluster Zabbix HA, SNMP v2c, IPMI/iDRAC, Grafana, Slack (API OAuth), e-mail avec seuils anti-spam.
+Zabbix 7.2, Ubuntu Server 24.04, MySQL, NGINX, Zabbix Agent 2, cluster HA, SNMP v2c, IPMI/iDRAC, Grafana, Slack (OAuth), e-mail
 
 ## 💡 Démarche
-Déploiement de Zabbix 7.2 sur une VM dédiée (Ubuntu Server 24.04, 8 vCPU, 10 Go de RAM, 60 Go de SSD) avec la stack MySQL/NGINX/Zabbix Agent 2. Intégration des serveurs Dell via IPMI/iDRAC (santé disques, températures, alimentations, ventilateurs) et des switches et pare-feu via SNMP v2c (trafic, liens SFP+). Création de templates personnalisés et de triggers adaptés à chaque type d'équipement. Configuration d'un cluster Zabbix en haute disponibilité : en cas de défaillance d'un nœud, l'autre prend le relais automatiquement sans interruption. Intégration avec Grafana pour des visualisations avancées, et configuration d'alertes Slack (bot OAuth) et e-mail avec seuils pour éviter le spam.
+- VM dédiée (8 vCPU / 10 Go / 60 Go SSD), stack MySQL/NGINX
+- Intégration serveurs (IPMI/iDRAC) et réseau (SNMP v2c)
+- Cluster HA avec bascule automatique + alertes Slack/e-mail
 
 ## 📊 Résultats
-- Supervision proactive couvrant l'ensemble du parc KISS (serveurs, switches, hyperviseurs, VMs)
-- Continuité du monitoring garantie par le cluster HA
-- Alertes en temps réel opérationnelles sur Slack et e-mail
-- Tableaux de bord Grafana permettant un pilotage visuel de l'infrastructure
+- Supervision proactive de tout le parc KISS
+- Continuité du monitoring garantie (cluster HA)
+- Alertes temps réel opérationnelles
+- Pilotage visuel via Grafana
 
 ## 🚀 Compétences développées
-Administration Linux, déploiement de solutions de supervision (Zabbix), intégration multi-protocoles (SNMP v2c, IPMI), mise en place de haute disponibilité, visualisation (Grafana), intégration d'alertes automatiques.`,
+Administration Linux, Zabbix, SNMP v2c, IPMI, haute disponibilité, Grafana, alerting automatisé`,
       en: `## 📋 Project context
-Faced with a lack of visibility into KISS's IT estate, a centralised monitoring solution was deployed to proactively detect incidents, manage resources and ensure service continuity. The solution needed to cover the full infrastructure: Dell servers, switches, firewalls and hypervisors.
+Facing a lack of visibility into KISS's IT estate, a centralised Zabbix monitoring solution was deployed to cover servers, network and hypervisors.
 
 ## 🎯 Objectives
-- Centralise monitoring across all KISS IT equipment
-- Deploy Zabbix with high availability to guarantee continuous monitoring
-- Integrate real-time alerts (Slack, email) to speed up incident response
-- Visualise the IT estate through Grafana dashboards
+- Centralise monitoring across the IT estate
+- Zabbix with high availability
+- Real-time alerts (Slack, email)
+- Grafana dashboards
 
 ## 🛠️ Technologies used
-Zabbix 7.2, Ubuntu Server 24.04, MySQL, NGINX, Zabbix Agent 2, Zabbix HA cluster, SNMP v2c, IPMI/iDRAC, Grafana, Slack (OAuth API), email with anti-spam thresholds.
+Zabbix 7.2, Ubuntu Server 24.04, MySQL, NGINX, Zabbix Agent 2, HA cluster, SNMP v2c, IPMI/iDRAC, Grafana, Slack (OAuth), email
 
 ## 💡 Approach
-Deployed Zabbix 7.2 on a dedicated VM (Ubuntu Server 24.04, 8 vCPU, 10 GB RAM, 60 GB SSD) running a MySQL/NGINX/Zabbix Agent 2 stack. Integrated Dell servers via IPMI/iDRAC (disk health, temperatures, power supplies, fans) and switches/firewalls via SNMP v2c (traffic, SFP+ links). Created custom templates and triggers tailored to each device type. Set up a Zabbix HA cluster: if one node fails, the other takes over automatically with no interruption. Integrated Grafana for advanced visualisation and configured Slack (OAuth bot) and email alerts with thresholds to prevent notification spam.
+- Dedicated VM (8 vCPU / 10 GB / 60 GB SSD), MySQL/NGINX stack
+- Server (IPMI/iDRAC) and network (SNMP v2c) integration
+- HA cluster with automatic failover + Slack/email alerts
 
 ## 📊 Results
-- Proactive monitoring covering the full KISS estate (servers, switches, hypervisors, VMs)
-- Continuous monitoring guaranteed by the HA cluster
-- Real-time alerts operational on Slack and email
-- Grafana dashboards enabling visual management of the infrastructure
+- Proactive monitoring across the full KISS estate
+- Continuous monitoring guaranteed (HA cluster)
+- Real-time alerts operational
+- Visual management via Grafana
 
 ## 🚀 Skills developed
-Linux administration, monitoring solution deployment (Zabbix), multi-protocol integration (SNMP v2c, IPMI), high-availability setup, visualisation (Grafana), automated alerting.`,
+Linux administration, Zabbix, SNMP v2c, IPMI, high availability, Grafana, automated alerting`,
     },
     image: "/projects/supervision-zabbix.svg",
     architectureDiagram: "/projects/supervision-zabbix-architecture.svg",
@@ -186,47 +194,51 @@ Linux administration, monitoring solution deployment (Zabbix), multi-protocol in
     },
     longDescription: {
       fr: `## 📋 Contexte du projet
-Le datacenter interne de KISS héberge à la fois des environnements de production et un environnement de préproduction. Ce dernier a été conçu dans une démarche d'industrialisation : valider et fiabiliser les configurations avant toute bascule en production, pour KISS comme pour ses clients hébergés (KHosting), réduisant ainsi les risques d'incidents en production.
+Un environnement de préproduction isolé a été mis en place dans le datacenter KISS pour valider les configurations avant mise en production.
 
 ## 🎯 Objectifs
-- Mettre en place un environnement de préproduction isolé de la production au sein des mêmes baies
-- Permettre la validation des configurations et des déploiements dans des conditions proches du réel
-- Réduire les risques en ajoutant une étape de validation structurée avant chaque mise en production
+- Isoler la préproduction de la production
+- Valider les déploiements en conditions réelles
+- Réduire les risques d'incidents
 
 ## 🛠️ Technologies utilisées
-VLANs dédiés, switches Netgear stackés, hyperviseurs Proxmox et Hyper-V, NAS Synology, serveurs Dell PowerEdge R6615, contrôleur PERC H330, RAID 10.
+VLANs dédiés, Netgear (stacking), Proxmox, Hyper-V, NAS Synology, Dell PowerEdge R6615, PERC H330, RAID 10
 
 ## 💡 Démarche
-Isolation de l'environnement de préproduction via des VLANs dédiés configurés sur les switches Netgear stackés, garantissant une séparation stricte avec la production. Provisionnement des ressources de stockage sur NAS Synology et volumes RAID 10 (serveurs Dell PowerEdge R6615, contrôleur PERC H330). Déploiement et configuration des hyperviseurs Proxmox et Hyper-V pour accueillir les VMs de test. Définition et documentation des procédures de bascule vers la production.
+- VLANs dédiés sur switches stackés
+- Stockage NAS Synology + RAID 10
+- Hyperviseurs Proxmox/Hyper-V pour VMs de test
 
 ## 📊 Résultats
-- Environnement de préproduction opérationnel et isolé de la production
-- Déploiements validés avant mise en production, réduisant les risques d'incidents
-- Base documentée pour des procédures de déploiement reproductibles et traçables
+- Environnement préprod opérationnel et isolé
+- Déploiements validés avant mise en production
+- Procédures documentées et reproductibles
 
 ## 🚀 Compétences développées
-Segmentation réseau (VLANs), virtualisation (Proxmox, Hyper-V), gestion du stockage (NAS Synology, RAID 10), conception et documentation de procédures de déploiement.`,
+VLANs, virtualisation, gestion du stockage, procédures de déploiement`,
       en: `## 📋 Project context
-KISS's in-house datacenter hosts both production and pre-production environments. The pre-production environment was built as part of a deployment industrialisation initiative: validating and hardening configurations before going live — for KISS and its hosted clients (KHosting) — to reduce the risk of production incidents.
+An isolated pre-production environment was set up in the KISS datacenter to validate configurations before going live.
 
 ## 🎯 Objectives
-- Set up a pre-production environment isolated from production within the same racks
-- Enable configuration and deployment validation under near-real conditions
-- Reduce risk by adding a structured validation step before every production deployment
+- Isolate pre-production from production
+- Validate deployments under real conditions
+- Reduce the risk of incidents
 
 ## 🛠️ Technologies used
-Dedicated VLANs, stacked Netgear switches, Proxmox and Hyper-V hypervisors, Synology NAS, Dell PowerEdge R6615 servers, PERC H330 controller, RAID 10.
+Dedicated VLANs, Netgear (stacking), Proxmox, Hyper-V, Synology NAS, Dell PowerEdge R6615, PERC H330, RAID 10
 
 ## 💡 Approach
-Isolated the pre-production environment via dedicated VLANs on stacked Netgear switches, ensuring strict separation from production. Provisioned storage resources on a Synology NAS and RAID 10 volumes (Dell PowerEdge R6615 servers, PERC H330 controller). Deployed and configured Proxmox and Hyper-V hypervisors to host test VMs. Defined and documented deployment-to-production procedures.
+- Dedicated VLANs on stacked switches
+- Synology NAS storage + RAID 10
+- Proxmox/Hyper-V hypervisors for test VMs
 
 ## 📊 Results
-- Pre-production environment operational and isolated from production
-- Deployments validated before go-live, reducing the risk of production incidents
-- Documented baseline for reproducible and auditable deployment procedures
+- Pre-production environment operational and isolated
+- Deployments validated before go-live
+- Documented, reproducible procedures
 
 ## 🚀 Skills developed
-Network segmentation (VLANs), virtualisation (Proxmox, Hyper-V), storage management (Synology NAS, RAID 10), deployment procedure design and documentation.`,
+VLANs, virtualisation, storage management, deployment procedures`,
     },
     image: "/projects/siem-security-onion.svg",
     technologies: ["VLANs", "Netgear", "Proxmox", "Hyper-V", "RAID 10"],
@@ -248,53 +260,55 @@ Network segmentation (VLANs), virtualisation (Proxmox, Hyper-V), storage managem
     },
     longDescription: {
       fr: `## 📋 Contexte du projet
-L'Hôpital Franco-Britannique (270+ lits, environ 700 professionnels de santé) a engagé une restructuration de son SI dans un contexte de fusion de sites et de montée en puissance des cyberattaques visant les établissements de santé. J'ai contribué à l'administration et à la sécurisation de l'infrastructure IT au quotidien sur cette période.
+À l'Hôpital Franco-Britannique (270+ lits, ~700 professionnels), j'ai administré et sécurisé l'infrastructure IT au quotidien.
 
 ## 🎯 Objectifs
-- Administrer et sécuriser l'Active Directory (comptes, équipements, GPO)
-- Configurer les règles de filtrage réseau conformes aux exigences de sécurité
-- Déployer et maintenir une messagerie d'entreprise à grande échelle
-- Industrialiser la gestion du parc informatique (masterisation, déploiement centralisé)
-- Assurer la conformité RGPD propre au secteur de la santé
+- Sécuriser Active Directory et le réseau
+- Déployer une messagerie d'entreprise fiable
+- Industrialiser la gestion du parc (masterisation)
+- Assurer la conformité RGPD santé
 
 ## 🛠️ Technologies utilisées
-Pare-feux de nouvelle génération (NGFW) en cluster HA, Active Directory, GPO, messagerie d'entreprise, solution de gestion de parc centralisée, Sysprep, réseau Wi-Fi Aruba.
+Pare-feux NGFW (cluster HA), Active Directory, GPO, messagerie d'entreprise, gestion de parc centralisée, Sysprep, Wi-Fi Aruba
 
 ## 💡 Démarche
-Configuration des ACL et des règles de filtrage sur les pare-feux de nouvelle génération en cluster. Administration Active Directory : gestion des comptes utilisateurs, des objets ordinateurs, des lecteurs réseau et des réservations DHCP. Déploiement et administration de la messagerie d'entreprise à grande échelle. Création et application de GPO pour l'automatisation et la sécurisation des postes. Masterisation des postes via Sysprep et déploiement centralisé sur un parc de plusieurs centaines d'équipements. Ensemble des actions menées dans le strict respect des exigences RGPD propres au secteur de la santé.
+- ACL et règles de filtrage sur pare-feux NGFW
+- Administration AD (comptes, GPO, DHCP)
+- Masterisation Sysprep + déploiement centralisé
 
 ## 📊 Résultats
-- Infrastructure IT administrée et sécurisée au quotidien dans un environnement hospitalier critique
-- Conformité RGPD assurée sur la gestion des accès et des postes utilisateurs
-- Déploiement centralisé opérationnel, permettant des mises à jour et masterisations reproductibles
-- Règles de sécurité réseau appliquées, documentées et maintenues
+- Infrastructure administrée et sécurisée en continu
+- Conformité RGPD assurée
+- Déploiement centralisé opérationnel
+- Règles réseau documentées et maintenues
 
 ## 🚀 Compétences développées
-Administration Active Directory, politique de groupe (GPO), sécurisation réseau (ACL, NGFW), gestion de parc (masterisation Sysprep, déploiement centralisé), conformité RGPD en environnement de santé.`,
+Active Directory, GPO, sécurité réseau (ACL, NGFW), gestion de parc, conformité RGPD santé`,
       en: `## 📋 Project context
-The Hôpital Franco-Britannique (270+ beds, around 700 healthcare staff) launched a full IT restructuring driven by site mergers and the growing wave of cyberattacks targeting healthcare organisations. I contributed to the day-to-day administration and security of the IT infrastructure during this period.
+At the Hôpital Franco-Britannique (270+ beds, ~700 staff), I administered and secured the IT infrastructure day-to-day.
 
 ## 🎯 Objectives
-- Administer and secure Active Directory (accounts, devices, GPOs)
-- Configure network filtering rules in line with security requirements
-- Deploy and maintain enterprise-scale email
-- Industrialise device management (Sysprep masterisation, centralised deployment)
-- Ensure GDPR compliance specific to the healthcare sector
+- Secure Active Directory and the network
+- Deploy reliable enterprise email
+- Industrialise device management (masterisation)
+- Ensure healthcare GDPR compliance
 
 ## 🛠️ Technologies used
-Next-generation firewalls (NGFW) in HA cluster, Active Directory, GPOs, enterprise email, centralised device management solution, Sysprep, Aruba Wi-Fi network.
+NGFW firewalls (HA cluster), Active Directory, GPOs, enterprise email, centralised device management, Sysprep, Aruba Wi-Fi
 
 ## 💡 Approach
-Configured ACLs and filtering rules on next-generation firewalls in an HA cluster. Active Directory administration: managed user accounts, computer objects, network drives and DHCP reservations. Deployed and administered enterprise-scale email. Created and applied GPOs to automate and harden workstations. Masterised devices with Sysprep and rolled them out centrally across a fleet of several hundred endpoints. All actions carried out in strict compliance with GDPR requirements specific to the healthcare sector.
+- ACLs and filtering rules on NGFW firewalls
+- AD administration (accounts, GPOs, DHCP)
+- Sysprep masterisation + centralised deployment
 
 ## 📊 Results
-- IT infrastructure administered and secured day-to-day in a critical hospital environment
-- GDPR compliance ensured across access management and user workstations
-- Centralised deployment operational, enabling reproducible updates and masterisations
-- Network security rules applied, documented and maintained
+- Infrastructure administered and secured continuously
+- GDPR compliance ensured
+- Centralised deployment operational
+- Network rules documented and maintained
 
 ## 🚀 Skills developed
-Active Directory administration, Group Policy (GPO), network security (ACL, NGFW), device management (Sysprep masterisation, centralised deployment), GDPR compliance in a healthcare setting.`,
+Active Directory, GPO, network security (ACL, NGFW), device management, healthcare GDPR compliance`,
     },
     image: "/projects/securite-parc-hospitalier.svg",
     architectureDiagram: "/projects/securite-parc-hospitalier-architecture.svg",
@@ -321,47 +335,51 @@ Active Directory administration, Group Policy (GPO), network security (ACL, NGFW
     },
     longDescription: {
       fr: `## 📋 Contexte du projet
-Chez KISS, les impressions étaient gérées de façon non consolidée : absence de suivi centralisé, de traçabilité et de maîtrise des flux documentaires. Dans un contexte d'infogérance où la confidentialité des documents est un enjeu opérationnel, une solution d'impression centralisée s'imposait.
+Chez KISS, l'absence de gestion consolidée des impressions posait un problème de traçabilité et de confidentialité documentaire.
 
 ## 🎯 Objectifs
-- Centraliser la gestion de toutes les impressions sur un serveur dédié
-- Assurer la traçabilité complète des documents imprimés
-- Maîtriser les flux d'impression et renforcer la confidentialité documentaire au sein de KISS
+- Centraliser la gestion des impressions
+- Assurer la traçabilité des documents
+- Renforcer la confidentialité documentaire
 
 ## 🛠️ Technologies utilisées
-SavaPage (gestionnaire d'impression open-source), Windows Server, Hyper-V, Active Directory.
+SavaPage, Windows Server, Hyper-V, Active Directory
 
 ## 💡 Démarche
-Analyse du besoin et sélection de SavaPage comme solution d'impression centralisée. Déploiement sur une VM Windows Server hébergée sous Hyper-V. Intégration avec Active Directory pour la gestion des utilisateurs et des droits d'impression. Configuration des files d'impression et des politiques d'accès. Tests de validation avant mise en production.
+- Déploiement de SavaPage sur VM Windows Server (Hyper-V)
+- Intégration Active Directory (droits d'impression)
+- Configuration des files et politiques d'accès
 
 ## 📊 Résultats
-- Gestion des impressions centralisée et traçable sur l'ensemble du parc KISS
-- Confidentialité renforcée par la maîtrise des flux documentaires
-- Solution hébergée en interne, sans dépendance à un service externe d'impression
+- Impressions centralisées et traçables
+- Confidentialité renforcée
+- Solution hébergée en interne
 
 ## 🚀 Compétences développées
-Administration Windows Server, déploiement de services métier (SavaPage), intégration Active Directory, virtualisation (Hyper-V), gestion des politiques d'impression.`,
+Windows Server, SavaPage, intégration Active Directory, virtualisation Hyper-V`,
       en: `## 📋 Project context
-At KISS, printing was managed in a fragmented way: no centralised tracking, no traceability and no control over document flows. In a managed-services context where document confidentiality is an operational concern, a centralised print management solution was needed.
+At KISS, the lack of consolidated print management created a traceability and document confidentiality issue.
 
 ## 🎯 Objectives
-- Centralise all print management on a dedicated server
-- Ensure full traceability of printed documents
-- Control print flows and strengthen document confidentiality across KISS
+- Centralise print management
+- Ensure document traceability
+- Strengthen document confidentiality
 
 ## 🛠️ Technologies used
-SavaPage (open-source print management), Windows Server, Hyper-V, Active Directory.
+SavaPage, Windows Server, Hyper-V, Active Directory
 
 ## 💡 Approach
-Analysed the requirement and selected SavaPage as the centralised print management solution. Deployed on a Windows Server VM hosted on Hyper-V. Integrated with Active Directory for user and print rights management. Configured print queues and access policies. Validated the setup before going live.
+- Deployed SavaPage on a Windows Server VM (Hyper-V)
+- Active Directory integration (print rights)
+- Configured print queues and access policies
 
 ## 📊 Results
-- Centralised, traceable print management across the KISS fleet
-- Improved confidentiality through controlled document flows
-- Internally hosted solution with no dependency on an external print service
+- Centralised, traceable printing
+- Stronger confidentiality
+- Internally hosted solution
 
 ## 🚀 Skills developed
-Windows Server administration, business service deployment (SavaPage), Active Directory integration, virtualisation (Hyper-V), print policy management.`,
+Windows Server, SavaPage, Active Directory integration, Hyper-V virtualisation`,
     },
     image: "/projects/impression-securisee-nfc.svg",
     technologies: ["SavaPage", "Sécurité", "Active Directory", "Serveur d'impression"],
@@ -383,49 +401,53 @@ Windows Server administration, business service deployment (SavaPage), Active Di
     },
     longDescription: {
       fr: `## 📋 Contexte du projet
-Projet d'entraînement personnel réalisé pour un client fictif (« Stadium Company »), visant à concevoir et déployer de bout en bout une infrastructure IT d'entreprise complète. L'objectif était de simuler un cahier des charges réel — haute disponibilité, sécurité renforcée, services d'annuaire et de messagerie — pour consolider les compétences acquises en formation.
+Projet d'entraînement personnel pour un client fictif : conception d'une infrastructure IT complète de bout en bout.
 
 ## 🎯 Objectifs
-- Concevoir une architecture réseau redondante avec segmentation par VLANs
-- Déployer la virtualisation et les services d'annuaire (Active Directory)
-- Configurer la messagerie d'entreprise (Exchange)
-- Appliquer des politiques de sécurité conformes aux standards de l'industrie
+- Architecture réseau redondante (VLANs)
+- Virtualisation et services d'annuaire
+- Messagerie d'entreprise (Exchange)
+- Sécurité conforme aux standards
 
 ## 🛠️ Technologies utilisées
-VMware, Active Directory, Exchange, VLANs, pare-feu NGFW.
+VMware, Active Directory, Exchange, VLANs, pare-feu NGFW
 
 ## 💡 Démarche
-Définition du cahier des charges et conception du schéma d'architecture réseau. Déploiement de la plateforme de virtualisation VMware, installation et configuration d'Active Directory. Mise en place d'Exchange pour la messagerie interne. Configuration du pare-feu NGFW et des VLANs. Application des GPO et des règles de sécurité. Tests de validation de la redondance et des services.
+- Conception de l'architecture réseau
+- Déploiement VMware + Active Directory + Exchange
+- Configuration NGFW, VLANs, GPO
 
 ## 📊 Résultats
-- Infrastructure IT complète opérationnelle pour un client fictif
-- Architecture redondante avec services d'annuaire et de messagerie configurés et validés
-- Consolidation des compétences en conception d'infrastructure d'entreprise
+- Infrastructure complète opérationnelle
+- Services annuaire/messagerie validés
+- Compétences consolidées en conception d'infrastructure
 
 ## 🚀 Compétences développées
-Architecture réseau, virtualisation (VMware), administration Active Directory, Exchange, sécurité périmétrique (NGFW, VLANs), conception d'infrastructure d'entreprise.`,
+Architecture réseau, VMware, Active Directory, Exchange, sécurité périmétrique`,
       en: `## 📋 Project context
-A personal training project carried out for a fictional client ("Stadium Company"), aimed at end-to-end design and deployment of a complete corporate IT infrastructure. The goal was to simulate a real specification — high availability, hardened security, directory and email services — to consolidate skills learned in training.
+Personal training project for a fictional client: end-to-end design of a complete IT infrastructure.
 
 ## 🎯 Objectives
-- Design a redundant network architecture with VLAN segmentation
-- Deploy virtualisation and directory services (Active Directory)
-- Configure corporate email (Exchange)
-- Apply security policies in line with industry standards
+- Redundant network architecture (VLANs)
+- Virtualisation and directory services
+- Corporate email (Exchange)
+- Security aligned with standards
 
 ## 🛠️ Technologies used
-VMware, Active Directory, Exchange, VLANs, NGFW firewall.
+VMware, Active Directory, Exchange, VLANs, NGFW firewall
 
 ## 💡 Approach
-Defined the specification and designed the network architecture diagram. Deployed the VMware virtualisation platform, installed and configured Active Directory. Set up Exchange for internal email. Configured the NGFW firewall and VLANs. Applied GPOs and security rules. Validated redundancy and services.
+- Network architecture design
+- VMware + Active Directory + Exchange deployment
+- NGFW, VLAN, GPO configuration
 
 ## 📊 Results
-- Complete, operational IT infrastructure for a fictional client
-- Redundant architecture with directory and email services configured and validated
-- Consolidated skills in corporate infrastructure design
+- Complete, operational infrastructure
+- Directory/email services validated
+- Consolidated infrastructure design skills
 
 ## 🚀 Skills developed
-Network architecture, virtualisation (VMware), Active Directory administration, Exchange, perimeter security (NGFW, VLANs), corporate infrastructure design.`,
+Network architecture, VMware, Active Directory, Exchange, perimeter security`,
     },
     image: "/projects/stadium-company-infra.svg",
     technologies: ["VMware", "Active Directory", "Pare-feu NGFW", "VLANs", "Exchange"],
@@ -447,49 +469,53 @@ Network architecture, virtualisation (VMware), Active Directory administration, 
     },
     longDescription: {
       fr: `## 📋 Contexte du projet
-L'Hôpital Franco-Britannique rencontrait depuis 2020 des problèmes chroniques de couverture Wi-Fi affectant directement le personnel soignant, qui se connectait en Wi-Fi aux serveurs TSE (bureau à distance) pour accéder à l'application métier de gestion des dossiers patients. Coupures, freezes et latences pénalisaient le travail quotidien des infirmières lors de leurs tournées. Il était impératif de résoudre ce problème sans interrompre les services de soins.
+Depuis 2020, l'Hôpital Franco-Britannique souffrait d'une couverture Wi-Fi instable, pénalisant l'accès du personnel soignant au serveur TSE (application métier).
 
 ## 🎯 Objectifs
-- Diagnostiquer la ou les causes réelles des problèmes de couverture Wi-Fi
-- Améliorer la stabilité et la qualité du signal sans perturber les services hospitaliers
-- Garantir un accès fiable au serveur TSE depuis toutes les zones de soins
+- Diagnostiquer la cause des coupures Wi-Fi
+- Améliorer la stabilité sans interrompre les soins
+- Fiabiliser l'accès au serveur TSE
 
 ## 🛠️ Technologies utilisées
-Bornes et contrôleurs Wi-Fi Aruba, GPO, solution de gestion de parc centralisée, pare-feu (règles ACL), serveur TSE, analyse RF.
+Bornes/contrôleurs Wi-Fi Aruba, GPO, gestion de parc centralisée, pare-feu (ACL), analyse RF
 
 ## 💡 Diagnostic et résolution
-Identification de cinq facteurs possibles à l'origine des problèmes : configuration des contrôleurs et bornes Aruba, règles de flux, positionnement des bornes, drivers Wi-Fi, architecture réseau. Tests de ping comparatifs sur différents modèles de PC (PC-chariots Decide Life vs. PC portables HP) sous batterie et sur secteur : les PC sur batterie présentaient des temps de réponse dégradés. Tests de roaming borne par borne sur le terrain : découverte de mauvaises configurations sur plusieurs bornes. Déploiement de GPO pour mettre à jour les drivers Wi-Fi et activer les performances maximales de la carte réseau. Vérification des règles ACL sur le pare-feu. Bascule des bornes concernées de 2,4 GHz vers 5 GHz et ajustement du roaming : amélioration significative constatée. Migration de la VM du serveur TSE vers des serveurs physiquement plus proches pour optimiser la latence.
+- Tests de ping comparatifs (PC-chariots vs portables, batterie vs secteur)
+- Tests de roaming borne par borne → configurations Aruba erronées détectées
+- GPO (drivers, perf. Wi-Fi max) + bascule 2,4→5 GHz + migration VM TSE
 
 ## 📊 Résultats
-- Amélioration significative de la couverture Wi-Fi constatée après les modifications
-- Personnel soignant en mesure d'accéder à l'application métier sans interruptions répétées
-- Mauvaises configurations Aruba identifiées et corrigées
-- Protocole de diagnostic documenté et réutilisable pour les interventions futures
+- Couverture Wi-Fi significativement améliorée
+- Accès fiabilisé à l'application métier
+- Configurations Aruba corrigées
+- Protocole de diagnostic documenté
 
 ## 🚀 Compétences développées
-Audit et diagnostic Wi-Fi, configuration de contrôleurs Aruba, analyse RF, GPO, administration de pare-feu (ACL), gestion de parc, résolution méthodique d'incidents complexes en environnement critique.`,
+Audit Wi-Fi, configuration Aruba, analyse RF, GPO, administration pare-feu, gestion de parc`,
       en: `## 📋 Project context
-The Hôpital Franco-Britannique had been experiencing chronic Wi-Fi coverage issues since 2020, directly affecting healthcare staff who connect over Wi-Fi to TSE remote-desktop servers to use the patient records management application. Dropouts, freezes and latency were disrupting nurses' day-to-day rounds. The issue had to be resolved without interrupting patient care services.
+Since 2020, the Hôpital Franco-Britannique had suffered unstable Wi-Fi coverage, hampering staff access to the TSE server (patient records application).
 
 ## 🎯 Objectives
-- Diagnose the actual root cause(s) of the Wi-Fi coverage issues
-- Improve signal stability and quality without disrupting hospital services
-- Ensure reliable access to the TSE server from all care areas
+- Diagnose the cause of Wi-Fi dropouts
+- Improve stability without disrupting care
+- Ensure reliable access to the TSE server
 
 ## 🛠️ Technologies used
-Aruba Wi-Fi access points and controllers, GPOs, centralised device management solution, firewall (ACL rules), TSE server, RF analysis.
+Aruba Wi-Fi access points/controllers, GPOs, centralised device management, firewall (ACL), RF analysis
 
 ## 💡 Diagnosis and resolution
-Identified five potential root causes: Aruba controller/AP configuration, flow rules, AP positioning, Wi-Fi drivers, network architecture. Comparative ping tests on different PC types (Decide Life PC-carts vs HP laptops) on battery vs mains power: battery-powered laptops showed degraded response times. On-site roaming tests at each AP: discovered misconfigurations on several access points. Deployed GPOs to update Wi-Fi drivers and enable maximum wireless card performance. Checked ACL rules on the firewall. Switched affected APs from 2.4 GHz to 5 GHz and tuned roaming settings: significant improvement observed. Migrated the TSE server VM to physically closer servers to reduce latency.
+- Comparative ping tests (PC-carts vs laptops, battery vs mains)
+- On-site roaming tests per AP → misconfigured Aruba settings found
+- GPOs (drivers, max Wi-Fi perf.) + 2.4→5 GHz switch + TSE VM migration
 
 ## 📊 Results
-- Significant Wi-Fi coverage improvement observed after the changes
-- Healthcare staff able to access the patient records application without repeated interruptions
-- Aruba misconfigurations identified and corrected
-- Documented diagnostic protocol available for future interventions
+- Wi-Fi coverage significantly improved
+- Reliable access to the patient records application
+- Aruba misconfigurations corrected
+- Documented diagnostic protocol
 
 ## 🚀 Skills developed
-Wi-Fi auditing and diagnosis, Aruba controller configuration, RF analysis, GPO, firewall administration (ACL), device management, methodical complex incident resolution in a critical environment.`,
+Wi-Fi auditing, Aruba configuration, RF analysis, GPO, firewall administration, device management`,
     },
     image: "/projects/amelioration-wifi-hfb.svg",
     architectureDiagram: "/projects/amelioration-wifi-hfb-architecture.svg",
@@ -539,47 +565,51 @@ Wi-Fi auditing and diagnosis, Aruba controller configuration, RF analysis, GPO, 
     },
     longDescription: {
       fr: `## 📋 Contexte du projet
-Dans le cadre d'un stage chez W3TEL, opérateur télécom, j'ai été mobilisé sur la conception d'un système de protection contre les appels et communications indésirables. L'enjeu était de filtrer automatiquement les numéros malveillants sans impacter la qualité de service pour les utilisateurs légitimes.
+Chez W3TEL, opérateur télécom, j'ai conçu un système de tokens pour filtrer automatiquement les numéros indésirables.
 
 ## 🎯 Objectifs
-- Identifier et bloquer les numéros indésirables de façon automatisée
-- Intégrer la solution dans l'infrastructure télécom existante sans rupture de service
-- Fournir une interface de gestion aux administrateurs
+- Identifier et bloquer les numéros indésirables
+- Intégrer la solution sans rupture de service
+- Fournir une interface de gestion
 
 ## 🛠️ Technologies utilisées
-Shell Script, pfSense, outils d'automatisation télécom.
+Shell Script, pfSense, automatisation télécom
 
 ## 💡 Démarche
-Analyse du besoin et conception du mécanisme de tokens pour identifier les sources indésirables. Développement de scripts Shell pour automatiser la gestion et le renouvellement des tokens. Intégration avec l'infrastructure télécom existante et tests de validation. Mise en place d'une interface de gestion pour les opérateurs.
+- Conception du mécanisme de tokens
+- Scripts Shell pour la gestion automatisée
+- Intégration à l'infrastructure existante + interface admin
 
 ## 📊 Résultats
-- Système de filtrage automatisé opérationnel pour la détection des numéros indésirables
-- Processus de gestion des tokens automatisé, réduisant les interventions manuelles
-- Solution intégrée dans l'existant sans impact sur les communications légitimes
+- Filtrage automatisé opérationnel
+- Gestion des tokens automatisée
+- Aucun impact sur les communications légitimes
 
 ## 🚀 Compétences développées
-Scripting Shell, automatisation, infrastructure télécom, intégration système, sécurité des communications.`,
+Scripting Shell, automatisation, infrastructure télécom, sécurité des communications`,
       en: `## 📋 Project context
-During an internship at W3TEL, a telecom operator, I worked on designing a protection system against unwanted calls and communications. The goal was to automatically filter malicious numbers without impacting service quality for legitimate users.
+At W3TEL, a telecom operator, I designed a token system to automatically filter unwanted numbers.
 
 ## 🎯 Objectives
-- Identify and block unwanted numbers in an automated way
-- Integrate the solution into the existing telecom infrastructure without service disruption
-- Provide a management interface for administrators
+- Identify and block unwanted numbers
+- Integrate the solution without service disruption
+- Provide a management interface
 
 ## 🛠️ Technologies used
-Shell Script, pfSense, telecom automation tools.
+Shell Script, pfSense, telecom automation
 
 ## 💡 Approach
-Analysed the requirement and designed the token mechanism to identify unwanted sources. Developed shell scripts to automate token management and renewal. Integrated with the existing telecom infrastructure and ran validation tests. Set up a management interface for operators.
+- Designed the token mechanism
+- Shell scripts for automated management
+- Integrated into existing infrastructure + admin interface
 
 ## 📊 Results
-- Automated filtering system operational for detecting unwanted numbers
-- Token management process automated, reducing manual interventions
-- Solution integrated into the existing stack without impacting legitimate communications
+- Automated filtering operational
+- Automated token management
+- No impact on legitimate communications
 
 ## 🚀 Skills developed
-Shell scripting, automation, telecom infrastructure, system integration, communications security.`,
+Shell scripting, automation, telecom infrastructure, communications security`,
     },
     image: "/projects/token-anti-spam-telecom.svg",
     technologies: ["Shell Script", "pfSense", "Sécurité Télécom", "Automation"],
@@ -601,49 +631,51 @@ Shell scripting, automation, telecom infrastructure, system integration, communi
     },
     longDescription: {
       fr: `## 📋 Contexte du projet
-Mise en place d'un laboratoire personnel pour pratiquer et approfondir les concepts DevSecOps : conteneurisation, orchestration, Infrastructure as Code et intégration de la sécurité dans les pipelines CI/CD. Ce lab sert d'environnement d'expérimentation en complément de la formation et des expériences professionnelles.
+Lab personnel pour pratiquer les concepts DevSecOps : conteneurisation, orchestration et Infrastructure as Code.
 
 ## 🎯 Objectifs
-- Déployer et administrer un cluster Kubernetes local
-- Mettre en place des pipelines CI/CD avec intégration de contrôles de sécurité
-- Automatiser les scans de vulnérabilités
-- Pratiquer l'Infrastructure as Code (Terraform, Ansible)
+- Déployer un cluster Kubernetes local
+- Pipelines CI/CD avec scans de sécurité
+- Pratiquer l'IaC (Terraform, Ansible)
 
 ## 🛠️ Technologies utilisées
-Docker, Kubernetes, pipelines CI/CD, Terraform, Ansible.
+Docker, Kubernetes, CI/CD, Terraform, Ansible
 
 ## 💡 Démarche
-Installation et configuration de Docker et d'un cluster Kubernetes local. Déploiement de pipelines CI/CD avec intégration de scans de vulnérabilités automatisés à chaque étape. Rédaction de manifestes d'Infrastructure as Code (Terraform pour le provisionnement, Ansible pour la configuration). Expérimentation avec différents patterns de déploiement et de sécurisation des workloads.
+- Installation Docker + cluster Kubernetes
+- Pipelines CI/CD avec scans de vulnérabilités automatisés
+- Manifestes IaC (Terraform, Ansible)
 
 ## 📊 Résultats
-- Environnement de lab fonctionnel et évolutif pour la pratique DevSecOps
-- Pipelines CI/CD sécurisés avec scans automatisés opérationnels
-- Montée en compétence sur l'écosystème cloud-native et l'IaC
+- Lab fonctionnel et évolutif
+- Pipelines sécurisés opérationnels
+- Montée en compétence cloud-native/IaC
 
 ## 🚀 Compétences développées
-Conteneurisation (Docker), orchestration (Kubernetes), CI/CD, Infrastructure as Code (Terraform, Ansible), sécurité des pipelines, culture DevSecOps.`,
+Docker, Kubernetes, CI/CD, Terraform, Ansible, culture DevSecOps`,
       en: `## 📋 Project context
-Set up a personal lab to practice and deepen DevSecOps concepts: containerisation, orchestration, Infrastructure as Code and integrating security into CI/CD pipelines. This lab serves as an experimentation environment alongside formal training and professional experience.
+Personal lab to practice DevSecOps concepts: containerisation, orchestration and Infrastructure as Code.
 
 ## 🎯 Objectives
-- Deploy and administer a local Kubernetes cluster
-- Set up CI/CD pipelines with integrated security controls
-- Automate vulnerability scanning
-- Practice Infrastructure as Code (Terraform, Ansible)
+- Deploy a local Kubernetes cluster
+- CI/CD pipelines with security scans
+- Practice IaC (Terraform, Ansible)
 
 ## 🛠️ Technologies used
-Docker, Kubernetes, CI/CD pipelines, Terraform, Ansible.
+Docker, Kubernetes, CI/CD, Terraform, Ansible
 
 ## 💡 Approach
-Installed and configured Docker and a local Kubernetes cluster. Deployed CI/CD pipelines with automated vulnerability scans integrated at each stage. Wrote Infrastructure as Code manifests (Terraform for provisioning, Ansible for configuration). Experimented with different deployment and workload security patterns.
+- Docker + local Kubernetes cluster setup
+- CI/CD pipelines with automated vulnerability scans
+- IaC manifests (Terraform, Ansible)
 
 ## 📊 Results
-- Functional, scalable lab environment for hands-on DevSecOps practice
-- Secure CI/CD pipelines with automated scanning operational
-- Levelled up on the cloud-native ecosystem and IaC
+- Functional, scalable lab
+- Secure pipelines operational
+- Levelled up on cloud-native/IaC
 
 ## 🚀 Skills developed
-Containerisation (Docker), orchestration (Kubernetes), CI/CD, Infrastructure as Code (Terraform, Ansible), pipeline security, DevSecOps culture.`,
+Docker, Kubernetes, CI/CD, Terraform, Ansible, DevSecOps culture`,
     },
     image: "/projects/lab-devsecops.svg",
     technologies: ["Docker", "Kubernetes", "CI/CD", "Terraform", "Ansible"],

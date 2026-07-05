@@ -66,3 +66,25 @@ export function MarkdownContent({ content }: { content: string }) {
 
   return <div className="space-y-1">{nodes}</div>;
 }
+
+// Extrait uniquement le texte de la première section (## Contexte du projet)
+// pour les aperçus courts (ex. panneau latéral) — sans titres ni puces.
+export function extractSummary(markdown: string): string {
+  const lines = markdown.split("\n");
+  const contentLines: string[] = [];
+  let started = false;
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (trimmed.startsWith("## ")) {
+      if (started) break;
+      started = true;
+      continue;
+    }
+    if (started && trimmed !== "") {
+      contentLines.push(trimmed.startsWith("- ") ? trimmed.slice(2) : trimmed);
+    }
+  }
+
+  return contentLines.join(" ");
+}

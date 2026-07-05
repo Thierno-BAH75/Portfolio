@@ -7,6 +7,7 @@ import { X, Github, ExternalLink, Calendar, ArrowRight, Star } from "lucide-reac
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
 import { useI18n } from "@/i18n";
+import { MarkdownContent, extractSummary } from "@/components/projects/markdown-content";
 import type { Project } from "@/types";
 
 interface ProjectPanelProps {
@@ -137,9 +138,15 @@ export function ProjectPanel({ project, onClose }: ProjectPanelProps) {
                 {tx(project.title)}
               </h2>
 
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {tx(project.longDescription ?? project.description)}
-              </p>
+              <div className="text-sm">
+                <MarkdownContent
+                  content={
+                    project.longDescription
+                      ? extractSummary(tx(project.longDescription))
+                      : tx(project.description)
+                  }
+                />
+              </div>
 
               <div className="flex flex-wrap gap-2">
                 {project.technologies.map((tech) => (

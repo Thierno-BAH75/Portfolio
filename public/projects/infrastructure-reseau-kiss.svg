@@ -1,0 +1,88 @@
+<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="bg-kiss" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b0b16"/>
+      <stop offset="100%" stop-color="#160c26"/>
+    </linearGradient>
+    <linearGradient id="stroke-kiss" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+    <radialGradient id="glowV-kiss" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.30"/>
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowC-kiss" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid-kiss" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="rgba(255,255,255,0.07)"/>
+    </pattern>
+  </defs>
+
+  <rect width="400" height="250" fill="url(#bg-kiss)"/>
+  <rect width="400" height="250" fill="url(#grid-kiss)"/>
+  <circle cx="70" cy="50" r="130" fill="url(#glowV-kiss)"/>
+  <circle cx="340" cy="200" r="140" fill="url(#glowC-kiss)"/>
+
+  <!-- 3 baies serveur -->
+  <g stroke="url(#stroke-kiss)" stroke-width="2.5" fill="none">
+    <rect x="118" y="58" width="44" height="150" rx="6"/>
+    <rect x="178" y="42" width="44" height="166" rx="6"/>
+    <rect x="238" y="58" width="44" height="150" rx="6"/>
+  </g>
+
+  <!-- unités de serveur (lignes horizontales) dans chaque baie -->
+  <g stroke="rgba(255,255,255,0.28)" stroke-width="2" stroke-linecap="round">
+    <line x1="126" y1="74" x2="154" y2="74"/>
+    <line x1="126" y1="88" x2="154" y2="88"/>
+    <line x1="126" y1="102" x2="154" y2="102"/>
+    <line x1="126" y1="116" x2="154" y2="116"/>
+    <line x1="126" y1="130" x2="154" y2="130"/>
+    <line x1="126" y1="144" x2="154" y2="144"/>
+    <line x1="126" y1="158" x2="154" y2="158"/>
+    <line x1="126" y1="172" x2="154" y2="172"/>
+    <line x1="126" y1="186" x2="154" y2="186"/>
+
+    <line x1="186" y1="58" x2="214" y2="58"/>
+    <line x1="186" y1="72" x2="214" y2="72"/>
+    <line x1="186" y1="86" x2="214" y2="86"/>
+    <line x1="186" y1="100" x2="214" y2="100"/>
+    <line x1="186" y1="114" x2="214" y2="114"/>
+    <line x1="186" y1="128" x2="214" y2="128"/>
+    <line x1="186" y1="142" x2="214" y2="142"/>
+    <line x1="186" y1="156" x2="214" y2="156"/>
+    <line x1="186" y1="170" x2="214" y2="170"/>
+    <line x1="186" y1="184" x2="214" y2="184"/>
+    <line x1="186" y1="198" x2="214" y2="198"/>
+
+    <line x1="246" y1="74" x2="274" y2="74"/>
+    <line x1="246" y1="88" x2="274" y2="88"/>
+    <line x1="246" y1="102" x2="274" y2="102"/>
+    <line x1="246" y1="116" x2="274" y2="116"/>
+    <line x1="246" y1="130" x2="274" y2="130"/>
+    <line x1="246" y1="144" x2="274" y2="144"/>
+    <line x1="246" y1="158" x2="274" y2="158"/>
+    <line x1="246" y1="172" x2="274" y2="172"/>
+    <line x1="246" y1="186" x2="274" y2="186"/>
+  </g>
+
+  <!-- LEDs -->
+  <g>
+    <circle cx="157" cy="74" r="1.6" fill="#22d3ee"/>
+    <circle cx="157" cy="102" r="1.6" fill="#8b5cf6"/>
+    <circle cx="157" cy="144" r="1.6" fill="#22d3ee"/>
+    <circle cx="217" cy="58" r="1.6" fill="#8b5cf6"/>
+    <circle cx="217" cy="100" r="1.6" fill="#22d3ee"/>
+    <circle cx="217" cy="156" r="1.6" fill="#22d3ee"/>
+    <circle cx="217" cy="198" r="1.6" fill="#8b5cf6"/>
+    <circle cx="277" cy="88" r="1.6" fill="#22d3ee"/>
+    <circle cx="277" cy="130" r="1.6" fill="#8b5cf6"/>
+    <circle cx="277" cy="172" r="1.6" fill="#22d3ee"/>
+  </g>
+
+  <!-- câblage au sol reliant les baies -->
+  <path d="M140 208 Q200 226 200 208" stroke="url(#stroke-kiss)" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <path d="M200 208 Q260 226 260 208" stroke="url(#stroke-kiss)" stroke-width="1.5" fill="none" opacity="0.6"/>
+</svg>

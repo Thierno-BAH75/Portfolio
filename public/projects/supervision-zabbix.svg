@@ -1,0 +1,64 @@
+<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="bg-zbx" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b0b16"/>
+      <stop offset="100%" stop-color="#0c1a24"/>
+    </linearGradient>
+    <linearGradient id="stroke-zbx" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+    <radialGradient id="glowV-zbx" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.26"/>
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowC-zbx" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.24"/>
+      <stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid-zbx" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="rgba(255,255,255,0.07)"/>
+    </pattern>
+  </defs>
+
+  <rect width="400" height="250" fill="url(#bg-zbx)"/>
+  <rect width="400" height="250" fill="url(#grid-zbx)"/>
+  <circle cx="330" cy="40" r="130" fill="url(#glowV-zbx)"/>
+  <circle cx="60" cy="210" r="140" fill="url(#glowC-zbx)"/>
+
+  <!-- écran / dashboard -->
+  <rect x="70" y="48" width="260" height="150" rx="10" stroke="url(#stroke-zbx)" stroke-width="2.5" fill="rgba(255,255,255,0.02)"/>
+  <line x1="70" y1="72" x2="330" y2="72" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+  <circle cx="84" cy="60" r="3" fill="#8b5cf6"/>
+  <circle cx="96" cy="60" r="3" fill="#22d3ee"/>
+  <circle cx="108" cy="60" r="3" fill="rgba(255,255,255,0.3)"/>
+
+  <!-- courbe de supervision -->
+  <polyline points="86,150 116,120 140,160 168,100 196,140 224,90 252,130 280,108 308,150"
+    fill="none" stroke="url(#stroke-zbx)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- aire sous la courbe -->
+  <polygon points="86,150 116,120 140,160 168,100 196,140 224,90 252,130 280,108 308,150 308,182 86,182"
+    fill="url(#glowC-zbx)" opacity="0.5"/>
+
+  <!-- barres secondaires -->
+  <g fill="rgba(139,92,246,0.5)">
+    <rect x="90" y="172" width="8" height="14"/>
+    <rect x="122" y="164" width="8" height="22"/>
+    <rect x="154" y="176" width="8" height="10"/>
+    <rect x="186" y="158" width="8" height="28"/>
+    <rect x="218" y="168" width="8" height="18"/>
+    <rect x="250" y="150" width="8" height="36"/>
+    <rect x="282" y="172" width="8" height="14"/>
+  </g>
+
+  <!-- points d'alerte -->
+  <circle cx="168" cy="100" r="5" fill="#0c1a24" stroke="#22d3ee" stroke-width="2"/>
+  <circle cx="224" cy="90" r="5" fill="#0c1a24" stroke="#8b5cf6" stroke-width="2"/>
+
+  <!-- badges flottants alerte -->
+  <g opacity="0.85">
+    <circle cx="345" cy="205" r="14" fill="none" stroke="#22d3ee" stroke-width="2"/>
+    <circle cx="345" cy="205" r="3" fill="#22d3ee"/>
+  </g>
+</svg>

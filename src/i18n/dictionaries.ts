@@ -113,13 +113,17 @@ const fr = {
         automation: "Automatisation",
       },
     },
+    panel: {
+      close: "Fermer",
+      viewCase: "Voir l'étude complète",
+    },
     detail: {
       back: "Retour aux projets",
       about: "À propos du projet",
       technologies: "Technologies utilisées",
-      challenges: "Défis et solutions",
-      challengesText:
-        "Ce projet m'a permis de relever plusieurs défis techniques intéressants, notamment en matière de performance, d'expérience utilisateur et d'architecture logicielle.",
+      featuredBadge: "Projet vedette",
+      previous: "Projet précédent",
+      next: "Projet suivant",
       viewSite: "Voir le site",
       sourceCode: "Code source",
     },
@@ -345,13 +349,17 @@ const en: DeepDict<typeof fr> = {
         automation: "Automation",
       },
     },
+    panel: {
+      close: "Close",
+      viewCase: "See the full case study",
+    },
     detail: {
       back: "Back to projects",
       about: "About the project",
       technologies: "Technologies used",
-      challenges: "Challenges & solutions",
-      challengesText:
-        "This project allowed me to tackle several interesting technical challenges, particularly around performance, user experience and software architecture.",
+      featuredBadge: "Featured project",
+      previous: "Previous project",
+      next: "Next project",
       viewSite: "Visit site",
       sourceCode: "Source code",
     },

@@ -1,24 +1,14 @@
 "use client";
 
 import { useState, useMemo, useRef } from "react";
-import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Eye, Search, SlidersHorizontal, ChevronDown, ChevronRight, Star, X, Terminal } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Search, SlidersHorizontal, ChevronDown, ChevronRight, X, Terminal } from "lucide-react";
 import { FadeIn } from "@/components/animations";
+import { ProjectCard } from "@/components/projects/project-card";
+import { ProjectPanel } from "@/components/projects/project-panel";
+import { useProjectPanel } from "@/components/projects/use-project-panel";
 import { projects } from "@/data/projects";
-import type { Project } from "@/types";
 import { useI18n } from "@/i18n";
-
-/* ── Métadonnées catégorie ──────────────────────────────── */
-const categoryMeta: Record<string, { gradient: string }> = {
-  security:       { gradient: "from-violet-900/60 to-violet-700/30" },
-  infrastructure: { gradient: "from-blue-900/60 to-blue-700/30" },
-  monitoring:     { gradient: "from-cyan-900/60 to-cyan-700/30" },
-  network:        { gradient: "from-teal-900/60 to-teal-700/30" },
-  cloud:          { gradient: "from-sky-900/60 to-sky-700/30" },
-  automation:     { gradient: "from-indigo-900/60 to-indigo-700/30" },
-};
 
 /* ── Groupes de technologies ────────────────────────────── */
 const techGroups = [
@@ -152,81 +142,13 @@ function CascadeFilter({
   );
 }
 
-/* ── Carte projet ───────────────────────────────────────── */
-function ProjectCard({ project }: { project: Project }) {
-  const meta = categoryMeta[project.category] ?? categoryMeta.infrastructure;
-  const { t, tx } = useI18n();
-
-  return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.96 }}
-      whileHover={{ scale: 1.025, y: -6 }}
-      transition={{ type: "spring", stiffness: 260, damping: 18 }}
-      className="h-full"
-    >
-      <div className="relative flex flex-col h-full rounded-xl border border-border/50 bg-background/60 backdrop-blur-sm overflow-hidden hover:border-violet-500/40 hover:shadow-[0_0_24px_rgba(139,92,246,0.15)] transition-all duration-300">
-
-        {/* Bannière */}
-        <div className={`relative aspect-video bg-gradient-to-br ${meta.gradient} flex items-center justify-center overflow-hidden`}>
-          <div className="absolute inset-0 opacity-10" style={{
-            backgroundImage: "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
-            backgroundSize: "20px 20px",
-          }} />
-          {project.featured && (
-            <span className="absolute top-3 right-3 inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gradient-to-r from-violet-600 to-cyan-500 text-white shadow">
-              <Star size={9} /> {t.projects.featured}
-            </span>
-          )}
-        </div>
-
-        {/* Contenu */}
-        <div className="flex flex-col flex-1 p-5 gap-3">
-          <Badge variant="outline" className="w-fit text-[10px] border-violet-500/30 bg-violet-500/10 text-violet-300 capitalize">
-            {t.projects.categories[project.category]}
-          </Badge>
-
-          <h2 className="font-bold text-base text-foreground leading-snug line-clamp-2">
-            {tx(project.title)}
-          </h2>
-
-          <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3 flex-1">
-            {tx(project.description)}
-          </p>
-
-          <div className="flex flex-wrap gap-1.5">
-            {project.technologies.slice(0, 4).map((tech) => (
-              <span key={tech} className="text-[10px] px-2 py-0.5 rounded-md border border-border/60 bg-muted/40 text-muted-foreground">
-                {tech}
-              </span>
-            ))}
-            {project.technologies.length > 4 && (
-              <span className="text-[10px] px-2 py-0.5 text-muted-foreground">
-                +{project.technologies.length - 4}
-              </span>
-            )}
-          </div>
-
-          <Link
-            href={`/projects/${project.slug}`}
-            className="mt-1 flex items-center justify-center gap-2 w-full py-2 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-semibold shadow hover:shadow-[0_0_16px_rgba(6,182,212,0.4)] transition-all"
-          >
-            <Eye size={14} /> {t.projects.details}
-          </Link>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
 /* ── Page ───────────────────────────────────────────────── */
 export default function ProjectsPage() {
   const [activeTech, setActiveTech] = useState<string>("");
   const [sortOption, setSortOption] = useState<SortOption>("featured");
   const [search, setSearch] = useState("");
   const { t, tx, locale } = useI18n();
+  const { project: openProject, open, close } = useProjectPanel();
 
   const filtered = useMemo(() => {
     let result = projects;
@@ -429,7 +351,7 @@ export default function ProjectsPage() {
           {filtered.length > 0 ? (
             <motion.div key="grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
               {filtered.map((project) => (
-                <ProjectCard key={project.id} project={project} />
+                <ProjectCard key={project.id} project={project} onOpen={open} animateLayout />
               ))}
             </motion.div>
           ) : (
@@ -446,6 +368,8 @@ export default function ProjectsPage() {
         </AnimatePresence>
 
       </div>
+
+      <ProjectPanel project={openProject} onClose={close} />
     </div>
   );
 }

@@ -1,0 +1,106 @@
+<svg viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="bg-zbxa" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#080b14"/>
+      <stop offset="100%" stop-color="#0b1520"/>
+    </linearGradient>
+    <linearGradient id="gv-zbxa" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+    <linearGradient id="bv-zbxa" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(139,92,246,0.2)"/>
+      <stop offset="100%" stop-color="rgba(139,92,246,0.05)"/>
+    </linearGradient>
+    <linearGradient id="bc-zbxa" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(34,211,238,0.18)"/>
+      <stop offset="100%" stop-color="rgba(34,211,238,0.04)"/>
+    </linearGradient>
+    <radialGradient id="gl1-zbxa" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="gl2-zbxa" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots-zbxa" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="rgba(255,255,255,0.06)"/>
+    </pattern>
+    <marker id="arr-z" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="rgba(167,139,250,0.65)"/>
+    </marker>
+    <marker id="arr-zc" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="rgba(34,211,238,0.65)"/>
+    </marker>
+  </defs>
+
+  <rect width="700" height="400" fill="url(#bg-zbxa)"/>
+  <rect width="700" height="400" fill="url(#dots-zbxa)"/>
+  <circle cx="350" cy="180" r="200" fill="url(#gl1-zbxa)"/>
+  <circle cx="80" cy="320" r="160" fill="url(#gl2-zbxa)"/>
+
+  <text x="350" y="26" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="600" fill="rgba(255,255,255,0.5)" letter-spacing="1">ARCHITECTURE — SUPERVISION ZABBIX</text>
+
+  <!-- ══ Centre : Serveur Zabbix HA ══ -->
+  <rect x="240" y="140" width="220" height="90" rx="10" fill="url(#bv-zbxa)" stroke="url(#gv-zbxa)" stroke-width="2.5"/>
+  <text x="350" y="168" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#a78bfa">ZABBIX 7.2</text>
+  <text x="350" y="185" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.5)">Cluster HA · nœud actif / passif</text>
+  <text x="350" y="200" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.5)">VM Ubuntu 24.04 · MySQL · NGINX</text>
+  <text x="350" y="216" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(34,211,238,0.8)">8 vCPU · 10 Go RAM · 60 Go SSD</text>
+
+  <!-- ══ SOURCES : gauche ══ -->
+  <!-- Serveurs Dell (IPMI/iDRAC) -->
+  <rect x="30" y="60" width="150" height="58" rx="8" fill="url(#bc-zbxa)" stroke="rgba(34,211,238,0.5)" stroke-width="1.5"/>
+  <text x="105" y="82" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#22d3ee">SERVEURS DELL</text>
+  <text x="105" y="97" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">PowerEdge R6615</text>
+  <text x="105" y="110" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(34,211,238,0.65)">Protocol : IPMI / iDRAC</text>
+
+  <!-- Switches + Pare-feu (SNMP) -->
+  <rect x="30" y="160" width="150" height="58" rx="8" fill="url(#bc-zbxa)" stroke="rgba(34,211,238,0.45)" stroke-width="1.5"/>
+  <text x="105" y="182" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#22d3ee">SWITCHES / PARE-FEU</text>
+  <text x="105" y="197" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">Netgear · pfSense</text>
+  <text x="105" y="210" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(34,211,238,0.65)">Protocol : SNMP v2c</text>
+
+  <!-- Hyperviseurs + VMs -->
+  <rect x="30" y="260" width="150" height="58" rx="8" fill="url(#bc-zbxa)" stroke="rgba(34,211,238,0.4)" stroke-width="1.5"/>
+  <text x="105" y="282" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#22d3ee">HYPERVISEURS / VMs</text>
+  <text x="105" y="297" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">Proxmox · Hyper-V</text>
+  <text x="105" y="310" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(34,211,238,0.65)">Protocol : Zabbix Agent 2</text>
+
+  <!-- Flèches sources → Zabbix -->
+  <line x1="180" y1="89" x2="239" y2="168" stroke="rgba(34,211,238,0.5)" stroke-width="1.5" marker-end="url(#arr-zc)"/>
+  <line x1="180" y1="189" x2="239" y2="185" stroke="rgba(34,211,238,0.5)" stroke-width="1.5" marker-end="url(#arr-zc)"/>
+  <line x1="180" y1="289" x2="239" y2="208" stroke="rgba(34,211,238,0.5)" stroke-width="1.5" marker-end="url(#arr-zc)"/>
+
+  <!-- ══ SORTIES : droite ══ -->
+  <!-- Grafana -->
+  <rect x="520" y="60" width="150" height="58" rx="8" fill="url(#bv-zbxa)" stroke="rgba(167,139,250,0.5)" stroke-width="1.5"/>
+  <text x="595" y="82" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#a78bfa">GRAFANA</text>
+  <text x="595" y="97" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">Tableaux de bord</text>
+  <text x="595" y="110" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(167,139,250,0.65)">Visualisation avancée</text>
+
+  <!-- Alertes Slack -->
+  <rect x="520" y="160" width="150" height="58" rx="8" fill="url(#bv-zbxa)" stroke="rgba(167,139,250,0.45)" stroke-width="1.5"/>
+  <text x="595" y="182" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#a78bfa">SLACK</text>
+  <text x="595" y="197" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">Bot OAuth API</text>
+  <text x="595" y="210" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(167,139,250,0.65)">Alertes temps réel</text>
+
+  <!-- Alertes e-mail -->
+  <rect x="520" y="260" width="150" height="58" rx="8" fill="url(#bv-zbxa)" stroke="rgba(167,139,250,0.4)" stroke-width="1.5"/>
+  <text x="595" y="282" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#a78bfa">E-MAIL</text>
+  <text x="595" y="297" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">Seuils anti-spam</text>
+  <text x="595" y="310" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(167,139,250,0.65)">Escalade &amp; incidents</text>
+
+  <!-- Flèches Zabbix → sorties -->
+  <line x1="460" y1="168" x2="519" y2="89" stroke="rgba(167,139,250,0.5)" stroke-width="1.5" marker-end="url(#arr-z)"/>
+  <line x1="460" y1="185" x2="519" y2="189" stroke="rgba(167,139,250,0.5)" stroke-width="1.5" marker-end="url(#arr-z)"/>
+  <line x1="460" y1="208" x2="519" y2="289" stroke="rgba(167,139,250,0.5)" stroke-width="1.5" marker-end="url(#arr-z)"/>
+
+  <!-- Légende HA -->
+  <rect x="240" y="248" width="220" height="30" rx="6" fill="rgba(139,92,246,0.07)" stroke="rgba(167,139,250,0.2)" stroke-width="1"/>
+  <text x="350" y="268" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(167,139,250,0.8)">Bascule automatique · continuité garantie</text>
+
+  <!-- Note bas -->
+  <text x="350" y="385" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(255,255,255,0.25)">Tous les équipements sont supervisés via templates personnalisés Zabbix</text>
+</svg>

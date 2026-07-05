@@ -126,6 +126,11 @@ const fr = {
       next: "Projet suivant",
       viewSite: "Voir le site",
       sourceCode: "Code source",
+      metrics: "Résultats chiffrés",
+      architecture: "Schéma d'architecture",
+      challenges: "Défis rencontrés",
+      challengeProblem: "Le défi",
+      challengeSolution: "Comment je l'ai résolu",
     },
   },
   experience: {
@@ -362,6 +367,11 @@ const en: DeepDict<typeof fr> = {
       next: "Next project",
       viewSite: "Visit site",
       sourceCode: "Source code",
+      metrics: "Key figures",
+      architecture: "Architecture diagram",
+      challenges: "Challenges",
+      challengeProblem: "The challenge",
+      challengeSolution: "How I solved it",
     },
   },
   experience: {

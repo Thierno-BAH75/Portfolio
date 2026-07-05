@@ -14,20 +14,19 @@ import { Badge } from "@/components/ui/badge";
 import { formatDate, cn } from "@/lib/utils";
 import { useI18n } from "@/i18n";
 import { projects } from "@/data/projects";
+import { MarkdownContent } from "@/components/projects/markdown-content";
+import { ResultsGrid } from "@/components/projects/results-grid";
+import { ChallengesSection } from "@/components/projects/challenges-section";
 import type { Project } from "@/types";
 
-// Le dernier mot du titre est mis en dégradé — pas de nouveau champ data,
-// juste une mise en forme du titre déjà existant.
 function splitTitleForGradient(title: string) {
   const words = title.trim().split(" ");
   const gradient = words.pop() ?? "";
   return { start: words.join(" "), gradient };
 }
 
-// Apparition sobre au scroll, une seule fois, désactivable
 function useFadeProps() {
   const reduce = useReducedMotion();
-
   return (delay = 0) =>
     reduce
       ? {}
@@ -140,34 +139,72 @@ export function ProjectDetail({ project }: { project: Project }) {
             </motion.div>
           )}
 
-          {/* Contenu — uniquement ce qui existe dans les data */}
-          <motion.div className="space-y-10" {...fade(0.2)}>
-            <div>
-              <h2 className="text-xl font-semibold mb-3">{t.projects.detail.about}</h2>
-              <p className="text-muted-foreground leading-relaxed">
-                {tx(project.longDescription ?? project.description)}
-              </p>
-            </div>
+          {/* Description longue (Markdown) */}
+          <motion.div className="mb-10" {...fade(0.2)}>
+            <h2 className="text-xl font-semibold mb-4">{t.projects.detail.about}</h2>
+            <MarkdownContent
+              content={tx(project.longDescription ?? project.description)}
+            />
+          </motion.div>
 
-            <div>
-              <h2 className="text-xl font-semibold mb-3">{t.projects.detail.technologies}</h2>
-              <div className="flex flex-wrap gap-2">
-                {project.technologies.map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-3 py-1.5 bg-muted rounded-lg text-sm font-medium"
-                  >
-                    {tech}
-                  </span>
-                ))}
+          {/* Diagramme d'architecture */}
+          {project.architectureDiagram && (
+            <motion.div className="mb-10" {...fade(0.22)}>
+              <h2 className="text-xl font-semibold mb-4">{t.projects.detail.architecture}</h2>
+              <div className="rounded-2xl border border-border/60 overflow-hidden shadow-[0_0_30px_rgba(139,92,246,0.08)]">
+                {/* eslint-disable-next-line @next/next/no-img-element -- SVG d'architecture local */}
+                <img
+                  src={project.architectureDiagram}
+                  alt=""
+                  className="w-full h-auto"
+                />
               </div>
+            </motion.div>
+          )}
+
+          {/* Technologies */}
+          <motion.div className="mb-10" {...fade(0.24)}>
+            <h2 className="text-xl font-semibold mb-3">{t.projects.detail.technologies}</h2>
+            <div className="flex flex-wrap gap-2">
+              {project.technologies.map((tech) => (
+                <span
+                  key={tech}
+                  className="px-3 py-1.5 bg-muted rounded-lg text-sm font-medium"
+                >
+                  {tech}
+                </span>
+              ))}
             </div>
           </motion.div>
+
+          {/* Résultats chiffrés */}
+          {project.metrics && project.metrics.length > 0 && (
+            <motion.div className="mb-10" {...fade(0.26)}>
+              <ResultsGrid
+                metrics={project.metrics}
+                locale={locale}
+                title={t.projects.detail.metrics}
+              />
+            </motion.div>
+          )}
+
+          {/* Défis rencontrés */}
+          {project.challenges && project.challenges.length > 0 && (
+            <motion.div className="mb-10" {...fade(0.28)}>
+              <ChallengesSection
+                challenges={project.challenges}
+                locale={locale}
+                title={t.projects.detail.challenges}
+                labelProblem={t.projects.detail.challengeProblem}
+                labelSolution={t.projects.detail.challengeSolution}
+              />
+            </motion.div>
+          )}
 
           {/* Navigation projet précédent / suivant */}
           <motion.div
             className="mt-16 pt-8 border-t border-border/60 grid grid-cols-1 sm:grid-cols-2 gap-4"
-            {...fade(0.25)}
+            {...fade(0.3)}
           >
             {prevProject ? (
               <Link
@@ -207,7 +244,7 @@ export function ProjectDetail({ project }: { project: Project }) {
             )}
           </motion.div>
 
-          <motion.div className="mt-6 text-center" {...fade(0.3)}>
+          <motion.div className="mt-6 text-center" {...fade(0.32)}>
             <Link
               href="/projects"
               className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg border border-border/60 text-sm text-muted-foreground hover:text-foreground hover:border-violet-500/50 transition-all"

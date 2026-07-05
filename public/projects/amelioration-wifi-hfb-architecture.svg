@@ -1,0 +1,101 @@
+<svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="bg-wh" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#080b14"/>
+      <stop offset="100%" stop-color="#0c1a24"/>
+    </linearGradient>
+    <linearGradient id="gv-wh" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+    <linearGradient id="bv-wh" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(139,92,246,0.18)"/>
+      <stop offset="100%" stop-color="rgba(139,92,246,0.04)"/>
+    </linearGradient>
+    <linearGradient id="bc-wh" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(34,211,238,0.16)"/>
+      <stop offset="100%" stop-color="rgba(34,211,238,0.04)"/>
+    </linearGradient>
+    <radialGradient id="gl-wh1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="gl-wh2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots-wh" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="rgba(255,255,255,0.06)"/>
+    </pattern>
+    <marker id="arr-wh" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="rgba(167,139,250,0.65)"/>
+    </marker>
+    <marker id="arr-whc" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="rgba(34,211,238,0.65)"/>
+    </marker>
+  </defs>
+
+  <rect width="700" height="380" fill="url(#bg-wh)"/>
+  <rect width="700" height="380" fill="url(#dots-wh)"/>
+  <circle cx="550" cy="80" r="200" fill="url(#gl-wh1)"/>
+  <circle cx="150" cy="300" r="180" fill="url(#gl-wh2)"/>
+
+  <text x="350" y="26" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="600" fill="rgba(255,255,255,0.5)" letter-spacing="1">TOPOLOGIE — OPTIMISATION WI-FI · HFB</text>
+
+  <!-- ══ Contrôleur Aruba ══ -->
+  <rect x="30" y="50" width="150" height="70" rx="10" fill="url(#bv-wh)" stroke="url(#gv-wh)" stroke-width="2"/>
+  <text x="105" y="76" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#a78bfa">CONTRÔLEUR ARUBA</text>
+  <text x="105" y="92" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">Gestion centralisée</text>
+  <text x="105" y="108" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(167,139,250,0.7)">Config. · Roaming · Freq.</text>
+
+  <!-- ══ Bornes Wi-Fi (cluster) ══ -->
+  <rect x="240" y="40" width="180" height="90" rx="10" fill="url(#bc-wh)" stroke="rgba(34,211,238,0.55)" stroke-width="2"/>
+  <text x="330" y="65" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#22d3ee">BORNES WI-FI ARUBA</text>
+  <text x="330" y="81" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">100+ points d'accès</text>
+  <text x="330" y="96" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(34,211,238,0.7)">5 GHz optimisé</text>
+  <text x="330" y="111" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(34,211,238,0.6)">Roaming configuré</text>
+
+  <!-- Flèche contrôleur → bornes -->
+  <line x1="180" y1="85" x2="239" y2="85" stroke="url(#gv-wh)" stroke-width="2" marker-end="url(#arr-wh)"/>
+  <!-- Retour config -->
+  <line x1="239" y1="95" x2="180" y2="95" stroke="url(#gv-wh)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr-whc)"/>
+
+  <!-- ══ Personnel soignant ══ -->
+  <rect x="240" y="175" width="180" height="70" rx="10" fill="url(#bc-wh)" stroke="rgba(34,211,238,0.4)" stroke-width="1.5"/>
+  <text x="330" y="198" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#22d3ee">PERSONNEL SOIGNANT</text>
+  <text x="330" y="214" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">PC-chariots · PC portables</text>
+  <text x="330" y="230" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(34,211,238,0.6)">Drivers optimisés via GPO</text>
+
+  <!-- Flèche bornes → personnel -->
+  <line x1="330" y1="130" x2="330" y2="174" stroke="rgba(34,211,238,0.55)" stroke-width="1.5" marker-end="url(#arr-whc)"/>
+
+  <!-- ══ Switch cœur / réseau ══ -->
+  <rect x="480" y="150" width="150" height="58" rx="8" fill="url(#bv-wh)" stroke="rgba(167,139,250,0.45)" stroke-width="1.5"/>
+  <text x="555" y="172" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#a78bfa">SWITCH CŒUR</text>
+  <text x="555" y="188" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">Infrastructure réseau</text>
+  <text x="555" y="200" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(167,139,250,0.65)">ACL · Flux vérifiés</text>
+
+  <!-- Flèche personnel → switch -->
+  <line x1="420" y1="210" x2="479" y2="179" stroke="rgba(167,139,250,0.45)" stroke-width="1.5" marker-end="url(#arr-wh)"/>
+
+  <!-- ══ Serveur TSE ══ -->
+  <rect x="480" y="258" width="150" height="70" rx="8" fill="url(#bv-wh)" stroke="url(#gv-wh)" stroke-width="2"/>
+  <text x="555" y="282" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#a78bfa">SERVEUR TSE</text>
+  <text x="555" y="298" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">Bureau à distance</text>
+  <text x="555" y="314" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(167,139,250,0.7)">VM migrée · latence optimisée</text>
+
+  <!-- Flèche switch → TSE -->
+  <line x1="555" y1="208" x2="555" y2="257" stroke="url(#gv-wh)" stroke-width="1.5" marker-end="url(#arr-wh)"/>
+
+  <!-- ══ App métier ══ -->
+  <rect x="240" y="280" width="180" height="60" rx="8" fill="rgba(139,92,246,0.07)" stroke="rgba(167,139,250,0.3)" stroke-width="1"/>
+  <text x="330" y="305" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="rgba(167,139,250,0.9)">APPLICATION MÉTIER</text>
+  <text x="330" y="320" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(255,255,255,0.35)">Gestion des dossiers patients</text>
+  <text x="330" y="332" text-anchor="middle" font-family="sans-serif" font-size="8" fill="rgba(167,139,250,0.5)">Accès via serveur TSE</text>
+
+  <!-- Flèche TSE → app -->
+  <line x1="480" y1="293" x2="421" y2="305" stroke="rgba(167,139,250,0.4)" stroke-width="1.5" marker-end="url(#arr-wh)"/>
+
+  <!-- Note bas -->
+  <text x="350" y="368" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(255,255,255,0.25)">Problème historique 2020 · Diagnostic · GPO · 2,4→5 GHz · VM TSE migrée</text>
+</svg>

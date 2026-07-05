@@ -1,0 +1,113 @@
+<svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="bg-hfbs" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#080b14"/>
+      <stop offset="100%" stop-color="#0c1520"/>
+    </linearGradient>
+    <linearGradient id="gv-hfbs" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+    <linearGradient id="bv-hfbs" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(139,92,246,0.18)"/>
+      <stop offset="100%" stop-color="rgba(139,92,246,0.04)"/>
+    </linearGradient>
+    <linearGradient id="bc-hfbs" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(34,211,238,0.16)"/>
+      <stop offset="100%" stop-color="rgba(34,211,238,0.04)"/>
+    </linearGradient>
+    <radialGradient id="gl-hfbs1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="gl-hfbs2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.13"/>
+      <stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots-hfbs" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="rgba(255,255,255,0.06)"/>
+    </pattern>
+    <marker id="arr-hfbs" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="rgba(167,139,250,0.65)"/>
+    </marker>
+    <marker id="arr-hfbsc" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="rgba(34,211,238,0.65)"/>
+    </marker>
+  </defs>
+
+  <rect width="700" height="380" fill="url(#bg-hfbs)"/>
+  <rect width="700" height="380" fill="url(#dots-hfbs)"/>
+  <circle cx="600" cy="70" r="200" fill="url(#gl-hfbs1)"/>
+  <circle cx="100" cy="320" r="180" fill="url(#gl-hfbs2)"/>
+
+  <text x="350" y="26" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="600" fill="rgba(255,255,255,0.5)" letter-spacing="1">TOPOLOGIE — SÉCURITÉ INFRASTRUCTURE · HFB</text>
+
+  <!-- ══ Internet ══ -->
+  <rect x="30" y="50" width="110" height="52" rx="8" fill="url(#bv-hfbs)" stroke="rgba(167,139,250,0.4)" stroke-width="1.5"/>
+  <text x="85" y="72" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#a78bfa">INTERNET</text>
+  <text x="85" y="88" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">WAN externe</text>
+
+  <!-- ══ NGFW Cluster ══ -->
+  <rect x="190" y="38" width="160" height="76" rx="10" fill="url(#bv-hfbs)" stroke="url(#gv-hfbs)" stroke-width="2.5"/>
+  <text x="270" y="64" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#a78bfa">PARE-FEU NGFW</text>
+  <text x="270" y="80" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.45)">Cluster HA · 2 nœuds</text>
+  <text x="270" y="96" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(167,139,250,0.7)">ACL · Filtrage · Flux entrants/sortants</text>
+
+  <!-- Flèche Internet → NGFW -->
+  <line x1="140" y1="76" x2="189" y2="76" stroke="url(#gv-hfbs)" stroke-width="1.5" marker-end="url(#arr-hfbs)"/>
+
+  <!-- ══ Switch cœur ══ -->
+  <rect x="410" y="50" width="140" height="52" rx="8" fill="url(#bc-hfbs)" stroke="rgba(34,211,238,0.5)" stroke-width="1.5"/>
+  <text x="480" y="72" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#22d3ee">SWITCH CŒUR</text>
+  <text x="480" y="88" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">Distribution réseau interne</text>
+
+  <!-- Flèche NGFW → Switch -->
+  <line x1="350" y1="76" x2="409" y2="76" stroke="url(#gv-hfbs)" stroke-width="1.5" marker-end="url(#arr-hfbs)"/>
+
+  <!-- Ligne switch → bas -->
+  <line x1="480" y1="102" x2="480" y2="142" stroke="rgba(34,211,238,0.5)" stroke-width="1.5"/>
+
+  <!-- ══ Rangée 2 : services internes ══ -->
+  <!-- Active Directory -->
+  <rect x="50" y="150" width="145" height="66" rx="8" fill="url(#bc-hfbs)" stroke="rgba(34,211,238,0.45)" stroke-width="1.5"/>
+  <text x="122" y="173" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#22d3ee">ACTIVE DIRECTORY</text>
+  <text x="122" y="189" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">~700 comptes utilisateurs</text>
+  <text x="122" y="205" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(34,211,238,0.65)">GPO · DHCP · Lecteurs réseau</text>
+
+  <!-- Messagerie -->
+  <rect x="220" y="150" width="145" height="66" rx="8" fill="url(#bc-hfbs)" stroke="rgba(34,211,238,0.4)" stroke-width="1.5"/>
+  <text x="292" y="173" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#22d3ee">MESSAGERIE</text>
+  <text x="292" y="189" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">Entreprise · Grande échelle</text>
+  <text x="292" y="205" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(34,211,238,0.65)">Flux sécurisés</text>
+
+  <!-- Parc PC -->
+  <rect x="390" y="150" width="145" height="66" rx="8" fill="url(#bv-hfbs)" stroke="rgba(167,139,250,0.45)" stroke-width="1.5"/>
+  <text x="462" y="173" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#a78bfa">PARC INFORMATIQUE</text>
+  <text x="462" y="189" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">Centaines d'équipements</text>
+  <text x="462" y="205" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(167,139,250,0.65)">Sysprep · Déploiement centralisé</text>
+
+  <!-- Réseau Wi-Fi Aruba -->
+  <rect x="560" y="150" width="115" height="66" rx="8" fill="url(#bv-hfbs)" stroke="rgba(167,139,250,0.35)" stroke-width="1.5"/>
+  <text x="617" y="173" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#a78bfa">RÉSEAU WI-FI</text>
+  <text x="617" y="189" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">Aruba</text>
+  <text x="617" y="205" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(167,139,250,0.6)">Accès soignants</text>
+
+  <!-- Lignes switch → services -->
+  <line x1="480" y1="142" x2="122" y2="150" stroke="rgba(34,211,238,0.4)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr-hfbsc)"/>
+  <line x1="480" y1="142" x2="292" y2="150" stroke="rgba(34,211,238,0.4)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr-hfbsc)"/>
+  <line x1="480" y1="142" x2="462" y2="150" stroke="rgba(167,139,250,0.4)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr-hfbs)"/>
+  <line x1="480" y1="142" x2="617" y2="150" stroke="rgba(167,139,250,0.35)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr-hfbs)"/>
+
+  <!-- ══ RGPD bloc ══ -->
+  <rect x="100" y="265" width="500" height="58" rx="10" fill="rgba(139,92,246,0.07)" stroke="url(#gv-hfbs)" stroke-width="1.5"/>
+  <text x="350" y="289" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="rgba(167,139,250,0.9)">CONFORMITÉ RGPD — SECTEUR SANTÉ</text>
+  <text x="350" y="308" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">Gestion des accès · Traçabilité · Sécurisation des postes · Politique de droits utilisateurs</text>
+
+  <!-- Lignes services → RGPD -->
+  <line x1="122" y1="216" x2="200" y2="265" stroke="rgba(139,92,246,0.3)" stroke-width="1" stroke-dasharray="3 4"/>
+  <line x1="292" y1="216" x2="300" y2="265" stroke="rgba(139,92,246,0.3)" stroke-width="1" stroke-dasharray="3 4"/>
+  <line x1="462" y1="216" x2="420" y2="265" stroke="rgba(139,92,246,0.3)" stroke-width="1" stroke-dasharray="3 4"/>
+
+  <!-- Chiffres clés -->
+  <text x="350" y="365" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(255,255,255,0.25)">270+ lits · ~700 professionnels de santé · RAID · iDRAC · pare-feux HA</text>
+</svg>

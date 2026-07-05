@@ -7,6 +7,18 @@
 export type Locale = "fr" | "en";
 export type Localized<T = string> = Record<Locale, T>;
 
+export interface ProjectMetric {
+  icon: string;    // nom d'icône Lucide
+  value: string;
+  label: Localized;
+}
+
+export interface ProjectChallenge {
+  title: Localized;
+  problem: Localized;
+  solution: Localized;
+}
+
 export interface Project {
   id: string;
   slug: string;
@@ -24,6 +36,9 @@ export interface Project {
   };
   featured: boolean;
   date: string;
+  metrics?: ProjectMetric[];
+  challenges?: ProjectChallenge[];
+  architectureDiagram?: string; // chemin SVG
 }
 
 export type ProjectCategory =

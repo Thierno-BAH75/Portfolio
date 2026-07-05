@@ -1,0 +1,125 @@
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="bg-arch1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#080b14"/>
+      <stop offset="100%" stop-color="#0b1520"/>
+    </linearGradient>
+    <linearGradient id="grad-v" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+    <linearGradient id="box-v" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(139,92,246,0.15)"/>
+      <stop offset="100%" stop-color="rgba(139,92,246,0.04)"/>
+    </linearGradient>
+    <linearGradient id="box-c" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(34,211,238,0.15)"/>
+      <stop offset="100%" stop-color="rgba(34,211,238,0.04)"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots-a1" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="rgba(255,255,255,0.06)"/>
+    </pattern>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="rgba(167,139,250,0.7)"/>
+    </marker>
+  </defs>
+
+  <rect width="700" height="420" fill="url(#bg-arch1)"/>
+  <rect width="700" height="420" fill="url(#dots-a1)"/>
+  <circle cx="600" cy="60" r="180" fill="url(#glow1)"/>
+  <circle cx="80" cy="360" r="180" fill="url(#glow2)"/>
+
+  <!-- Titre -->
+  <text x="350" y="28" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="600" fill="rgba(255,255,255,0.5)" letter-spacing="1">TOPOLOGIE — DATACENTER KISS</text>
+
+  <!-- ══ COLONNE 1 : WAN / Internet ══ -->
+  <rect x="30" y="50" width="110" height="52" rx="8" fill="url(#box-v)" stroke="rgba(167,139,250,0.45)" stroke-width="1.5"/>
+  <text x="85" y="71" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#a78bfa">INTERNET</text>
+  <text x="85" y="87" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.45)">WAN</text>
+
+  <!-- ══ COLONNE 2 : Pare-feu pfSense ══ -->
+  <rect x="195" y="50" width="120" height="52" rx="8" fill="url(#box-v)" stroke="rgba(167,139,250,0.6)" stroke-width="1.5"/>
+  <text x="255" y="71" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#a78bfa">PARE-FEU</text>
+  <text x="255" y="87" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.45)">pfSense · NAT · VPN</text>
+
+  <!-- ══ COLONNE 3 : Switch cœur stacké ══ -->
+  <rect x="370" y="38" width="140" height="76" rx="8" fill="url(#box-v)" stroke="url(#grad-v)" stroke-width="2"/>
+  <text x="440" y="62" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#a78bfa">SWITCHES NETGEAR</text>
+  <text x="440" y="78" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.45)">Stackés · HA · Bascule auto</text>
+  <text x="440" y="94" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(34,211,238,0.8)">10 Gb SFP+ · LAGs</text>
+
+  <!-- Flèches WAN → pfSense → Switches -->
+  <line x1="140" y1="76" x2="194" y2="76" stroke="url(#grad-v)" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="315" y1="76" x2="369" y2="76" stroke="url(#grad-v)" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ══ Séparateur vertical ══ -->
+  <line x1="440" y1="115" x2="440" y2="145" stroke="url(#grad-v)" stroke-width="1.5"/>
+
+  <!-- ══ RANGÉE 2 : Serveurs Dell ══ -->
+  <rect x="30" y="150" width="150" height="66" rx="8" fill="url(#box-c)" stroke="rgba(34,211,238,0.5)" stroke-width="1.5"/>
+  <text x="105" y="172" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#22d3ee">SERVEURS DELL</text>
+  <text x="105" y="188" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.45)">PowerEdge R6615</text>
+  <text x="105" y="204" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(34,211,238,0.7)">RAID 10 · PERC H330 · iDRAC</text>
+
+  <!-- ══ NAS Synology ══ -->
+  <rect x="210" y="150" width="130" height="66" rx="8" fill="url(#box-c)" stroke="rgba(34,211,238,0.4)" stroke-width="1.5"/>
+  <text x="275" y="172" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#22d3ee">NAS SYNOLOGY</text>
+  <text x="275" y="188" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.45)">Stockage partagé</text>
+  <text x="275" y="204" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(34,211,238,0.7)">Sauvegardes · KHosting</text>
+
+  <!-- ══ Hyperviseurs ══ -->
+  <rect x="370" y="150" width="140" height="66" rx="8" fill="url(#box-v)" stroke="rgba(167,139,250,0.5)" stroke-width="1.5"/>
+  <text x="440" y="172" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#a78bfa">HYPERVISEURS</text>
+  <text x="440" y="188" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.45)">Proxmox · Hyper-V</text>
+  <text x="440" y="204" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(167,139,250,0.7)">Virtualisation</text>
+
+  <!-- ══ Pare-feu pfSense 2e nœud ══ -->
+  <rect x="540" y="150" width="130" height="66" rx="8" fill="url(#box-v)" stroke="rgba(167,139,250,0.4)" stroke-width="1.5"/>
+  <text x="605" y="172" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#a78bfa">PARE-FEU</text>
+  <text x="605" y="188" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.45)">pfSense HA</text>
+  <text x="605" y="204" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(167,139,250,0.7)">ACL · Bascule</text>
+
+  <!-- Ligne switches → rangée 2 -->
+  <line x1="440" y1="145" x2="105" y2="150" stroke="url(#grad-v)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+  <line x1="440" y1="145" x2="275" y2="150" stroke="url(#grad-v)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+  <line x1="440" y1="145" x2="440" y2="150" stroke="url(#grad-v)" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="440" y1="145" x2="605" y2="150" stroke="url(#grad-v)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+
+  <!-- ══ RANGÉE 3 : VMs ══ -->
+  <line x1="440" y1="216" x2="440" y2="258" stroke="rgba(167,139,250,0.5)" stroke-width="1.5"/>
+
+  <rect x="110" y="263" width="120" height="48" rx="8" fill="rgba(139,92,246,0.08)" stroke="rgba(167,139,250,0.3)" stroke-width="1"/>
+  <text x="170" y="283" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="rgba(167,139,250,0.9)">VMs KHosting</text>
+  <text x="170" y="298" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(255,255,255,0.35)">Clients hébergés</text>
+
+  <rect x="260" y="263" width="120" height="48" rx="8" fill="rgba(139,92,246,0.08)" stroke="rgba(167,139,250,0.3)" stroke-width="1"/>
+  <text x="320" y="283" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="rgba(167,139,250,0.9)">VMs Production</text>
+  <text x="320" y="298" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(255,255,255,0.35)">Services KISS</text>
+
+  <rect x="410" y="263" width="120" height="48" rx="8" fill="rgba(34,211,238,0.06)" stroke="rgba(34,211,238,0.3)" stroke-width="1"/>
+  <text x="470" y="283" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="rgba(34,211,238,0.9)">VMs Préproduction</text>
+  <text x="470" y="298" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="rgba(255,255,255,0.35)">Tests &amp; validation</text>
+
+  <!-- Lignes hyperviseurs → VMs -->
+  <line x1="440" y1="258" x2="170" y2="263" stroke="rgba(167,139,250,0.4)" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="440" y1="258" x2="320" y2="263" stroke="rgba(167,139,250,0.4)" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="440" y1="258" x2="470" y2="263" stroke="rgba(34,211,238,0.4)" stroke-width="1" stroke-dasharray="3 3"/>
+
+  <!-- ══ Légende baies ══ -->
+  <rect x="30" y="340" width="640" height="62" rx="8" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+  <text x="350" y="360" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.35)" font-weight="600">RÉPARTITION — 3 BAIES DATACENTER</text>
+  <rect x="52" y="370" width="8" height="8" rx="2" fill="#8b5cf6" opacity="0.7"/>
+  <text x="66" y="379" font-family="sans-serif" font-size="8.5" fill="rgba(255,255,255,0.5)">Baie 1 — Réseau (switches, pare-feux)</text>
+  <rect x="252" y="370" width="8" height="8" rx="2" fill="#22d3ee" opacity="0.7"/>
+  <text x="266" y="379" font-family="sans-serif" font-size="8.5" fill="rgba(255,255,255,0.5)">Baie 2 — Serveurs Dell + NAS</text>
+  <rect x="452" y="370" width="8" height="8" rx="2" fill="#a78bfa" opacity="0.5"/>
+  <text x="466" y="379" font-family="sans-serif" font-size="8.5" fill="rgba(255,255,255,0.5)">Baie 3 — Hyperviseurs + stockage</text>
+</svg>

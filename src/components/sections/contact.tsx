@@ -137,9 +137,9 @@ export function Contact() {
 
     try {
       // Formspree affiche un champ "name" unique dans ses notifications ;
-      // on concatène prénom + nom pour rester lisible côté réception.
+      // on concatène nom + prénom pour rester lisible côté réception.
       const payload = {
-        name: `${data.firstName} ${data.lastName}`.trim(),
+        name: `${data.lastName} ${data.firstName}`.trim(),
         email: data.email,
         subject: data.subject,
         message: data.message,
@@ -210,21 +210,6 @@ export function Contact() {
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label className="text-sm font-medium">
-                      {t.contact.form.firstName}
-                      <RequiredMark />
-                    </label>
-                    <Input
-                      placeholder={t.contact.form.firstNamePlaceholder}
-                      {...register("firstName")}
-                      className={cn(fieldClass, errors.firstName && "border-red-500")}
-                    />
-                    {errors.firstName && (
-                      <p className="text-xs text-red-400">{errors.firstName.message}</p>
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">
                       {t.contact.form.lastName}
                       <RequiredMark />
                     </label>
@@ -235,6 +220,21 @@ export function Contact() {
                     />
                     {errors.lastName && (
                       <p className="text-xs text-red-400">{errors.lastName.message}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">
+                      {t.contact.form.firstName}
+                      <RequiredMark />
+                    </label>
+                    <Input
+                      placeholder={t.contact.form.firstNamePlaceholder}
+                      {...register("firstName")}
+                      className={cn(fieldClass, errors.firstName && "border-red-500")}
+                    />
+                    {errors.firstName && (
+                      <p className="text-xs text-red-400">{errors.firstName.message}</p>
                     )}
                   </div>
                 </div>

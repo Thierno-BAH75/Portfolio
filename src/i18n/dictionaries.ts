@@ -170,7 +170,7 @@ const fr = {
     emailLabel: "Email",
     quickTitle: "Contact rapide",
     quickAvailability: "Disponible dès septembre 2026",
-    responseTime: "Je réponds rapidement",
+    responseTime: "Prêt à en discuter dès maintenant",
     form: {
       firstName: "Prénom",
       firstNamePlaceholder: "Votre prénom",
@@ -410,7 +410,7 @@ const en: DeepDict<typeof fr> = {
     emailLabel: "Email",
     quickTitle: "Quick contact",
     quickAvailability: "Available from September 2026",
-    responseTime: "I reply quickly",
+    responseTime: "Ready to talk right now",
     form: {
       firstName: "First name",
       firstNamePlaceholder: "Your first name",

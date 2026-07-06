@@ -1,7 +1,8 @@
 import { z } from "zod";
 
 export interface ContactValidationMessages {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   subject: string;
   message: string;
@@ -9,7 +10,8 @@ export interface ContactValidationMessages {
 
 // Messages par défaut (fallback si aucune traduction n'est fournie)
 export const defaultContactMessages: ContactValidationMessages = {
-  name: "Name must be at least 2 characters",
+  firstName: "First name must be at least 2 characters",
+  lastName: "Last name must be at least 2 characters",
   email: "Invalid email address",
   subject: "Subject must be at least 5 characters",
   message: "Message must be at least 10 characters",
@@ -22,7 +24,8 @@ export function makeContactSchema(
   messages: ContactValidationMessages = defaultContactMessages
 ) {
   return z.object({
-    name: z.string().min(2, messages.name),
+    firstName: z.string().min(2, messages.firstName),
+    lastName: z.string().min(2, messages.lastName),
     email: z.string().email(messages.email),
     subject: z.string().min(5, messages.subject),
     message: z.string().min(10, messages.message),

@@ -34,6 +34,15 @@ function setSpotlight(e: MouseEvent<HTMLDivElement>) {
 const fieldClass =
   "bg-background/60 border-border/60 focus-visible:ring-2 focus-visible:ring-violet-500/40 focus-visible:border-cyan-400/50";
 
+// Astérisque discret marquant les champs obligatoires
+function RequiredMark() {
+  return (
+    <span className="text-violet-400 ml-0.5" aria-hidden="true">
+      *
+    </span>
+  );
+}
+
 // Carte au style établi du site : bordure fine → anneau dégradé violet→cyan
 // au survol, glow doux, spotlight qui suit la souris. Neutralisée sous
 // prefers-reduced-motion (bordure statique, pas de spotlight ni de glow).
@@ -127,10 +136,19 @@ export function Contact() {
     }
 
     try {
+      // Formspree affiche un champ "name" unique dans ses notifications ;
+      // on concatène prénom + nom pour rester lisible côté réception.
+      const payload = {
+        name: `${data.firstName} ${data.lastName}`.trim(),
+        email: data.email,
+        subject: data.subject,
+        message: data.message,
+      };
+
       const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
@@ -191,29 +209,50 @@ export function Contact() {
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">{t.contact.form.name}</label>
+                    <label className="text-sm font-medium">
+                      {t.contact.form.firstName}
+                      <RequiredMark />
+                    </label>
                     <Input
-                      placeholder={t.contact.form.namePlaceholder}
-                      {...register("name")}
-                      className={cn(fieldClass, errors.name && "border-red-500")}
+                      placeholder={t.contact.form.firstNamePlaceholder}
+                      {...register("firstName")}
+                      className={cn(fieldClass, errors.firstName && "border-red-500")}
                     />
-                    {errors.name && (
-                      <p className="text-xs text-red-400">{errors.name.message}</p>
+                    {errors.firstName && (
+                      <p className="text-xs text-red-400">{errors.firstName.message}</p>
                     )}
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">{t.contact.form.email}</label>
+                    <label className="text-sm font-medium">
+                      {t.contact.form.lastName}
+                      <RequiredMark />
+                    </label>
                     <Input
-                      type="email"
-                      placeholder={t.contact.form.emailPlaceholder}
-                      {...register("email")}
-                      className={cn(fieldClass, errors.email && "border-red-500")}
+                      placeholder={t.contact.form.lastNamePlaceholder}
+                      {...register("lastName")}
+                      className={cn(fieldClass, errors.lastName && "border-red-500")}
                     />
-                    {errors.email && (
-                      <p className="text-xs text-red-400">{errors.email.message}</p>
+                    {errors.lastName && (
+                      <p className="text-xs text-red-400">{errors.lastName.message}</p>
                     )}
                   </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">
+                    {t.contact.form.email}
+                    <RequiredMark />
+                  </label>
+                  <Input
+                    type="email"
+                    placeholder={t.contact.form.emailPlaceholder}
+                    {...register("email")}
+                    className={cn(fieldClass, errors.email && "border-red-500")}
+                  />
+                  {errors.email && (
+                    <p className="text-xs text-red-400">{errors.email.message}</p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
@@ -229,7 +268,10 @@ export function Contact() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">{t.contact.form.message}</label>
+                  <label className="text-sm font-medium">
+                    {t.contact.form.message}
+                    <RequiredMark />
+                  </label>
                   <Textarea
                     placeholder={t.contact.form.messagePlaceholder}
                     rows={5}

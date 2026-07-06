@@ -4,8 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Send, Mail, MapPin, CheckCircle, Clock } from "lucide-react";
+import { Send, Mail, MapPin, CheckCircle, AlertCircle, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,22 +12,12 @@ import { FadeIn, StaggerChildren, StaggerItem, GlowOnHover } from "@/components/
 import { personalInfo } from "@/data/experience";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/i18n";
-import type { Dictionary } from "@/i18n/dictionaries";
-
-// Les messages de validation suivent la langue active
-const makeContactSchema = (messages: Dictionary["contact"]["errors"]) =>
-  z.object({
-    name: z.string().min(2, messages.name),
-    email: z.string().email(messages.email),
-    subject: z.string().min(5, messages.subject),
-    message: z.string().min(10, messages.message),
-  });
-
-type ContactFormData = z.infer<ReturnType<typeof makeContactSchema>>;
+import { makeContactSchema, type ContactFormData } from "@/lib/contact-schema";
 
 export function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const { t, tx } = useI18n();
 
   const {
@@ -42,17 +31,33 @@ export function Contact() {
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
+    setSubmitError(null);
 
-    // Simuler l'envoi du formulaire
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-    console.log("Form data:", data);
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    reset();
+      if (!response.ok) {
+        const payload = await response.json().catch(() => null);
+        const errorMessage =
+          payload?.error === "rate_limited"
+            ? t.contact.form.errorRateLimited
+            : t.contact.form.errorText;
+        setSubmitError(errorMessage);
+        return;
+      }
 
-    // Réinitialiser après 5 secondes
-    setTimeout(() => setIsSubmitted(false), 5000);
+      setIsSubmitted(true);
+      reset();
+      setTimeout(() => setIsSubmitted(false), 5000);
+    } catch {
+      setSubmitError(t.contact.form.errorText);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -271,6 +276,17 @@ export function Contact() {
                       </p>
                     )}
                   </div>
+
+                  {submitError && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex items-start gap-2 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-500"
+                    >
+                      <AlertCircle size={16} className="mt-0.5 flex-shrink-0" />
+                      <span>{submitError}</span>
+                    </motion.div>
+                  )}
 
                   <Button
                     type="submit"

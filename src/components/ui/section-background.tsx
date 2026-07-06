@@ -22,13 +22,13 @@ function glowBackground(position: GlowPosition, variant: GlowVariant): string {
   if (variant === "dual") {
     // Alternance douce violet → cyan, deux glows superposés et décalés
     return [
-      `radial-gradient(ellipse at 42% 0%, rgba(${VIOLET},0.16) 0%, transparent 50%)`,
-      `radial-gradient(ellipse at 58% 0%, rgba(${CYAN},0.13) 0%, transparent 50%)`,
+      `radial-gradient(ellipse at 42% 0%, rgba(${VIOLET},0.24) 0%, transparent 62%)`,
+      `radial-gradient(ellipse at 58% 0%, rgba(${CYAN},0.20) 0%, transparent 62%)`,
     ].join(", ");
   }
 
   const color = variant === "violet" ? VIOLET : CYAN;
-  return `radial-gradient(${origin}, rgba(${color},0.18) 0%, transparent 55%)`;
+  return `radial-gradient(${origin}, rgba(${color},0.28) 0%, transparent 68%)`;
 }
 
 interface SectionBackgroundProps {
@@ -40,7 +40,7 @@ interface SectionBackgroundProps {
 export function SectionBackground({
   glowPosition,
   variant,
-  dotOpacity = 0.2,
+  dotOpacity = 0.32,
 }: SectionBackgroundProps) {
   return (
     <>

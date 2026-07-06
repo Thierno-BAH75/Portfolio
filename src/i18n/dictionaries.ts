@@ -201,6 +201,8 @@ const fr = {
   },
   footer: {
     navigation: "Navigation",
+    explore: "Explorer",
+    keywords: "Réseaux • Cybersécurité • Cloud",
     rights: "Tous droits réservés.",
     admin: "Admin",
   },
@@ -437,6 +439,8 @@ const en: DeepDict<typeof fr> = {
   },
   footer: {
     navigation: "Navigation",
+    explore: "Explore",
+    keywords: "Networking • Cybersecurity • Cloud",
     rights: "All rights reserved.",
     admin: "Admin",
   },

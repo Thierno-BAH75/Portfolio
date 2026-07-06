@@ -7,7 +7,7 @@ export interface ContactValidationMessages {
   message: string;
 }
 
-// Messages par défaut (utilisés côté serveur, indépendant de la langue du visiteur)
+// Messages par défaut (fallback si aucune traduction n'est fournie)
 export const defaultContactMessages: ContactValidationMessages = {
   name: "Name must be at least 2 characters",
   email: "Invalid email address",
@@ -15,7 +15,9 @@ export const defaultContactMessages: ContactValidationMessages = {
   message: "Message must be at least 10 characters",
 };
 
-// Schéma partagé front (avec messages localisés) et route API (validation serveur)
+// Schéma de validation côté client (UX, messages d'erreur inline) —
+// la soumission finale est envoyée directement à Formspree, qui applique
+// ses propres validations et son anti-spam côté serveur.
 export function makeContactSchema(
   messages: ContactValidationMessages = defaultContactMessages
 ) {

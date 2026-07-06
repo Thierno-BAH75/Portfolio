@@ -196,8 +196,6 @@ const fr = {
       errorTitle: "Une erreur est survenue",
       errorText:
         "Impossible d'envoyer le message pour le moment. Réessayez plus tard ou écrivez-moi directement par email.",
-      errorRateLimited:
-        "Trop de tentatives. Merci de réessayer dans quelques minutes.",
     },
     errors: {
       name: "Le nom doit contenir au moins 2 caractères",
@@ -443,7 +441,6 @@ const en: DeepDict<typeof fr> = {
       errorTitle: "Something went wrong",
       errorText:
         "Couldn't send the message right now. Please try again later or email me directly.",
-      errorRateLimited: "Too many attempts. Please try again in a few minutes.",
     },
     errors: {
       name: "Name must be at least 2 characters",

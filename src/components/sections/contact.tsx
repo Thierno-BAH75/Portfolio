@@ -33,20 +33,25 @@ export function Contact() {
     setIsSubmitting(true);
     setSubmitError(null);
 
+    const endpoint = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT;
+    if (!endpoint) {
+      console.error(
+        "[Contact] NEXT_PUBLIC_FORMSPREE_ENDPOINT n'est pas défini. Ajoutez-le dans .env.local (voir .env.example)."
+      );
+      setSubmitError(t.contact.form.errorText);
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch(endpoint, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify(data),
       });
 
       if (!response.ok) {
-        const payload = await response.json().catch(() => null);
-        const errorMessage =
-          payload?.error === "rate_limited"
-            ? t.contact.form.errorRateLimited
-            : t.contact.form.errorText;
-        setSubmitError(errorMessage);
+        setSubmitError(t.contact.form.errorText);
         return;
       }
 

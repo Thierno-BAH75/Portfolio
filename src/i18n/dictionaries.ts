@@ -200,12 +200,7 @@ const fr = {
     },
   },
   footer: {
-    navigation: "Navigation",
-    contact: "Contact",
-    availableProjects: "Disponible pour des projets",
     rights: "Tous droits réservés.",
-    madeWithPrefix: "Fait avec",
-    madeWithSuffix: "et beaucoup de café",
     admin: "Admin",
   },
   veille: {
@@ -440,12 +435,7 @@ const en: DeepDict<typeof fr> = {
     },
   },
   footer: {
-    navigation: "Navigation",
-    contact: "Contact",
-    availableProjects: "Available for projects",
     rights: "All rights reserved.",
-    madeWithPrefix: "Made with",
-    madeWithSuffix: "and lots of coffee",
     admin: "Admin",
   },
   veille: {

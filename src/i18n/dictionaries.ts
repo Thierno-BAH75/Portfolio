@@ -200,6 +200,7 @@ const fr = {
     },
   },
   footer: {
+    navigation: "Navigation",
     rights: "Tous droits réservés.",
     admin: "Admin",
   },
@@ -435,6 +436,7 @@ const en: DeepDict<typeof fr> = {
     },
   },
   footer: {
+    navigation: "Navigation",
     rights: "All rights reserved.",
     admin: "Admin",
   },

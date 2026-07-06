@@ -6,6 +6,7 @@ import { FadeIn, StaggerChildren, StaggerItem } from "@/components/animations";
 import { ProjectCard } from "@/components/projects/project-card";
 import { ProjectPanel } from "@/components/projects/project-panel";
 import { useProjectPanel } from "@/components/projects/use-project-panel";
+import { SectionBackground } from "@/components/ui/section-background";
 import { featuredProjects } from "@/data/projects";
 import { useI18n } from "@/i18n";
 
@@ -14,7 +15,8 @@ export function Projects() {
   const { project, open, close } = useProjectPanel();
 
   return (
-    <section className="py-20 lg:py-32 bg-muted/30" id="projects">
+    <section className="relative overflow-hidden py-20 lg:py-32 bg-muted/30" id="projects">
+      <SectionBackground glowPosition="top-center" variant="dual" />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}

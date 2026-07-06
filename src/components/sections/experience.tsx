@@ -12,6 +12,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { SectionBackground } from "@/components/ui/section-background";
 import { education, experiences, certifications } from "@/data/experience";
 import { formatDate, cn } from "@/lib/utils";
 import type { Education, Experience as ExperienceType } from "@/types";
@@ -269,7 +270,8 @@ export function Experience() {
   const { t, tx } = useI18n();
 
   return (
-    <section className="py-20 lg:py-32" id="experience">
+    <section className="relative overflow-hidden py-20 lg:py-32" id="experience">
+      <SectionBackground glowPosition="bottom-left" variant="violet" />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div className="text-center max-w-2xl mx-auto mb-16" {...fade()}>

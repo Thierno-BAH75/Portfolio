@@ -3,6 +3,7 @@
 import type { MouseEvent } from "react";
 import { motion, useReducedMotion, Variants } from "framer-motion";
 import { Counter, StaggerChildren, StaggerItem } from "@/components/animations";
+import { SectionBackground } from "@/components/ui/section-background";
 import { skills, skillsByCategory } from "@/data/skills";
 import { projects } from "@/data/projects";
 import { certifications } from "@/data/experience";
@@ -61,7 +62,8 @@ export function Skills() {
   const { t, locale } = useI18n();
 
   return (
-    <section className="py-16 sm:py-20 lg:py-32" id="skills">
+    <section className="relative overflow-hidden py-16 sm:py-20 lg:py-32" id="skills">
+      <SectionBackground glowPosition="top-right" variant="cyan" />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div

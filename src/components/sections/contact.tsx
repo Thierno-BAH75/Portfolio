@@ -16,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { SectionBackground } from "@/components/ui/section-background";
 import { personalInfo, socialLinks } from "@/data/experience";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/i18n";
@@ -167,7 +168,8 @@ export function Contact() {
   };
 
   return (
-    <section className="py-16 sm:py-20 lg:py-32" id="contact">
+    <section className="relative overflow-hidden py-16 sm:py-20 lg:py-32" id="contact">
+      <SectionBackground glowPosition="bottom-right" variant="cyan" />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header — même pattern que src/components/sections/skills.tsx */}
         <motion.div

@@ -15,8 +15,9 @@ export interface RSSArticle {
 const FEEDS: { url: string; source: string; domain: string }[] = [
   // ── Cybersécurité ────────────────────────────────────────────────
   { url: "https://www.cert.ssi.gouv.fr/feed/",                  source: "ANSSI",            domain: "Cybersécurité" },
-  { url: "https://nvd.nist.gov/feeds/xml/cve/misc/nvd-rss.xml", source: "NIST NVD",         domain: "Cybersécurité" },
   { url: "https://krebsonsecurity.com/feed/",                    source: "Krebs on Security", domain: "Cybersécurité" },
+  { url: "https://feeds.feedburner.com/TheHackersNews",          source: "The Hacker News",  domain: "Cybersécurité" },
+  { url: "https://isc.sans.edu/rssfeed.xml",                     source: "SANS ISC",         domain: "Cybersécurité" },
   // ── Réseaux & Infrastructure ─────────────────────────────────────
   { url: "https://blogs.cisco.com/feed",                         source: "Cisco Blog",       domain: "Réseaux & Infrastructure" },
   { url: "https://blog.cloudflare.com/rss/",                     source: "Cloudflare",       domain: "Réseaux & Infrastructure" },
@@ -25,7 +26,6 @@ const FEEDS: { url: string; source: string; domain: string }[] = [
   { url: "https://azure.microsoft.com/en-us/blog/feed/",         source: "Microsoft Azure", domain: "Cloud & DevSecOps" },
   // ── Système & Linux ──────────────────────────────────────────────
   { url: "https://www.redhat.com/en/rss/blog",                   source: "Red Hat",          domain: "Système & Linux" },
-  { url: "https://www.linuxfoundation.org/feed/",                source: "Linux Foundation", domain: "Système & Linux" },
 ];
 
 function detectTag(title: string, desc: string): string {
@@ -107,11 +107,14 @@ export async function GET() {
           headers: { "User-Agent": "Mozilla/5.0 (compatible; RSSBot/1.0)" },
           signal: AbortSignal.timeout(8000),
         });
-        if (!res.ok) return;
+        if (!res.ok) {
+          console.warn(`[api/rss] Flux indisponible (${res.status}) : ${source} — ${url}`);
+          return;
+        }
         const xml = await res.text();
         results.push(...parseRSS(xml, source, domain));
-      } catch {
-        // feed unavailable — skip silently
+      } catch (err) {
+        console.warn(`[api/rss] Échec de récupération du flux ${source} — ${url} :`, err);
       }
     })
   );

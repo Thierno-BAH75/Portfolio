@@ -14,7 +14,9 @@ import {
   X,
 } from "lucide-react";
 import type { RSSArticle } from "@/app/api/rss/route";
+import { SectionBackground } from "@/components/ui/section-background";
 import { useI18n } from "@/i18n";
+import type { Dictionary } from "@/i18n/dictionaries";
 
 const LS_KEY = "veille_settings";
 interface VeilleSettings { autoRefresh: boolean; interval: number }
@@ -29,22 +31,27 @@ function readSettings(): VeilleSettings {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   Static data
+   Static data — les valeurs "domain"/"source" sont les clés internes
+   (identiques à celles renvoyées par /api/rss) ; seul le libellé
+   affiché est localisé.
 ───────────────────────────────────────────────────────────────── */
-const DOMAINS = [
-  "Tous les domaines",
+const ALL = "all";
+
+const DOMAIN_VALUES = [
+  ALL,
   "Cybersécurité",
   "Réseaux & Infrastructure",
   "Cloud & DevSecOps",
   "Système & Linux",
-];
+] as const;
 
-const SOURCES = [
-  "Toutes les sources",
+const SOURCE_VALUES = [
+  ALL,
   // Cybersécurité
   "ANSSI",
-  "NIST NVD",
   "Krebs on Security",
+  "The Hacker News",
+  "SANS ISC",
   // Réseaux & Infrastructure
   "Cisco Blog",
   "Cloudflare",
@@ -53,7 +60,6 @@ const SOURCES = [
   "Microsoft Azure",
   // Système & Linux
   "Red Hat",
-  "Linux Foundation",
 ];
 
 const TAG_COLORS: Record<string, string> = {
@@ -68,7 +74,7 @@ const TAG_COLORS: Record<string, string> = {
   DDoS:       "bg-blue-500/20 text-blue-300 border-blue-500/40",
   Cloud:      "bg-sky-500/20 text-sky-300 border-sky-500/40",
   Linux:      "bg-emerald-500/20 text-emerald-300 border-emerald-500/40",
-  Réseau:     "bg-teal-500/20 text-teal-300 border-teal-500/40",
+  Réseau:     "bg-teal-500/20 text-teal-300 border-teal-500/30",
   Actualité:  "bg-cyan-500/15 text-cyan-300 border-cyan-500/30",
 };
 
@@ -82,10 +88,20 @@ const DOMAIN_COLORS: Record<string, string> = {
 /* ─────────────────────────────────────────────────────────────────
    Helpers
 ───────────────────────────────────────────────────────────────── */
-function formatDate(raw: string): string {
+function domainLabel(domain: string, t: Dictionary): string {
+  switch (domain) {
+    case "Cybersécurité": return t.veille.domains.cyber;
+    case "Réseaux & Infrastructure": return t.veille.domains.network;
+    case "Cloud & DevSecOps": return t.veille.domains.cloud;
+    case "Système & Linux": return t.veille.domains.system;
+    default: return domain;
+  }
+}
+
+function formatDate(raw: string, locale: "fr" | "en"): string {
   if (!raw) return "—";
   try {
-    return new Intl.DateTimeFormat("fr-FR", {
+    return new Intl.DateTimeFormat(locale === "fr" ? "fr-FR" : "en-US", {
       day: "2-digit",
       month: "short",
       year: "numeric",
@@ -100,23 +116,27 @@ function formatDate(raw: string): string {
 /* ─────────────────────────────────────────────────────────────────
    Dropdown component
 ───────────────────────────────────────────────────────────────── */
+interface DropdownOption { value: string; label: string }
+
 function FilterDropdown({
   value,
   options,
   onChange,
 }: {
   value: string;
-  options: string[];
+  options: DropdownOption[];
   onChange: (v: string) => void;
 }) {
   const [open, setOpen] = useState(false);
+  const selectedLabel = options.find((o) => o.value === value)?.label ?? value;
+
   return (
     <div className="relative">
       <button
         onClick={() => setOpen((o) => !o)}
         className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border/60 bg-background/70 text-sm text-muted-foreground hover:border-violet-500/50 hover:text-foreground transition-all whitespace-nowrap"
       >
-        {value}
+        {selectedLabel}
         <ChevronDown size={14} className={`transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       <AnimatePresence>
@@ -129,14 +149,14 @@ function FilterDropdown({
             className="absolute left-0 top-full mt-1 z-50 min-w-full bg-background border border-border/60 rounded-lg shadow-xl overflow-hidden"
           >
             {options.map((opt) => (
-              <li key={opt}>
+              <li key={opt.value}>
                 <button
-                  onClick={() => { onChange(opt); setOpen(false); }}
+                  onClick={() => { onChange(opt.value); setOpen(false); }}
                   className={`w-full text-left px-3 py-2 text-sm hover:bg-violet-500/10 transition-colors ${
-                    opt === value ? "text-violet-400 bg-violet-500/10" : "text-muted-foreground"
+                    opt.value === value ? "text-violet-400 bg-violet-500/10" : "text-muted-foreground"
                   }`}
                 >
-                  {opt}
+                  {opt.label}
                 </button>
               </li>
             ))}
@@ -151,6 +171,7 @@ function FilterDropdown({
    Article Card
 ───────────────────────────────────────────────────────────────── */
 function ArticleCard({ article }: { article: RSSArticle }) {
+  const { t, locale } = useI18n();
   const domainColor = DOMAIN_COLORS[article.domain] ?? DOMAIN_COLORS["Cybersécurité"];
   const tagColor    = TAG_COLORS[article.tag] ?? TAG_COLORS["Actualité"];
 
@@ -171,7 +192,7 @@ function ArticleCard({ article }: { article: RSSArticle }) {
         {/* Domain + source row */}
         <div className="flex items-center gap-2 flex-wrap">
           <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${domainColor}`}>
-            {article.domain}
+            {domainLabel(article.domain, t)}
           </span>
           <span className="text-[10px] text-muted-foreground/60 truncate">
             {article.source}
@@ -197,7 +218,7 @@ function ArticleCard({ article }: { article: RSSArticle }) {
 
         {/* Date */}
         <div className="text-[10px] text-muted-foreground/60 pt-1 border-t border-border/30">
-          {formatDate(article.pubDate)}
+          {formatDate(article.pubDate, locale)}
         </div>
 
         {/* CTA */}
@@ -208,7 +229,7 @@ function ArticleCard({ article }: { article: RSSArticle }) {
           className="mt-1 flex items-center justify-center gap-2 w-full py-2 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-semibold shadow hover:shadow-[0_0_16px_rgba(6,182,212,0.4)] transition-all"
         >
           <ExternalLink size={12} />
-          Lire la source
+          {t.veille.readSource}
         </a>
       </div>
     </motion.div>
@@ -244,8 +265,8 @@ export default function VeillePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [search, setSearch] = useState("");
-  const [domain, setDomain] = useState("Tous les domaines");
-  const [source, setSource] = useState("Toutes les sources");
+  const [domain, setDomain] = useState<string>(ALL);
+  const [source, setSource] = useState<string>(ALL);
   const [refreshKey, setRefreshKey] = useState(0);
   const [lastUpdatedAt, setLastUpdatedAt] = useState<Date | null>(null);
   const [newCount, setNewCount] = useState(0);       // notification nouveaux articles
@@ -253,6 +274,24 @@ export default function VeillePage() {
   const [settings, setSettings] = useState<VeilleSettings>(DEFAULT_SETTINGS);
   const prevCountRef = useRef(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const domainOptions: DropdownOption[] = useMemo(
+    () =>
+      DOMAIN_VALUES.map((value) => ({
+        value,
+        label: value === ALL ? t.veille.domains.all : domainLabel(value, t),
+      })),
+    [t]
+  );
+
+  const sourceOptions: DropdownOption[] = useMemo(
+    () =>
+      SOURCE_VALUES.map((value) => ({
+        value,
+        label: value === ALL ? t.veille.allSources : value,
+      })),
+    [t]
+  );
 
   // Lire les settings depuis localStorage
   useEffect(() => {
@@ -324,10 +363,8 @@ export default function VeillePage() {
         a.title.toLowerCase().includes(q) ||
         a.description.toLowerCase().includes(q) ||
         a.source.toLowerCase().includes(q);
-      const matchDomain =
-        domain === "Tous les domaines" || a.domain === domain;
-      const matchSrc =
-        source === "Toutes les sources" || a.source === source;
+      const matchDomain = domain === ALL || a.domain === domain;
+      const matchSrc = source === ALL || a.source === source;
       return matchSearch && matchDomain && matchSrc;
     });
   }, [articles, search, domain, source]);
@@ -335,22 +372,9 @@ export default function VeillePage() {
   return (
     <div className="relative min-h-screen pt-24 pb-20 overflow-hidden">
 
-      {/* ── CSS ── */}
+      {/* ── CSS — animations fonctionnelles uniquement (le fond décoratif
+           vient du composant partagé SectionBackground ci-dessous) ── */}
       <style>{`
-        .veille-bg { background-color: hsl(var(--background)); }
-        .veille-grid {
-          background-image:
-            radial-gradient(circle, rgba(139,92,246,0.26) 1px, transparent 1px),
-            radial-gradient(circle, rgba(6,182,212,0.15) 1px, transparent 1px);
-          background-size: 32px 32px, 64px 64px;
-          background-position: 0 0, 16px 16px;
-        }
-        .veille-corner-tl { background: radial-gradient(ellipse at top left, rgba(139,92,246,0.30) 0%, transparent 55%); }
-        .veille-corner-br { background: radial-gradient(ellipse at bottom right, rgba(6,182,212,0.22) 0%, transparent 55%); }
-        .veille-corner-tr { background: radial-gradient(ellipse at top right, rgba(59,130,246,0.18) 0%, transparent 50%); }
-        .veille-corner-bl { background: radial-gradient(ellipse at bottom left, rgba(139,92,246,0.14) 0%, transparent 50%); }
-        .veille-blob-center { background: radial-gradient(ellipse at 50% 50%, rgba(139,92,246,0.08) 0%, transparent 65%); }
-
         @keyframes icon-float-v {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-7px); }
@@ -379,14 +403,8 @@ export default function VeillePage() {
         .spin { animation: spin-refresh 0.8s linear infinite; }
       `}</style>
 
-      {/* ── Background ── */}
-      <div className="veille-bg absolute inset-0 -z-10" />
-      <div className="veille-grid absolute inset-0 -z-10 opacity-60" />
-      <div className="veille-corner-tl absolute inset-0 -z-10" />
-      <div className="veille-corner-br absolute inset-0 -z-10" />
-      <div className="veille-corner-tr absolute inset-0 -z-10" />
-      <div className="veille-corner-bl absolute inset-0 -z-10" />
-      <div className="veille-blob-center absolute inset-0 -z-10" />
+      {/* ── Background — composant partagé, cohérent avec Skills/Parcours/Projets/Contact ── */}
+      <SectionBackground glowPosition="top-right" variant="violet" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
 
@@ -443,8 +461,8 @@ export default function VeillePage() {
 
           {/* Filters row */}
           <div className="flex flex-wrap items-center gap-2">
-            <FilterDropdown value={domain} options={DOMAINS} onChange={setDomain} />
-            <FilterDropdown value={source} options={SOURCES} onChange={setSource} />
+            <FilterDropdown value={domain} options={domainOptions} onChange={setDomain} />
+            <FilterDropdown value={source} options={sourceOptions} onChange={setSource} />
 
             {/* Refresh button + last-update badge */}
             <div className="flex flex-col items-start gap-0.5">

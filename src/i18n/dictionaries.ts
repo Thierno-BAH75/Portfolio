@@ -228,8 +228,17 @@ const fr = {
     oneMinAgo: "il y a 1 min",
     minutesAgoPrefix: "il y a ",
     minutesAgoSuffix: " min",
+    readSource: "Lire la source",
+    domains: {
+      all: "Tous les domaines",
+      cyber: "Cybersécurité",
+      network: "Réseaux & Infrastructure",
+      cloud: "Cloud & DevSecOps",
+      system: "Système & Linux",
+    },
+    allSources: "Toutes les sources",
     sourcesNote:
-      "Sources : ANSSI · NIST NVD · Krebs on Security · Cisco Blog · Cloudflare · AWS Security · Microsoft Azure · Red Hat · Linux Foundation — flux RSS mis à jour toutes les 5 min",
+      "Sources : ANSSI · Krebs on Security · The Hacker News · SANS ISC · Cisco Blog · Cloudflare · AWS Security · Microsoft Azure · Red Hat — flux RSS mis à jour toutes les 5 min",
   },
 };
 
@@ -465,8 +474,17 @@ const en: DeepDict<typeof fr> = {
     oneMinAgo: "1 min ago",
     minutesAgoPrefix: "",
     minutesAgoSuffix: " min ago",
+    readSource: "Read source",
+    domains: {
+      all: "All domains",
+      cyber: "Cybersecurity",
+      network: "Networking & Infrastructure",
+      cloud: "Cloud & DevSecOps",
+      system: "Systems & Linux",
+    },
+    allSources: "All sources",
     sourcesNote:
-      "Sources: ANSSI · NIST NVD · Krebs on Security · Cisco Blog · Cloudflare · AWS Security · Microsoft Azure · Red Hat · Linux Foundation — RSS feeds refreshed every 5 min",
+      "Sources: ANSSI · Krebs on Security · The Hacker News · SANS ISC · Cisco Blog · Cloudflare · AWS Security · Microsoft Azure · Red Hat — RSS feeds refreshed every 5 min",
   },
 };
 

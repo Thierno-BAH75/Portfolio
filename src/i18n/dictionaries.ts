@@ -245,6 +245,8 @@ const fr = {
     online: "En ligne",
     openLabel: "Ouvrir l'assistant IA",
     closeLabel: "Fermer l'assistant",
+    expandLabel: "Agrandir",
+    minimizeLabel: "Réduire",
     welcome:
       "Bonjour ! Je suis l'assistant de Thierno. Posez-moi vos questions sur son profil, ses compétences, ses projets ou sa disponibilité.",
     placeholder: "Votre question...",
@@ -509,6 +511,8 @@ const en: DeepDict<typeof fr> = {
     online: "Online",
     openLabel: "Open the AI assistant",
     closeLabel: "Close the assistant",
+    expandLabel: "Expand",
+    minimizeLabel: "Minimize",
     welcome:
       "Hi! I'm Thierno's assistant. Ask me anything about his profile, skills, projects or availability.",
     placeholder: "Your question...",

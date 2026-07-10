@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, type FormEvent } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { MessageCircle, Send, X } from "lucide-react";
+import { MessageCircle, Send, X, Maximize2, Minimize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/i18n";
 
@@ -16,6 +16,9 @@ export function ChatWidget() {
   const { t, locale } = useI18n();
   const reduceMotion = useReducedMotion();
   const [open, setOpen] = useState(false);
+  // Mode agrandi (desktop) : même composant et même état, seul le conteneur
+  // change — l'historique de conversation survit à la bascule.
+  const [expanded, setExpanded] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -29,11 +32,16 @@ export function ChatWidget() {
     }
   }, [open, messages.length, t.chat.welcome]);
 
-  // Échap pour fermer + focus initial sur l'input
+  // Échap progressif (agrandi → compact → fermé) + focus initial sur l'input
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key !== "Escape") return;
+      if (expanded) {
+        setExpanded(false);
+      } else {
+        setOpen(false);
+      }
     };
     window.addEventListener("keydown", onKeyDown);
     const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 50);
@@ -41,7 +49,22 @@ export function ChatWidget() {
       window.removeEventListener("keydown", onKeyDown);
       window.clearTimeout(focusTimer);
     };
+  }, [open, expanded]);
+
+  // À la fermeture du chat, on repart en mode compact
+  useEffect(() => {
+    if (!open) setExpanded(false);
   }, [open]);
+
+  // Scroll de la page bloqué tant que le mode agrandi est ouvert
+  useEffect(() => {
+    if (!expanded) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [expanded]);
 
   // Scroll en bas à chaque nouveau message
   useEffect(() => {
@@ -117,22 +140,49 @@ export function ChatWidget() {
         {open ? <X size={22} /> : <MessageCircle size={22} />}
       </motion.button>
 
-      {/* Panneau de chat */}
+      {/* Backdrop du mode agrandi (desktop) — clic = retour au mode compact */}
+      <AnimatePresence>
+        {open && expanded && (
+          <motion.div
+            key="chat-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.2 }}
+            onClick={() => setExpanded(false)}
+            aria-hidden="true"
+            className="fixed inset-0 z-[91] hidden sm:block bg-background/70 backdrop-blur-sm"
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Panneau de chat — même composant/état dans les deux modes,
+          seul le conteneur change (l'historique survit à la bascule) */}
       <AnimatePresence>
         {open && (
           <motion.div
             key="chat-panel"
             role="dialog"
-            aria-modal="false"
+            aria-modal={expanded}
             aria-label={t.chat.title}
+            layout={!reduceMotion}
             initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 16, scale: 0.97 }}
             animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 16, scale: 0.97 }}
-            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            transition={{
+              duration: 0.22,
+              ease: [0.22, 1, 0.36, 1],
+              layout: { duration: 0.3, ease: [0.22, 1, 0.36, 1] },
+            }}
             className={cn(
-              "fixed z-[91] flex flex-col overflow-hidden bg-card border border-border/60 shadow-2xl",
-              // Mobile : plein écran · Desktop : panneau ancré au-dessus de la bulle
-              "inset-0 sm:inset-auto sm:bottom-24 sm:right-6 sm:h-[540px] sm:max-h-[calc(100dvh-7rem)] sm:w-[380px] sm:rounded-2xl"
+              "fixed z-[92] flex flex-col overflow-hidden bg-card border border-border/60 shadow-2xl",
+              // Mobile : plein écran dans les deux cas
+              "inset-0 sm:rounded-2xl",
+              expanded
+                ? // Desktop agrandi : grande fenêtre centrée (inset-0 + m-auto)
+                  "sm:inset-0 sm:m-auto sm:w-[min(900px,90vw)] sm:h-[min(700px,80vh)]"
+                : // Desktop compact : panneau ancré au-dessus de la bulle
+                  "sm:inset-auto sm:bottom-24 sm:right-6 sm:h-[540px] sm:max-h-[calc(100dvh-7rem)] sm:w-[380px]"
             )}
           >
             {/* En-tête */}
@@ -152,18 +202,35 @@ export function ChatWidget() {
                   {t.chat.online}
                 </p>
               </div>
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                aria-label={t.chat.closeLabel}
-                className="ml-auto p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
-              >
-                <X size={17} />
-              </button>
+              <div className="ml-auto flex items-center gap-0.5">
+                {/* Agrandir/réduire — desktop uniquement (mobile déjà plein écran) */}
+                <button
+                  type="button"
+                  onClick={() => setExpanded((e) => !e)}
+                  aria-label={expanded ? t.chat.minimizeLabel : t.chat.expandLabel}
+                  className="hidden sm:flex p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
+                >
+                  {expanded ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  aria-label={t.chat.closeLabel}
+                  className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
+                >
+                  <X size={17} />
+                </button>
+              </div>
             </div>
 
             {/* Messages */}
-            <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
+            <div
+              ref={scrollRef}
+              className={cn(
+                "flex-1 overflow-y-auto px-4 py-4 space-y-3",
+                expanded && "sm:px-8 sm:py-6"
+              )}
+            >
               {messages.map((m, i) => (
                 <div
                   key={i}
@@ -172,6 +239,8 @@ export function ChatWidget() {
                   <div
                     className={cn(
                       "max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-wrap",
+                      // En agrandi : bulles plus larges en absolu (~630px) et padding plus confortable
+                      expanded && "sm:max-w-[70%] sm:px-4 sm:py-3",
                       m.role === "user"
                         ? "bg-gradient-to-br from-violet-600 to-cyan-600 text-white rounded-br-md"
                         : m.isError
@@ -223,7 +292,10 @@ export function ChatWidget() {
             {/* Saisie */}
             <form
               onSubmit={onSubmit}
-              className="flex items-center gap-2 border-t border-border/60 px-3 py-3"
+              className={cn(
+                "flex items-center gap-2 border-t border-border/60 px-3 py-3",
+                expanded && "sm:px-6 sm:py-4"
+              )}
             >
               <input
                 ref={inputRef}

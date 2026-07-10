@@ -240,6 +240,24 @@ const fr = {
     sourcesNote:
       "Sources : ANSSI · Krebs on Security · The Hacker News · SANS ISC · Cisco Blog · Cloudflare · AWS Security · Microsoft Azure · Red Hat — flux RSS mis à jour toutes les 5 min",
   },
+  chat: {
+    title: "Assistant IA",
+    online: "En ligne",
+    openLabel: "Ouvrir l'assistant IA",
+    closeLabel: "Fermer l'assistant",
+    welcome:
+      "Bonjour ! Je suis l'assistant de Thierno. Posez-moi vos questions sur son profil, ses compétences, ses projets ou sa disponibilité.",
+    placeholder: "Votre question...",
+    send: "Envoyer",
+    typing: "écrit...",
+    error: "Assistant momentanément indisponible",
+    quickQuestions: [
+      "Quelles sont ses compétences ?",
+      "Parle-moi de ses projets",
+      "Est-il disponible en alternance ?",
+      "Comment le contacter ?",
+    ],
+  },
 };
 
 // Toute feuille est string ou string[] ; toute clé de `fr` doit exister dans `en`
@@ -485,6 +503,24 @@ const en: DeepDict<typeof fr> = {
     allSources: "All sources",
     sourcesNote:
       "Sources: ANSSI · Krebs on Security · The Hacker News · SANS ISC · Cisco Blog · Cloudflare · AWS Security · Microsoft Azure · Red Hat — RSS feeds refreshed every 5 min",
+  },
+  chat: {
+    title: "AI Assistant",
+    online: "Online",
+    openLabel: "Open the AI assistant",
+    closeLabel: "Close the assistant",
+    welcome:
+      "Hi! I'm Thierno's assistant. Ask me anything about his profile, skills, projects or availability.",
+    placeholder: "Your question...",
+    send: "Send",
+    typing: "typing...",
+    error: "Assistant temporarily unavailable",
+    quickQuestions: [
+      "What are his skills?",
+      "Tell me about his projects",
+      "Is he available for a work-study?",
+      "How can I contact him?",
+    ],
   },
 };
 

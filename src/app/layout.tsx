@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/footer";
 import { CustomCursor } from "@/components/layout/cursor";
 import { Preloader } from "@/components/layout/preloader";
 import { ScrollProgress } from "@/components/animations/scroll-progress";
+import { ChatWidgetMount } from "@/components/chat/chat-widget-mount";
 import { LanguageSync } from "@/i18n";
 
 const geistSans = Geist({
@@ -134,6 +135,9 @@ export default function RootLayout({
 
           {/* Footer */}
           <Footer />
+
+          {/* Assistant IA — bulle flottante bas-droite */}
+          <ChatWidgetMount />
         </Providers>
       </body>
     </html>

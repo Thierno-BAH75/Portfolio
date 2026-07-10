@@ -2,10 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { buildSystemPrompt } from "@/lib/chat-context";
 import type { Locale } from "@/types";
 
-// Modèles flash récents, essayés dans l'ordre (fetch natif, pas de SDK) :
-// l'alias « flash-latest » suit les générations côté Google, le second sert
-// de repli en cas de surcharge (503) ou de retrait du premier.
-const GEMINI_MODELS = ["gemini-flash-latest", "gemini-3.1-flash-lite"];
+// Modèles flash-lite, essayés dans l'ordre (fetch natif, pas de SDK).
+// Note : l'alias "gemini-flash-latest" (sans "lite") résout aujourd'hui vers
+// gemini-3.5-flash, dont le quota gratuit est ~20 req/jour — beaucoup trop
+// serré pour ce widget. Les variantes "flash-lite" ont un quota gratuit
+// nettement plus généreux. L'alias "flash-lite-latest" suit les générations
+// côté Google, le second sert de repli en cas de surcharge/retrait.
+const GEMINI_MODELS = ["gemini-flash-lite-latest", "gemini-3.1-flash-lite"];
 const geminiUrl = (model: string) =>
   `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 
@@ -101,8 +104,18 @@ export async function POST(request: NextRequest) {
       parts: [{ text: m.content }],
     })),
     generationConfig: {
-      maxOutputTokens: 400,
-      temperature: 0.7,
+      // 500 pour laisser la place à une réponse complète quand la question
+      // le justifie (ex. présentation d'un projet) ; 0.3 pour des réponses
+      // factuelles et précises, peu de divagation.
+      maxOutputTokens: 500,
+      temperature: 0.3,
+      // Sans ça, les modèles Gemini récents consomment le budget de tokens
+      // en « réflexion » interne invisible (thoughtsTokenCount) avant même
+      // de produire la réponse visible, ce qui tronque les réponses en
+      // plein milieu de phrase (finishReason: MAX_TOKENS avec ~20 tokens
+      // de texte réel sur 500). Le prompt est factuel et court : pas besoin
+      // de chaîne de raisonnement, tout le budget va au texte visible.
+      thinkingConfig: { thinkingBudget: 0 },
     },
   });
 

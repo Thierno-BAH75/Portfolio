@@ -2,12 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/layout/providers";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
-import { CustomCursor } from "@/components/layout/cursor";
-import { Preloader } from "@/components/layout/preloader";
-import { ScrollProgress } from "@/components/animations/scroll-progress";
-import { ChatWidgetMount } from "@/components/chat/chat-widget-mount";
+import { PublicChrome } from "@/components/layout/public-chrome";
 import { LanguageSync } from "@/i18n";
 import { getPersonalInfo, getSocialLinks } from "@/lib/data";
 
@@ -121,26 +116,11 @@ export default async function RootLayout({
           {/* <html lang> suit la langue active (défaut : fr) */}
           <LanguageSync />
 
-          {/* Preloader */}
-          <Preloader name={personalInfo.name} />
-
-          {/* Custom cursor - desktop only */}
-          <CustomCursor />
-
-          {/* Scroll progress indicator */}
-          <ScrollProgress />
-
-          {/* Header */}
-          <Header personalInfo={personalInfo} socialLinks={socialLinks} />
-
-          {/* Main content */}
-          <main className="min-h-screen">{children}</main>
-
-          {/* Footer */}
-          <Footer personalInfo={personalInfo} socialLinks={socialLinks} />
-
-          {/* Assistant IA — bulle flottante bas-droite */}
-          <ChatWidgetMount />
+          {/* Header/Footer/Preloader/curseur/chat : absents sur /admin/*,
+              qui a son propre layout sobre (voir public-chrome.tsx) */}
+          <PublicChrome personalInfo={personalInfo} socialLinks={socialLinks}>
+            {children}
+          </PublicChrome>
         </Providers>
       </body>
     </html>

@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
 
   const safeLocale: Locale = locale === "en" ? "en" : "fr";
   const history = (messages as ChatMessage[]).slice(-MAX_HISTORY_MESSAGES);
-  const systemPrompt = buildSystemPrompt(safeLocale);
+  const systemPrompt = await buildSystemPrompt(safeLocale);
 
   // Même system prompt et même historique envoyés à chaque fournisseur :
   // le ton et le comportement de l'assistant ne varient jamais selon celui

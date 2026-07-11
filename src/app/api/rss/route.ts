@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getVeilleSources } from "@/lib/data";
 
 export interface RSSArticle {
   id: string;
@@ -11,22 +12,6 @@ export interface RSSArticle {
   category: string; // kept for backward compat — same as domain
   tag: string;
 }
-
-const FEEDS: { url: string; source: string; domain: string }[] = [
-  // ── Cybersécurité ────────────────────────────────────────────────
-  { url: "https://www.cert.ssi.gouv.fr/feed/",                  source: "ANSSI",            domain: "Cybersécurité" },
-  { url: "https://krebsonsecurity.com/feed/",                    source: "Krebs on Security", domain: "Cybersécurité" },
-  { url: "https://feeds.feedburner.com/TheHackersNews",          source: "The Hacker News",  domain: "Cybersécurité" },
-  { url: "https://isc.sans.edu/rssfeed.xml",                     source: "SANS ISC",         domain: "Cybersécurité" },
-  // ── Réseaux & Infrastructure ─────────────────────────────────────
-  { url: "https://blogs.cisco.com/feed",                         source: "Cisco Blog",       domain: "Réseaux & Infrastructure" },
-  { url: "https://blog.cloudflare.com/rss/",                     source: "Cloudflare",       domain: "Réseaux & Infrastructure" },
-  // ── Cloud & DevSecOps ────────────────────────────────────────────
-  { url: "https://aws.amazon.com/blogs/security/feed/",          source: "AWS Security",    domain: "Cloud & DevSecOps" },
-  { url: "https://azure.microsoft.com/en-us/blog/feed/",         source: "Microsoft Azure", domain: "Cloud & DevSecOps" },
-  // ── Système & Linux ──────────────────────────────────────────────
-  { url: "https://www.redhat.com/en/rss/blog",                   source: "Red Hat",          domain: "Système & Linux" },
-];
 
 function detectTag(title: string, desc: string): string {
   const text = (title + " " + desc).toLowerCase();
@@ -98,9 +83,10 @@ function parseRSS(xml: string, source: string, domain: string): RSSArticle[] {
 
 export async function GET() {
   const results: RSSArticle[] = [];
+  const sources = await getVeilleSources();
 
   await Promise.allSettled(
-    FEEDS.map(async ({ url, source, domain }) => {
+    sources.map(async ({ url, name: source, domain }) => {
       try {
         const res = await fetch(url, {
           next: { revalidate: 300 },

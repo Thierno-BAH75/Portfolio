@@ -159,3 +159,26 @@ export const personalInfoSchema = z.object({
 });
 
 export type PersonalInfoFormValues = z.infer<typeof personalInfoSchema>;
+
+// ── Veille ───────────────────────────────────────────────────────────
+export const veilleSourceSchema = z.object({
+  name: z.string().min(1, "Le nom est requis"),
+  url: z.string().url("URL invalide"),
+  domain: z.string().min(1, "Le domaine est requis"),
+  category: z.string().optional(),
+  isActive: z.boolean(),
+  displayOrder: z.number().int().min(0),
+});
+
+export type VeilleSourceFormValues = z.infer<typeof veilleSourceSchema>;
+
+export const veilleBookmarkSchema = z.object({
+  articleUrl: z.string().url("URL invalide"),
+  articleTitle: z.string().min(1, "Le titre est requis"),
+  sourceName: z.string().optional(),
+  commentFr: z.string().optional(),
+  commentEn: z.string().optional(),
+  isPinned: z.boolean(),
+});
+
+export type VeilleBookmarkFormValues = z.infer<typeof veilleBookmarkSchema>;

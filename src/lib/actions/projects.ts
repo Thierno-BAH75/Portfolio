@@ -152,3 +152,21 @@ export async function duplicateProject(id: string): Promise<ActionResult> {
     return { success: false, error: err instanceof Error ? err.message : "Erreur inconnue" };
   }
 }
+
+// Une seule requête réseau (RPC) — un upsert partiel {id, display_order}
+// échoue sur les colonnes NOT NULL sans défaut (slug, title…), Postgres
+// validant la ligne avant de retomber sur ON CONFLICT DO UPDATE.
+export async function reorderProjects(orderedIds: string[]): Promise<ActionResult> {
+  try {
+    await requireAdminUser();
+    const admin = getSupabaseAdmin();
+    const { error } = await admin.rpc("reorder_projects", { ids: orderedIds });
+    if (error) return { success: false, error: error.message };
+
+    updateTag("projects");
+    return { success: true };
+  } catch (err) {
+    if (err instanceof UnauthorizedError) return { success: false, error: err.message };
+    return { success: false, error: err instanceof Error ? err.message : "Erreur inconnue" };
+  }
+}

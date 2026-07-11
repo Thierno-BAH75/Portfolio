@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
 import { buildSystemPrompt } from "@/lib/chat-context";
 import { generateReply, type ChatMessage } from "@/lib/ai-providers";
+import { logChatInteraction } from "@/lib/chat-logger";
 import type { Locale } from "@/types";
 
 const MAX_MESSAGE_LENGTH = 500;
@@ -85,5 +86,19 @@ export async function POST(request: NextRequest) {
   }
 
   console.log(`[api/chat] Réponse servie par : ${result.provider}`);
+
+  // after() : exécuté une fois la réponse envoyée au visiteur, ne retarde
+  // jamais le temps de réponse perçu du chatbot.
+  const lastQuestion = (messages as ChatMessage[])[messages.length - 1].content;
+  after(() =>
+    logChatInteraction({
+      question: lastQuestion,
+      answer: result.reply,
+      locale: safeLocale,
+      provider: result.provider,
+      ip,
+    })
+  );
+
   return NextResponse.json({ reply: result.reply });
 }

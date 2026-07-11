@@ -84,6 +84,16 @@ export async function getProjectByIdAdmin(id: string): Promise<AdminProject | nu
   return data ? rowToAdminProject(data) : null;
 }
 
+export async function getTopViewedProjects(limit = 3): Promise<AdminProject[]> {
+  const { data, error } = await supabase
+    .from("projects")
+    .select("*")
+    .order("view_count", { ascending: false })
+    .limit(limit);
+  if (error) throw new Error(`getTopViewedProjects: ${error.message}`);
+  return (data ?? []).map(rowToAdminProject);
+}
+
 function rowToAdminExperience(row: Record<string, unknown>): AdminExperience {
   return {
     id: row.id as string,
@@ -289,4 +299,153 @@ export async function getAdminCounts(): Promise<AdminCounts> {
     education: education.count ?? 0,
     certifications: certifications.count ?? 0,
   };
+}
+
+// ── Chat logs ────────────────────────────────────────────────────────
+// Lecture réservée à l'admin (RLS) : toujours via le client service_role,
+// comme pour contact_messages.
+export interface AdminChatLog {
+  id: string;
+  question: string;
+  answer: string;
+  locale: string;
+  provider: string;
+  ip: string | null;
+  createdAt: string;
+}
+
+function rowToAdminChatLog(row: Record<string, unknown>): AdminChatLog {
+  return {
+    id: row.id as string,
+    question: row.question as string,
+    answer: row.answer as string,
+    locale: row.locale as string,
+    provider: row.provider as string,
+    ip: (row.ip as string) ?? null,
+    createdAt: row.created_at as string,
+  };
+}
+
+export async function getAllChatLogsAdmin(filters?: {
+  provider?: string;
+  from?: string;
+  to?: string;
+}): Promise<AdminChatLog[]> {
+  const admin = getSupabaseAdmin();
+  let query = admin.from("chat_logs").select("*").order("created_at", { ascending: false });
+  if (filters?.provider) query = query.eq("provider", filters.provider);
+  if (filters?.from) query = query.gte("created_at", filters.from);
+  if (filters?.to) query = query.lte("created_at", filters.to);
+
+  const { data, error } = await query;
+  if (error) throw new Error(`getAllChatLogsAdmin: ${error.message}`);
+  return (data ?? []).map(rowToAdminChatLog);
+}
+
+export async function getChatLogsCountThisWeek(): Promise<number> {
+  const admin = getSupabaseAdmin();
+  const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+  const { count, error } = await admin
+    .from("chat_logs")
+    .select("id", { count: "exact", head: true })
+    .gte("created_at", weekAgo);
+  if (error) throw new Error(`getChatLogsCountThisWeek: ${error.message}`);
+  return count ?? 0;
+}
+
+// ── Journal des connexions ──────────────────────────────────────────
+export interface AdminConnectionLog {
+  id: string;
+  email: string | null;
+  eventType: "login" | "logout" | "mfa_challenge";
+  ip: string | null;
+  userAgent: string | null;
+  createdAt: string;
+}
+
+function rowToAdminConnectionLog(row: Record<string, unknown>): AdminConnectionLog {
+  return {
+    id: row.id as string,
+    email: (row.email as string) ?? null,
+    eventType: row.event_type as AdminConnectionLog["eventType"],
+    ip: (row.ip as string) ?? null,
+    userAgent: (row.user_agent as string) ?? null,
+    createdAt: row.created_at as string,
+  };
+}
+
+export async function getConnectionLogs(limit = 50): Promise<AdminConnectionLog[]> {
+  const admin = getSupabaseAdmin();
+  const { data, error } = await admin
+    .from("connection_logs")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) throw new Error(`getConnectionLogs: ${error.message}`);
+  return (data ?? []).map(rowToAdminConnectionLog);
+}
+
+// ── Veille ───────────────────────────────────────────────────────────
+export interface AdminVeilleSource {
+  id: string;
+  name: string;
+  url: string;
+  domain: string;
+  category: string | null;
+  isActive: boolean;
+  displayOrder: number;
+}
+
+function rowToAdminVeilleSource(row: Record<string, unknown>): AdminVeilleSource {
+  return {
+    id: row.id as string,
+    name: row.name as string,
+    url: row.url as string,
+    domain: row.domain as string,
+    category: (row.category as string) ?? null,
+    isActive: row.is_active as boolean,
+    displayOrder: row.display_order as number,
+  };
+}
+
+export async function getAllVeilleSourcesAdmin(): Promise<AdminVeilleSource[]> {
+  const { data, error } = await supabase
+    .from("veille_sources")
+    .select("*")
+    .order("display_order", { ascending: true });
+  if (error) throw new Error(`getAllVeilleSourcesAdmin: ${error.message}`);
+  return (data ?? []).map(rowToAdminVeilleSource);
+}
+
+export interface AdminVeilleBookmark {
+  id: string;
+  articleUrl: string;
+  articleTitle: string;
+  sourceName: string | null;
+  commentFr: string | null;
+  commentEn: string | null;
+  isPinned: boolean;
+  createdAt: string;
+}
+
+function rowToAdminVeilleBookmark(row: Record<string, unknown>): AdminVeilleBookmark {
+  return {
+    id: row.id as string,
+    articleUrl: row.article_url as string,
+    articleTitle: row.article_title as string,
+    sourceName: (row.source_name as string) ?? null,
+    commentFr: (row.comment_fr as string) ?? null,
+    commentEn: (row.comment_en as string) ?? null,
+    isPinned: row.is_pinned as boolean,
+    createdAt: row.created_at as string,
+  };
+}
+
+export async function getAllVeilleBookmarksAdmin(): Promise<AdminVeilleBookmark[]> {
+  const { data, error } = await supabase
+    .from("veille_bookmarks")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw new Error(`getAllVeilleBookmarksAdmin: ${error.message}`);
+  return (data ?? []).map(rowToAdminVeilleBookmark);
 }

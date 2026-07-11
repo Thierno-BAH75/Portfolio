@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Plus, Pencil, Copy, Trash2, Star } from "lucide-react";
+import { Plus, Pencil, Copy, Trash2, Star, Eye, GripVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import type { AdminProject } from "@/lib/admin-data";
-import { deleteProject, duplicateProject } from "@/lib/actions/projects";
+import { deleteProject, duplicateProject, reorderProjects } from "@/lib/actions/projects";
 import { projectCategoryLabels } from "./constants";
 
 export function ProjectsList({ projects }: { projects: AdminProject[] }) {
@@ -16,6 +16,18 @@ export function ProjectsList({ projects }: { projects: AdminProject[] }) {
   const [isPending, startTransition] = useTransition();
   const [deleteTarget, setDeleteTarget] = useState<AdminProject | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [items, setItems] = useState(projects);
+  const [prevProjects, setPrevProjects] = useState(projects);
+  const [saving, setSaving] = useState(false);
+  const dragId = useRef<string | null>(null);
+
+  // Resynchronise l'ordre local avec les données serveur fraîches (après
+  // router.refresh() suite à une suppression/duplication par exemple) —
+  // ajustement pendant le rendu plutôt qu'un effect, cf. react.dev.
+  if (projects !== prevProjects) {
+    setPrevProjects(projects);
+    setItems(projects);
+  }
 
   const handleDelete = () => {
     if (!deleteTarget) return;
@@ -38,13 +50,37 @@ export function ProjectsList({ projects }: { projects: AdminProject[] }) {
     });
   };
 
+  const handleDrop = (targetId: string) => {
+    const sourceId = dragId.current;
+    dragId.current = null;
+    if (!sourceId || sourceId === targetId) return;
+
+    const sourceIndex = items.findIndex((p) => p.id === sourceId);
+    const targetIndex = items.findIndex((p) => p.id === targetId);
+    if (sourceIndex === -1 || targetIndex === -1) return;
+
+    const next = [...items];
+    const [moved] = next.splice(sourceIndex, 1);
+    next.splice(targetIndex, 0, moved);
+    setItems(next);
+
+    setSaving(true);
+    startTransition(async () => {
+      const result = await reorderProjects(next.map((p) => p.id));
+      setSaving(false);
+      if (!result.success) setError(result.error);
+      else router.refresh();
+    });
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold">Projets</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {projects.length} projet{projects.length > 1 ? "s" : ""}
+            {items.length} projet{items.length > 1 ? "s" : ""}
+            {saving && " · enregistrement de l'ordre…"}
           </p>
         </div>
         <Button asChild size="sm">
@@ -62,11 +98,16 @@ export function ProjectsList({ projects }: { projects: AdminProject[] }) {
       )}
 
       <div className="space-y-2">
-        {projects.map((project) => (
+        {items.map((project) => (
           <div
             key={project.id}
-            className="flex items-center gap-4 rounded-xl border border-border bg-card p-4 hover:border-violet-500/30 transition-colors"
+            draggable
+            onDragStart={() => (dragId.current = project.id)}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={() => handleDrop(project.id)}
+            className="flex items-center gap-3 rounded-xl border border-border bg-card p-4 hover:border-violet-500/30 transition-colors cursor-grab active:cursor-grabbing"
           >
+            <GripVertical size={16} className="text-muted-foreground flex-shrink-0" />
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap mb-1">
                 <span className="font-medium text-foreground truncate">{project.title.fr}</span>
@@ -86,8 +127,11 @@ export function ProjectsList({ projects }: { projects: AdminProject[] }) {
                   {project.status === "published" ? "Publié" : "Brouillon"}
                 </Badge>
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground flex items-center gap-1 flex-wrap">
                 {projectCategoryLabels[project.category]} · {project.date} · /{project.slug}
+                <span className="inline-flex items-center gap-0.5 ml-1">
+                  <Eye size={11} /> {project.viewCount}
+                </span>
               </p>
             </div>
 
@@ -119,7 +163,7 @@ export function ProjectsList({ projects }: { projects: AdminProject[] }) {
           </div>
         ))}
 
-        {projects.length === 0 && (
+        {items.length === 0 && (
           <p className="text-sm text-muted-foreground text-center py-12">Aucun projet pour l&apos;instant.</p>
         )}
       </div>

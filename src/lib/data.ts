@@ -15,6 +15,7 @@ import {
   socialLinks as staticSocialLinks,
 } from "@/data/experience";
 import { skills as staticSkills } from "@/data/skills";
+import { veilleSources as staticVeilleSources, type VeilleSource } from "@/data/veille-sources";
 import type {
   Project,
   Experience,
@@ -273,3 +274,61 @@ export async function getPersonalInfo(): Promise<PersonalInfo> {
 export async function getSocialLinks(): Promise<SocialLink[]> {
   return (await fetchPersonalInfo()).socialLinks;
 }
+
+// ── Veille : sources RSS + articles épinglés ──────────────────────────
+
+export const getVeilleSources = unstable_cache(
+  async (): Promise<VeilleSource[]> => {
+    const { data, error } = await supabase
+      .from("veille_sources")
+      .select("*")
+      .eq("is_active", true)
+      .order("display_order", { ascending: true });
+
+    if (error || !data || data.length === 0) {
+      if (error) console.warn("[data] getVeilleSources: fallback statique —", error.message);
+      return staticVeilleSources;
+    }
+    return data.map((row) => ({
+      name: row.name as string,
+      url: row.url as string,
+      domain: row.domain as string,
+    }));
+  },
+  ["veille-sources"],
+  { revalidate: REVALIDATE_SECONDS, tags: ["veille-sources"] }
+);
+
+export interface PinnedArticle {
+  id: string;
+  articleUrl: string;
+  articleTitle: string;
+  sourceName: string | null;
+  commentFr: string | null;
+  commentEn: string | null;
+}
+
+export const getPinnedBookmarks = unstable_cache(
+  async (): Promise<PinnedArticle[]> => {
+    const { data, error } = await supabase
+      .from("veille_bookmarks")
+      .select("*")
+      .eq("is_pinned", true)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.warn("[data] getPinnedBookmarks: indisponible —", error.message);
+      return [];
+    }
+    return (data ?? []).map((row) => ({
+      id: row.id as string,
+      articleUrl: row.article_url as string,
+      articleTitle: row.article_title as string,
+      sourceName: (row.source_name as string) ?? null,
+      commentFr: (row.comment_fr as string) ?? null,
+      commentEn: (row.comment_en as string) ?? null,
+    }));
+  },
+  ["veille-bookmarks"],
+  { revalidate: REVALIDATE_SECONDS, tags: ["veille-bookmarks"] }
+);

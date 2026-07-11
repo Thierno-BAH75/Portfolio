@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, GripVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import type { AdminSkill } from "@/lib/admin-data";
-import { createSkill, updateSkill, deleteSkill } from "@/lib/actions/skills";
+import { createSkill, updateSkill, deleteSkill, reorderSkills } from "@/lib/actions/skills";
 import type { SkillCategory } from "@/types";
 import { skillCategoryLabels, skillCategoryDefaultIcon, skillCategoryOrder } from "./constants";
 
@@ -16,7 +16,19 @@ function skillDisplayName(skill: AdminSkill): { fr: string; en: string } {
   return skill.name;
 }
 
-function SkillRow({ skill, onChanged }: { skill: AdminSkill; onChanged: () => void }) {
+function SkillRow({
+  skill,
+  onChanged,
+  onDragStart,
+  onDragOver,
+  onDrop,
+}: {
+  skill: AdminSkill;
+  onChanged: () => void;
+  onDragStart: () => void;
+  onDragOver: (e: React.DragEvent) => void;
+  onDrop: () => void;
+}) {
   const [isPending, startTransition] = useTransition();
   const initialName = skillDisplayName(skill);
   const [nameFr, setNameFr] = useState(initialName.fr);
@@ -52,7 +64,14 @@ function SkillRow({ skill, onChanged }: { skill: AdminSkill; onChanged: () => vo
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div
+      draggable
+      onDragStart={onDragStart}
+      onDragOver={onDragOver}
+      onDrop={onDrop}
+      className="flex items-center gap-2 cursor-grab active:cursor-grabbing"
+    >
+      <GripVertical size={14} className="text-muted-foreground flex-shrink-0" />
       <Input
         value={nameFr}
         onChange={(e) => setNameFr(e.target.value)}
@@ -137,25 +156,79 @@ function AddSkillRow({ category, nextOrder, onAdded }: { category: SkillCategory
 
 export function SkillsManager({ skills }: { skills: AdminSkill[] }) {
   const router = useRouter();
+  const [, startTransition] = useTransition();
+  const [items, setItems] = useState(skills);
+  const [prevSkills, setPrevSkills] = useState(skills);
+  const [error, setError] = useState<string | null>(null);
+  const [savingCategory, setSavingCategory] = useState<SkillCategory | null>(null);
+  const dragId = useRef<string | null>(null);
+
+  // Ajustement pendant le rendu plutôt qu'un effect, cf. react.dev.
+  if (skills !== prevSkills) {
+    setPrevSkills(skills);
+    setItems(skills);
+  }
+
   const refresh = () => router.refresh();
-  const maxOrder = skills.reduce((max, s) => Math.max(max, s.displayOrder), -1);
+  const maxOrder = items.reduce((max, s) => Math.max(max, s.displayOrder), -1);
+
+  const handleDrop = (category: SkillCategory, targetId: string) => {
+    const sourceId = dragId.current;
+    dragId.current = null;
+    if (!sourceId || sourceId === targetId) return;
+
+    const categorySkills = items.filter((s) => s.category === category);
+    const sourceIndex = categorySkills.findIndex((s) => s.id === sourceId);
+    const targetIndex = categorySkills.findIndex((s) => s.id === targetId);
+    if (sourceIndex === -1 || targetIndex === -1) return;
+
+    const reordered = [...categorySkills];
+    const [moved] = reordered.splice(sourceIndex, 1);
+    reordered.splice(targetIndex, 0, moved);
+
+    const reorderedIds = new Set(reordered.map((s) => s.id));
+    const rest = items.filter((s) => !reorderedIds.has(s.id));
+    setItems([...rest, ...reordered]);
+
+    setSavingCategory(category);
+    startTransition(async () => {
+      const result = await reorderSkills(reordered.map((s) => s.id));
+      setSavingCategory(null);
+      if (!result.success) setError(result.error);
+      else router.refresh();
+    });
+  };
 
   return (
     <div className="max-w-3xl">
       <h1 className="text-2xl font-bold mb-1">Compétences</h1>
-      <p className="text-sm text-muted-foreground mb-8">{skills.length} compétences au total</p>
+      <p className="text-sm text-muted-foreground mb-8">{items.length} compétences au total</p>
+
+      {error && (
+        <div className="mb-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+          {error}
+        </div>
+      )}
 
       <div className="space-y-8">
         {skillCategoryOrder.map((category) => {
-          const categorySkills = skills.filter((s) => s.category === category);
+          const categorySkills = items.filter((s) => s.category === category);
           return (
             <section key={category}>
               <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
                 {skillCategoryLabels[category]} ({categorySkills.length})
+                {savingCategory === category && " · enregistrement…"}
               </h2>
               <div className="space-y-2">
                 {categorySkills.map((skill) => (
-                  <SkillRow key={skill.id} skill={skill} onChanged={refresh} />
+                  <SkillRow
+                    key={skill.id}
+                    skill={skill}
+                    onChanged={refresh}
+                    onDragStart={() => (dragId.current = skill.id)}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={() => handleDrop(category, skill.id)}
+                  />
                 ))}
                 <AddSkillRow category={category} nextOrder={maxOrder + 1} onAdded={refresh} />
               </div>

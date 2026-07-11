@@ -4,11 +4,15 @@ import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createSupabaseBrowserClient } from "@/lib/supabase-browser";
+import { logConnectionEvent } from "@/lib/actions/security";
 
 export function LogoutButton() {
   const router = useRouter();
 
   const handleLogout = async () => {
+    // Journalisé avant signOut() : la session doit encore être valide pour
+    // que le server action puisse identifier l'utilisateur.
+    await logConnectionEvent("logout");
     const supabase = createSupabaseBrowserClient();
     await supabase.auth.signOut();
     router.push("/admin/login");

@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Lock, Mail, Shield, Database, Key, CheckCircle2, AlertCircle } from "lucide-react";
+import { Lock, Mail, Shield, Database, Key, CheckCircle2, AlertCircle, KeyRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { createSupabaseBrowserClient } from "@/lib/supabase-browser";
+import { logConnectionEvent } from "@/lib/actions/security";
 
 const features = [
   {
@@ -30,6 +31,18 @@ export default function AdminLoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Étape 2FA — n'apparaît que si un facteur TOTP vérifié existe déjà.
+  const [step, setStep] = useState<"password" | "mfa">("password");
+  const [factorId, setFactorId] = useState<string | null>(null);
+  const [challengeId, setChallengeId] = useState<string | null>(null);
+  const [code, setCode] = useState("");
+
+  const completeLogin = async () => {
+    await logConnectionEvent("login");
+    router.push("/admin");
+    router.refresh();
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -44,8 +57,62 @@ export default function AdminLoginPage() {
       return;
     }
 
-    router.push("/admin");
-    router.refresh();
+    const { data: aal, error: aalError } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+    if (aalError) {
+      setError(aalError.message);
+      setLoading(false);
+      return;
+    }
+
+    if (aal.nextLevel === "aal2" && aal.nextLevel !== aal.currentLevel) {
+      const { data: factorsData, error: factorsError } = await supabase.auth.mfa.listFactors();
+      const totpFactor = factorsData?.totp?.find((f) => f.status === "verified");
+      if (factorsError || !totpFactor) {
+        setError(factorsError?.message ?? "Facteur 2FA introuvable.");
+        setLoading(false);
+        return;
+      }
+
+      const { data: challenge, error: challengeError } = await supabase.auth.mfa.challenge({
+        factorId: totpFactor.id,
+      });
+      if (challengeError || !challenge) {
+        setError(challengeError?.message ?? "Échec du challenge 2FA.");
+        setLoading(false);
+        return;
+      }
+
+      setFactorId(totpFactor.id);
+      setChallengeId(challenge.id);
+      setStep("mfa");
+      setLoading(false);
+      return;
+    }
+
+    await completeLogin();
+  };
+
+  const handleVerifyMfa = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!factorId || !challengeId) return;
+    setLoading(true);
+    setError(null);
+
+    const supabase = createSupabaseBrowserClient();
+    const { error: verifyError } = await supabase.auth.mfa.verify({
+      factorId,
+      challengeId,
+      code: code.trim(),
+    });
+
+    if (verifyError) {
+      setError("Code invalide.");
+      setLoading(false);
+      return;
+    }
+
+    await logConnectionEvent("mfa_challenge");
+    await completeLogin();
   };
 
   return (
@@ -173,69 +240,119 @@ export default function AdminLoginPage() {
                     <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500/20 to-cyan-500/20 border border-violet-500/30 flex items-center justify-center">
                       <Lock className="w-6 h-6 text-cyan-400" />
                     </div>
-                    <h2 className="text-xl font-bold text-foreground">Connexion</h2>
+                    <h2 className="text-xl font-bold text-foreground">
+                      {step === "password" ? "Connexion" : "Vérification 2FA"}
+                    </h2>
                     <p className="text-xs text-muted-foreground text-center">
-                      Entrez vos identifiants pour accéder au panneau
+                      {step === "password"
+                        ? "Entrez vos identifiants pour accéder au panneau"
+                        : "Entrez le code généré par votre application d'authentification"}
                     </p>
                   </div>
 
-                  {/* Formulaire */}
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="space-y-1.5">
-                      <label className="text-xs font-medium text-muted-foreground">Email</label>
-                      <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                        <Input
-                          type="email"
-                          placeholder="admin@example.com"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          className="pl-9 bg-background border-border focus:border-cyan-500/50 focus:ring-cyan-500/20 placeholder:text-muted-foreground/50"
-                          required
-                        />
+                  {step === "password" ? (
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-medium text-muted-foreground">Email</label>
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                          <Input
+                            type="email"
+                            placeholder="admin@example.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="pl-9 bg-background border-border focus:border-cyan-500/50 focus:ring-cyan-500/20 placeholder:text-muted-foreground/50"
+                            required
+                          />
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="space-y-1.5">
-                      <label className="text-xs font-medium text-muted-foreground">Mot de passe</label>
-                      <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                        <Input
-                          type="password"
-                          placeholder="••••••••"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          className="pl-9 bg-background border-border focus:border-cyan-500/50 focus:ring-cyan-500/20 placeholder:text-muted-foreground/50"
-                          required
-                        />
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-medium text-muted-foreground">Mot de passe</label>
+                        <div className="relative">
+                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                          <Input
+                            type="password"
+                            placeholder="••••••••"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="pl-9 bg-background border-border focus:border-cyan-500/50 focus:ring-cyan-500/20 placeholder:text-muted-foreground/50"
+                            required
+                          />
+                        </div>
                       </div>
-                    </div>
 
-                    {error && (
-                      <div className="flex items-center gap-2 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-400">
-                        <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                        <span>{error}</span>
-                      </div>
-                    )}
-
-                    <Button
-                      type="submit"
-                      disabled={loading}
-                      className="w-full bg-cyan-600 hover:bg-cyan-700 text-white shadow-lg hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all"
-                    >
-                      {loading ? (
-                        <span className="flex items-center gap-2">
-                          <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                          Connexion…
-                        </span>
-                      ) : (
-                        <span className="flex items-center gap-2">
-                          <Lock className="w-4 h-4" />
-                          Se connecter
-                        </span>
+                      {error && (
+                        <div className="flex items-center gap-2 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-400">
+                          <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                          <span>{error}</span>
+                        </div>
                       )}
-                    </Button>
-                  </form>
+
+                      <Button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full bg-cyan-600 hover:bg-cyan-700 text-white shadow-lg hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all"
+                      >
+                        {loading ? (
+                          <span className="flex items-center gap-2">
+                            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            Connexion…
+                          </span>
+                        ) : (
+                          <span className="flex items-center gap-2">
+                            <Lock className="w-4 h-4" />
+                            Se connecter
+                          </span>
+                        )}
+                      </Button>
+                    </form>
+                  ) : (
+                    <form onSubmit={handleVerifyMfa} className="space-y-4">
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-medium text-muted-foreground">Code à 6 chiffres</label>
+                        <div className="relative">
+                          <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                          <Input
+                            type="text"
+                            inputMode="numeric"
+                            placeholder="123456"
+                            value={code}
+                            onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                            className="pl-9 bg-background border-border focus:border-cyan-500/50 focus:ring-cyan-500/20 placeholder:text-muted-foreground/50 text-center font-mono tracking-widest"
+                            maxLength={6}
+                            autoFocus
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      {error && (
+                        <div className="flex items-center gap-2 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-400">
+                          <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                          <span>{error}</span>
+                        </div>
+                      )}
+
+                      <Button
+                        type="submit"
+                        disabled={loading || code.length !== 6}
+                        className="w-full bg-cyan-600 hover:bg-cyan-700 text-white shadow-lg hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all"
+                      >
+                        {loading ? (
+                          <span className="flex items-center gap-2">
+                            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            Vérification…
+                          </span>
+                        ) : (
+                          <span className="flex items-center gap-2">
+                            <KeyRound className="w-4 h-4" />
+                            Vérifier
+                          </span>
+                        )}
+                      </Button>
+                    </form>
+                  )}
 
                   <p className="text-center text-xs text-muted-foreground/60">
                     Accès non autorisé = tentative journalisée

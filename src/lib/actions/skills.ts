@@ -68,3 +68,21 @@ export async function deleteSkill(id: string): Promise<ActionResult> {
     return { success: false, error: err instanceof Error ? err.message : "Erreur inconnue" };
   }
 }
+
+// orderedIds : les compétences d'UNE catégorie dans leur nouvel ordre —
+// display_order n'a de sens que relativement aux autres compétences de la
+// même catégorie (le site public filtre par catégorie avant de trier).
+export async function reorderSkills(orderedIds: string[]): Promise<ActionResult> {
+  try {
+    await requireAdminUser();
+    const admin = getSupabaseAdmin();
+    const { error } = await admin.rpc("reorder_skills", { ids: orderedIds });
+    if (error) return { success: false, error: error.message };
+
+    updateTag("skills");
+    return { success: true };
+  } catch (err) {
+    if (err instanceof UnauthorizedError) return { success: false, error: err.message };
+    return { success: false, error: err instanceof Error ? err.message : "Erreur inconnue" };
+  }
+}

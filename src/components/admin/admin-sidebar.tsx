@@ -12,6 +12,9 @@ import {
   Award,
   UserCog,
   Mail,
+  Rss,
+  MessageSquare,
+  ShieldCheck,
   Menu,
   X,
 } from "lucide-react";
@@ -26,6 +29,9 @@ const NAV_ITEMS = [
   { href: "/admin/education", label: "Formations", icon: GraduationCap },
   { href: "/admin/certifications", label: "Certifications", icon: Award },
   { href: "/admin/messages", label: "Messages", icon: Mail },
+  { href: "/admin/veille", label: "Veille", icon: Rss },
+  { href: "/admin/chat-logs", label: "Chat IA", icon: MessageSquare },
+  { href: "/admin/security", label: "Sécurité", icon: ShieldCheck },
   { href: "/admin/settings", label: "Infos perso", icon: UserCog },
 ];
 

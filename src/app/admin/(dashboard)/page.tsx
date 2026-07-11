@@ -1,8 +1,12 @@
-import { FolderKanban, Briefcase, Wrench, Award, FileCheck2, FileClock } from "lucide-react";
-import { getAdminCounts } from "@/lib/admin-data";
+import { FolderKanban, Briefcase, Wrench, Award, FileCheck2, FileClock, Eye, MessageSquare } from "lucide-react";
+import { getAdminCounts, getTopViewedProjects, getChatLogsCountThisWeek } from "@/lib/admin-data";
 
 export default async function AdminDashboardPage() {
-  const counts = await getAdminCounts();
+  const [counts, topViewed, chatLogsThisWeek] = await Promise.all([
+    getAdminCounts(),
+    getTopViewedProjects(3),
+    getChatLogsCountThisWeek(),
+  ]);
 
   const stats = [
     {
@@ -41,6 +45,12 @@ export default async function AdminDashboardPage() {
       icon: Award,
       accent: "from-pink-500/20 to-pink-500/5 text-pink-400 border-pink-500/20",
     },
+    {
+      label: "Questions chatbot cette semaine",
+      value: chatLogsThisWeek,
+      icon: MessageSquare,
+      accent: "from-teal-500/20 to-teal-500/5 text-teal-400 border-teal-500/20",
+    },
   ];
 
   return (
@@ -64,6 +74,26 @@ export default async function AdminDashboardPage() {
             </div>
           );
         })}
+      </div>
+
+      <div className="mt-8">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
+          Projets les plus vus
+        </h2>
+        <div className="rounded-2xl border border-border bg-card divide-y divide-border">
+          {topViewed.map((project, index) => (
+            <div key={project.id} className="flex items-center gap-3 px-4 py-3">
+              <span className="text-xs font-mono text-muted-foreground w-4">{index + 1}</span>
+              <span className="flex-1 text-sm truncate">{project.title.fr}</span>
+              <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                <Eye size={12} /> {project.viewCount}
+              </span>
+            </div>
+          ))}
+          {topViewed.length === 0 && (
+            <p className="text-sm text-muted-foreground text-center py-8">Aucune vue enregistrée pour l&apos;instant.</p>
+          )}
+        </div>
       </div>
     </div>
   );

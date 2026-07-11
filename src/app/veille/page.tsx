@@ -12,8 +12,10 @@ import {
   Bell,
   Clock,
   X,
+  Pin,
 } from "lucide-react";
 import type { RSSArticle } from "@/app/api/rss/route";
+import type { PinnedArticle } from "@/lib/data";
 import { SectionBackground } from "@/components/ui/section-background";
 import { useI18n } from "@/i18n";
 import type { Dictionary } from "@/i18n/dictionaries";
@@ -260,8 +262,9 @@ function SkeletonCard() {
    Page
 ───────────────────────────────────────────────────────────────── */
 export default function VeillePage() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const [articles, setArticles] = useState<RSSArticle[]>([]);
+  const [pinnedArticles, setPinnedArticles] = useState<PinnedArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [search, setSearch] = useState("");
@@ -329,6 +332,15 @@ export default function VeillePage() {
   useEffect(() => {
     fetchArticles();
   }, [fetchArticles, refreshKey]);
+
+  // Articles épinglés depuis l'admin — indépendant du flux RSS normal,
+  // un échec ici ne doit pas empêcher le reste de la page de fonctionner.
+  useEffect(() => {
+    fetch("/api/veille/pinned")
+      .then((res) => (res.ok ? res.json() : []))
+      .then(setPinnedArticles)
+      .catch(() => setPinnedArticles([]));
+  }, []);
 
   // Auto-refresh
   useEffect(() => {
@@ -439,6 +451,47 @@ export default function VeillePage() {
             <span className="text-blue-400 font-medium">{t.veille.domainInfra}</span>
           </p>
         </motion.div>
+
+        {/* ── Sélection de Thierno (articles épinglés depuis l'admin) ── */}
+        {pinnedArticles.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="mb-10"
+          >
+            <div className="flex items-center gap-2 mb-4">
+              <Pin size={16} className="text-cyan-400" />
+              <h2 className="text-lg font-semibold">
+                {locale === "fr" ? "Sélection de Thierno" : "Thierno's picks"}
+              </h2>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {pinnedArticles.map((article) => {
+                const comment = locale === "fr" ? article.commentFr : article.commentEn;
+                return (
+                  <a
+                    key={article.id}
+                    href={article.articleUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group rounded-xl border border-cyan-500/30 bg-cyan-500/[0.04] p-4 hover:border-cyan-400/60 transition-colors"
+                  >
+                    <p className="text-sm font-medium mb-1 group-hover:text-cyan-400 transition-colors">
+                      {article.articleTitle}
+                    </p>
+                    {article.sourceName && (
+                      <p className="text-xs text-muted-foreground mb-2">{article.sourceName}</p>
+                    )}
+                    {comment && (
+                      <p className="text-xs text-muted-foreground italic leading-relaxed">{comment}</p>
+                    )}
+                  </a>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
 
         {/* ── Toolbar ── */}
         <motion.div

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import {
@@ -46,6 +47,12 @@ export function ProjectDetail({
 }) {
   const { t, tx, locale } = useI18n();
   const fade = useFadeProps();
+
+  // Best-effort, une fois par montage — l'anti-abus (cookie 24h/projet) est
+  // géré côté serveur par la route elle-même.
+  useEffect(() => {
+    fetch(`/api/projects/${project.slug}/view`, { method: "POST" }).catch(() => {});
+  }, [project.slug]);
 
   const { start, gradient } = splitTitleForGradient(tx(project.title));
   const hasLinks = Boolean(

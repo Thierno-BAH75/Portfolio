@@ -81,11 +81,15 @@ export async function POST(request: NextRequest) {
   const result = await generateReply(systemPrompt, history);
 
   if (!result) {
-    console.error("[api/chat] Tous les fournisseurs (Gemini, Groq, Mistral) ont échoué.");
+    console.error(
+      "[api/chat] Tous les fournisseurs (Gemini flash, Gemini flash-lite, Groq, Mistral) ont échoué."
+    );
     return NextResponse.json({ error: "upstream_error" }, { status: 502 });
   }
 
-  console.log(`[api/chat] Réponse servie par : ${result.provider}`);
+  console.log(
+    `[api/chat] Réponse servie par : ${result.provider} — modèle exact : ${result.model}`
+  );
 
   // after() : exécuté une fois la réponse envoyée au visiteur, ne retarde
   // jamais le temps de réponse perçu du chatbot.

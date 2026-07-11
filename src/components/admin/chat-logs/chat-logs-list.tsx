@@ -7,6 +7,9 @@ import { Select } from "@/components/ui/select";
 import type { AdminChatLog } from "@/lib/admin-data";
 
 const PROVIDER_LABELS: Record<string, string> = {
+  "gemini-flash": "Gemini (flash)",
+  "gemini-flash-lite": "Gemini (flash-lite)",
+  // Anciennes entrées ("gemini") antérieures à la chaîne à 4 niveaux.
   gemini: "Gemini",
   groq: "Groq",
   mistral: "Mistral",

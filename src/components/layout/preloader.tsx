@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { personalInfo } from "@/data/experience";
 
-export function Preloader() {
+export function Preloader({ name }: { name: string }) {
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
@@ -76,7 +75,7 @@ export function Preloader() {
 
               {/* Name */}
               <div className="text-4xl sm:text-5xl font-bold">
-                {personalInfo.name.split("").map((char, index) => (
+                {name.split("").map((char, index) => (
                   <motion.span
                     key={index}
                     className="inline-block"

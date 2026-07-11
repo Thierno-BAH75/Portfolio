@@ -6,10 +6,11 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Github, Linkedin } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { navItems, personalInfo, socialLinks } from "@/data/experience";
+import { navItems } from "@/data/experience";
+import type { PersonalInfo } from "@/lib/data";
 import { ThemeToggle } from "./theme-toggle";
 import { useI18n, setLocale } from "@/i18n";
-import type { Locale } from "@/types";
+import type { Locale, SocialLink } from "@/types";
 
 // Sections de la home suivies par le scroll-spy (ordre du DOM)
 const SPY_SECTION_IDS = ["accueil", "about", "experience", "contact"];
@@ -19,7 +20,7 @@ function VSeparator() {
   return <span aria-hidden="true" className="h-5 w-px bg-border/40" />;
 }
 
-function SocialIcons({ size = 18 }: { size?: number }) {
+function SocialIcons({ socialLinks, size = 18 }: { socialLinks: SocialLink[]; size?: number }) {
   return (
     <>
       {socialLinks
@@ -50,17 +51,19 @@ function SocialIcons({ size = 18 }: { size?: number }) {
 }
 
 function AvailabilityBadge({
+  available,
   className,
   onClick,
   short = false,
 }: {
+  available: boolean;
   className?: string;
   onClick?: () => void;
   short?: boolean;
 }) {
   const { t } = useI18n();
 
-  if (!personalInfo.available) return null;
+  if (!available) return null;
 
   return (
     <Link
@@ -114,7 +117,13 @@ function LangToggle({ className }: { className?: string }) {
   );
 }
 
-export function Header() {
+export function Header({
+  personalInfo,
+  socialLinks,
+}: {
+  personalInfo: PersonalInfo;
+  socialLinks: SocialLink[];
+}) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
@@ -228,9 +237,9 @@ export function Header() {
             <LangToggle />
             <ThemeToggle />
             <VSeparator />
-            <SocialIcons />
+            <SocialIcons socialLinks={socialLinks} />
             <VSeparator />
-            <AvailabilityBadge className="flex" short />
+            <AvailabilityBadge available={personalInfo.available} className="flex" short />
           </div>
 
           {/* Tablette/mobile — langue + thème + burger à droite */}
@@ -265,6 +274,7 @@ export function Header() {
                 className="px-4 pb-2"
               >
                 <AvailabilityBadge
+                  available={personalInfo.available}
                   className="inline-flex"
                   onClick={() => setIsMobileMenuOpen(false)}
                 />
@@ -296,7 +306,7 @@ export function Header() {
                 transition={{ delay: navItems.length * 0.1 }}
                 className="flex items-center justify-center gap-4 pt-3"
               >
-                <SocialIcons size={20} />
+                <SocialIcons socialLinks={socialLinks} size={20} />
               </motion.div>
             </div>
           </motion.div>

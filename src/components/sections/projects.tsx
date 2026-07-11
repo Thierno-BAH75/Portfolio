@@ -7,10 +7,10 @@ import { ProjectCard } from "@/components/projects/project-card";
 import { ProjectPanel } from "@/components/projects/project-panel";
 import { useProjectPanel } from "@/components/projects/use-project-panel";
 import { SectionBackground } from "@/components/ui/section-background";
-import { featuredProjects } from "@/data/projects";
 import { useI18n } from "@/i18n";
+import type { Project } from "@/types";
 
-export function Projects() {
+export function Projects({ featuredProjects }: { featuredProjects: Project[] }) {
   const { t } = useI18n();
   const { project, open, close } = useProjectPanel();
 

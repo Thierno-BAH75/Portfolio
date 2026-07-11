@@ -9,7 +9,7 @@ import { ArrowRight, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Floating } from "@/components/animations";
-import { personalInfo } from "@/data/experience";
+import type { PersonalInfo } from "@/lib/data";
 import { TechMarquee } from "./tech-marquee";
 import { useI18n } from "@/i18n";
 
@@ -91,7 +91,7 @@ function LoopingTypewriter({ titles }: { titles: string[] }) {
   );
 }
 
-export function Hero() {
+export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
   const containerRef = useRef<HTMLElement>(null);
   const { t, tx, locale } = useI18n();
   const { scrollYProgress } = useScroll({

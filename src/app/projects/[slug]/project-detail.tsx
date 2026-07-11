@@ -13,7 +13,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { formatDate, cn } from "@/lib/utils";
 import { useI18n } from "@/i18n";
-import { projects } from "@/data/projects";
 import { MarkdownContent } from "@/components/projects/markdown-content";
 import { ResultsGrid } from "@/components/projects/results-grid";
 import { ChallengesSection } from "@/components/projects/challenges-section";
@@ -38,7 +37,13 @@ function useFadeProps() {
         };
 }
 
-export function ProjectDetail({ project }: { project: Project }) {
+export function ProjectDetail({
+  project,
+  allProjects,
+}: {
+  project: Project;
+  allProjects: Project[];
+}) {
   const { t, tx, locale } = useI18n();
   const fade = useFadeProps();
 
@@ -47,11 +52,11 @@ export function ProjectDetail({ project }: { project: Project }) {
     project.links.live || project.links.demo || project.links.github
   );
 
-  const currentIndex = projects.findIndex((p) => p.slug === project.slug);
-  const prevProject = currentIndex > 0 ? projects[currentIndex - 1] : null;
+  const currentIndex = allProjects.findIndex((p) => p.slug === project.slug);
+  const prevProject = currentIndex > 0 ? allProjects[currentIndex - 1] : null;
   const nextProject =
-    currentIndex >= 0 && currentIndex < projects.length - 1
-      ? projects[currentIndex + 1]
+    currentIndex >= 0 && currentIndex < allProjects.length - 1
+      ? allProjects[currentIndex + 1]
       : null;
 
   return (

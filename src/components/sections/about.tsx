@@ -16,13 +16,11 @@ import {
   LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { personalInfo, certifications } from "@/data/experience";
+import type { PersonalInfo } from "@/lib/data";
+import type { Certification } from "@/types";
 import { useI18n } from "@/i18n";
 
 const CV_PDF = "/CV_Alternance_BAH-Thierno_2026.pdf";
-
-// Format international pour le lien tel: (07… → +337…)
-const PHONE_HREF = `tel:+33${personalInfo.phone.replace(/\s/g, "").slice(1)}`;
 
 // Apparition au scroll cohérente avec les autres sections, désactivable
 function useFadeProps() {
@@ -67,9 +65,16 @@ function ProfileRow({
   );
 }
 
-export function About() {
+export function About({
+  personalInfo,
+  certifications,
+}: {
+  personalInfo: PersonalInfo;
+  certifications: Certification[];
+}) {
   const { t, tx } = useI18n();
   const fade = useFadeProps();
+  const PHONE_HREF = `tel:+33${personalInfo.phone.replace(/\s/g, "").slice(1)}`;
 
   return (
     <section className="relative py-16 sm:py-20 lg:py-32 overflow-hidden" id="about">

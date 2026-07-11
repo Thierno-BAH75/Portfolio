@@ -4,20 +4,11 @@ import type { MouseEvent } from "react";
 import { motion, useReducedMotion, Variants } from "framer-motion";
 import { Counter, StaggerChildren, StaggerItem } from "@/components/animations";
 import { SectionBackground } from "@/components/ui/section-background";
-import { skills, skillsByCategory } from "@/data/skills";
-import { projects } from "@/data/projects";
-import { certifications } from "@/data/experience";
 import { useI18n } from "@/i18n";
 import { cn } from "@/lib/utils";
+import type { Skill, SkillCategory } from "@/types";
 
-type CategoryKey = keyof typeof skillsByCategory;
-
-const stats = [
-  { value: projects.length, suffix: "", labelKey: "projects" as const },
-  { value: certifications.length, suffix: "", labelKey: "certifications" as const },
-  { value: 3, suffix: "+", labelKey: "years" as const },
-  { value: skills.length, suffix: "", labelKey: "technologies" as const },
-];
+type CategoryKey = SkillCategory;
 
 // ── Animations de la grille stack ──────────────────────────
 // Cascade des cartes, puis micro-cascade des chips à l'intérieur
@@ -57,9 +48,26 @@ function setSpotlight(e: MouseEvent<HTMLDivElement>) {
   e.currentTarget.style.setProperty("--spot-y", `${e.clientY - rect.top}px`);
 }
 
-export function Skills() {
+export function Skills({
+  skills,
+  skillsByCategory,
+  projectCount,
+  certificationCount,
+}: {
+  skills: Skill[];
+  skillsByCategory: Record<SkillCategory, Skill[]>;
+  projectCount: number;
+  certificationCount: number;
+}) {
   const reduceMotion = useReducedMotion();
   const { t, locale } = useI18n();
+
+  const stats = [
+    { value: projectCount, suffix: "", labelKey: "projects" as const },
+    { value: certificationCount, suffix: "", labelKey: "certifications" as const },
+    { value: 3, suffix: "+", labelKey: "years" as const },
+    { value: skills.length, suffix: "", labelKey: "technologies" as const },
+  ];
 
   return (
     <section className="relative overflow-hidden py-16 sm:py-20 lg:py-32" id="skills">

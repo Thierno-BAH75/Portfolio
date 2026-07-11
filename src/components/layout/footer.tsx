@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { Github, Linkedin } from "lucide-react";
-import { personalInfo, socialLinks, navItems } from "@/data/experience";
+import { navItems } from "@/data/experience";
+import type { PersonalInfo } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/i18n";
+import type { SocialLink } from "@/types";
 
 // 3 premiers liens d'ancre → colonne "Navigation", 3 derniers → colonne "Explorer"
 const NAV_SPLIT = 3;
@@ -26,7 +28,13 @@ function FooterLinkList({ links, tx }: { links: typeof navItems; tx: (l: (typeof
   );
 }
 
-export function Footer() {
+export function Footer({
+  personalInfo,
+  socialLinks,
+}: {
+  personalInfo: PersonalInfo;
+  socialLinks: SocialLink[];
+}) {
   const currentYear = new Date().getFullYear();
   const { t, tx } = useI18n();
 

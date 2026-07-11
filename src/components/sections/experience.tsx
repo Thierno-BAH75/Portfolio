@@ -13,9 +13,8 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { SectionBackground } from "@/components/ui/section-background";
-import { education, experiences, certifications } from "@/data/experience";
 import { formatDate, cn } from "@/lib/utils";
-import type { Education, Experience as ExperienceType } from "@/types";
+import type { Education, Experience as ExperienceType, Certification } from "@/types";
 import { useI18n } from "@/i18n";
 
 const VISIBLE_ACHIEVEMENTS = 2;
@@ -265,7 +264,15 @@ function ExperienceCard({
   );
 }
 
-export function Experience() {
+export function Experience({
+  education,
+  experiences,
+  certifications,
+}: {
+  education: Education[];
+  experiences: ExperienceType[];
+  certifications: Certification[];
+}) {
   const fade = useFadeProps();
   const { t, tx } = useI18n();
 

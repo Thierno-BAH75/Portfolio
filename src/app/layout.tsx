@@ -9,6 +9,7 @@ import { Preloader } from "@/components/layout/preloader";
 import { ScrollProgress } from "@/components/animations/scroll-progress";
 import { ChatWidgetMount } from "@/components/chat/chat-widget-mount";
 import { LanguageSync } from "@/i18n";
+import { getPersonalInfo, getSocialLinks } from "@/lib/data";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -104,11 +105,13 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [personalInfo, socialLinks] = await Promise.all([getPersonalInfo(), getSocialLinks()]);
+
   return (
     <html lang="fr" suppressHydrationWarning>
       <body
@@ -119,7 +122,7 @@ export default function RootLayout({
           <LanguageSync />
 
           {/* Preloader */}
-          <Preloader />
+          <Preloader name={personalInfo.name} />
 
           {/* Custom cursor - desktop only */}
           <CustomCursor />
@@ -128,13 +131,13 @@ export default function RootLayout({
           <ScrollProgress />
 
           {/* Header */}
-          <Header />
+          <Header personalInfo={personalInfo} socialLinks={socialLinks} />
 
           {/* Main content */}
           <main className="min-h-screen">{children}</main>
 
           {/* Footer */}
-          <Footer />
+          <Footer personalInfo={personalInfo} socialLinks={socialLinks} />
 
           {/* Assistant IA — bulle flottante bas-droite */}
           <ChatWidgetMount />

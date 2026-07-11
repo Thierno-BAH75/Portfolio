@@ -17,12 +17,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { SectionBackground } from "@/components/ui/section-background";
-import { personalInfo, socialLinks } from "@/data/experience";
+import type { PersonalInfo } from "@/lib/data";
+import type { SocialLink } from "@/types";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/i18n";
 import { makeContactSchema, type ContactFormData } from "@/lib/contact-schema";
-
-const PHONE_HREF = `tel:+33${personalInfo.phone.replace(/\s/g, "").slice(1)}`;
 
 // Spotlight radial qui suit la souris — CSS vars poussées sur la carte,
 // zéro re-render React (même technique que src/components/sections/skills.tsx)
@@ -106,12 +105,19 @@ function ContactCard({
   );
 }
 
-export function Contact() {
+export function Contact({
+  personalInfo,
+  socialLinks,
+}: {
+  personalInfo: PersonalInfo;
+  socialLinks: SocialLink[];
+}) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const { t } = useI18n();
   const reduceMotion = useReducedMotion();
+  const PHONE_HREF = `tel:+33${personalInfo.phone.replace(/\s/g, "").slice(1)}`;
 
   const {
     register,

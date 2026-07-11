@@ -3,7 +3,7 @@
 // incluent l'id Supabase de chaque ligne (nécessaire pour éditer/supprimer),
 // et ne passent pas par le cache Next.js : l'admin doit toujours voir l'état
 // le plus frais possible juste après une écriture.
-import { supabase } from "./supabase";
+import { supabase, getSupabaseAdmin } from "./supabase";
 import type {
   Project,
   Experience,
@@ -31,6 +31,19 @@ export type AdminSkill = { id: string; name: Skill["name"]; icon: string; catego
 export interface AdminPersonalInfo extends PersonalInfo {
   github?: string;
   linkedin?: string;
+  cvUrl?: string;
+}
+
+export interface AdminContactMessage {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  subject: string | null;
+  message: string;
+  read: boolean;
+  archived: boolean;
+  createdAt: string;
 }
 
 function rowToAdminProject(row: Record<string, unknown>): AdminProject {
@@ -199,7 +212,54 @@ export async function getPersonalInfoAdmin(): Promise<AdminPersonalInfo | null> 
     seeking: data.availability_message as Localized,
     github: socialLinks.find((s) => s.icon === "github")?.url,
     linkedin: socialLinks.find((s) => s.icon === "linkedin")?.url,
+    cvUrl: (data.cv_url as string) ?? undefined,
   };
+}
+
+function rowToAdminContactMessage(row: Record<string, unknown>): AdminContactMessage {
+  return {
+    id: row.id as string,
+    firstName: row.first_name as string,
+    lastName: row.last_name as string,
+    email: row.email as string,
+    subject: (row.subject as string) ?? null,
+    message: row.message as string,
+    read: row.read as boolean,
+    archived: row.archived as boolean,
+    createdAt: row.created_at as string,
+  };
+}
+
+// contact_messages a une policy de lecture restreinte aux utilisateurs
+// authentifiés (RLS) — le client anon `supabase` n'a pas de session côté
+// serveur et ne verrait donc jamais rien. On lit ces fetchers avec le
+// client service_role, qui contourne RLS comme pour les écritures admin.
+export async function getAllMessagesAdmin(): Promise<AdminContactMessage[]> {
+  const admin = getSupabaseAdmin();
+  const { data, error } = await admin
+    .from("contact_messages")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw new Error(`getAllMessagesAdmin: ${error.message}`);
+  return (data ?? []).map(rowToAdminContactMessage);
+}
+
+export async function getMessageByIdAdmin(id: string): Promise<AdminContactMessage | null> {
+  const admin = getSupabaseAdmin();
+  const { data, error } = await admin.from("contact_messages").select("*").eq("id", id).maybeSingle();
+  if (error) throw new Error(`getMessageByIdAdmin: ${error.message}`);
+  return data ? rowToAdminContactMessage(data) : null;
+}
+
+export async function getUnreadMessageCount(): Promise<number> {
+  const admin = getSupabaseAdmin();
+  const { count, error } = await admin
+    .from("contact_messages")
+    .select("id", { count: "exact", head: true })
+    .eq("read", false)
+    .eq("archived", false);
+  if (error) throw new Error(`getUnreadMessageCount: ${error.message}`);
+  return count ?? 0;
 }
 
 export interface AdminCounts {

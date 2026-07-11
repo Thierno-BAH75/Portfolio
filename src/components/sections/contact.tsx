@@ -22,6 +22,7 @@ import type { SocialLink } from "@/types";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/i18n";
 import { makeContactSchema, type ContactFormData } from "@/lib/contact-schema";
+import { submitContactMessage } from "@/lib/actions/contact-messages";
 
 // Spotlight radial qui suit la souris — CSS vars poussées sur la carte,
 // zéro re-render React (même technique que src/components/sections/skills.tsx)
@@ -162,6 +163,11 @@ export function Contact({
         setSubmitError(t.contact.form.errorText);
         return;
       }
+
+      // Copie du message en base pour la boîte de réception admin — en plus
+      // de Formspree (jamais à sa place). Best-effort : un échec ici reste
+      // invisible au visiteur, l'email étant déjà parti à ce stade.
+      submitContactMessage(data).catch(() => {});
 
       setIsSubmitted(true);
       reset();

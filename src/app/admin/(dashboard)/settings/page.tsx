@@ -18,5 +18,5 @@ export default async function AdminSettingsPage() {
     linkedin: info?.linkedin ?? "",
   };
 
-  return <PersonalInfoForm initial={initial} />;
+  return <PersonalInfoForm initial={initial} cvUrl={info?.cvUrl} />;
 }

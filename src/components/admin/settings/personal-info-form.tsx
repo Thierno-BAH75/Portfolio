@@ -10,8 +10,15 @@ import { Switch } from "@/components/ui/switch";
 import { FormFeedback } from "@/components/admin/form-feedback";
 import { personalInfoSchema, type PersonalInfoFormValues } from "@/lib/schemas";
 import { updatePersonalInfo } from "@/lib/actions/personal-info";
+import { CvUpload } from "./cv-upload";
 
-export function PersonalInfoForm({ initial }: { initial: PersonalInfoFormValues }) {
+export function PersonalInfoForm({
+  initial,
+  cvUrl,
+}: {
+  initial: PersonalInfoFormValues;
+  cvUrl?: string;
+}) {
   const [isPending, startTransition] = useTransition();
   const [feedback, setFeedback] = useState<{ status: "success" | "error"; message: string } | null>(null);
 
@@ -105,6 +112,11 @@ export function PersonalInfoForm({ initial }: { initial: PersonalInfoFormValues 
             <Input placeholder="https://www.linkedin.com/in/…" {...register("linkedin")} />
           </div>
         </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">CV</h2>
+        <CvUpload initialUrl={cvUrl} />
       </section>
 
       <section className="space-y-4">

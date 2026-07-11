@@ -12,6 +12,7 @@ import { Select } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { FormFeedback } from "@/components/admin/form-feedback";
 import { TagInput } from "@/components/admin/tag-input";
+import { ProjectImageUpload } from "./project-image-upload";
 import { projectSchema, projectCategories, type ProjectFormValues } from "@/lib/schemas";
 import { slugify } from "@/lib/utils";
 import { createProject, updateProject } from "@/lib/actions/projects";
@@ -64,6 +65,7 @@ export function ProjectForm({ mode, projectId, initial }: ProjectFormProps) {
   const technologies = watch("technologies");
   const featured = watch("featured");
   const status = watch("status");
+  const image = watch("image");
 
   const handleTitleFrChange = (value: string) => {
     setValue("title.fr", value);
@@ -180,10 +182,8 @@ export function ProjectForm({ mode, projectId, initial }: ProjectFormProps) {
           </div>
         </div>
         <div className="space-y-1.5">
-          <label className="text-xs font-medium text-muted-foreground">
-            Image (chemin, ex. /projects/mon-projet.svg) *
-          </label>
-          <Input {...register("image")} />
+          <label className="text-xs font-medium text-muted-foreground">Image *</label>
+          <ProjectImageUpload value={image} projectId={projectId} onUploaded={(url) => setValue("image", url)} />
           {errors.image && <p className="text-xs text-red-400">{errors.image.message}</p>}
         </div>
         <div className="space-y-1.5">

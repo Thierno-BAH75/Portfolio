@@ -110,6 +110,7 @@ export interface PersonalInfo {
   location: Localized;
   available: boolean;
   seeking: Localized;
+  cvUrl?: string;
 }
 
 function rowToPersonalInfo(row: Record<string, unknown>): PersonalInfo {
@@ -122,6 +123,7 @@ function rowToPersonalInfo(row: Record<string, unknown>): PersonalInfo {
     location: row.location as Localized,
     available: row.available as boolean,
     seeking: row.availability_message as Localized,
+    cvUrl: (row.cv_url as string) ?? undefined,
   };
 }
 

@@ -75,6 +75,7 @@ export function About({
   const { t, tx } = useI18n();
   const fade = useFadeProps();
   const PHONE_HREF = `tel:+33${personalInfo.phone.replace(/\s/g, "").slice(1)}`;
+  const cvHref = personalInfo.cvUrl || CV_PDF;
 
   return (
     <section className="relative py-16 sm:py-20 lg:py-32 overflow-hidden" id="about">
@@ -247,7 +248,7 @@ export function About({
                 className="bg-foreground text-background hover:bg-foreground/85 shadow-lg"
                 asChild
               >
-                <a href={CV_PDF} target="_blank" rel="noopener noreferrer">
+                <a href={cvHref} target="_blank" rel="noopener noreferrer">
                   <Download className="h-4 w-4" />
                   {t.about.downloadCv}
                 </a>

@@ -11,6 +11,7 @@ import type { PersonalInfo } from "@/lib/data";
 import { ThemeToggle } from "./theme-toggle";
 import { useI18n, setLocale } from "@/i18n";
 import type { Locale, SocialLink } from "@/types";
+import { useRealtimeAvailability } from "@/hooks/use-realtime-availability";
 
 // Sections de la home suivies par le scroll-spy (ordre du DOM)
 const SPY_SECTION_IDS = ["accueil", "about", "experience", "contact"];
@@ -130,6 +131,7 @@ export function Header({
   const visibleSections = useRef<Record<string, boolean>>({});
   const pathname = usePathname();
   const { tx } = useI18n();
+  const available = useRealtimeAvailability(personalInfo.available);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -239,7 +241,7 @@ export function Header({
             <VSeparator />
             <SocialIcons socialLinks={socialLinks} />
             <VSeparator />
-            <AvailabilityBadge available={personalInfo.available} className="flex" short />
+            <AvailabilityBadge available={available} className="flex" short />
           </div>
 
           {/* Tablette/mobile — langue + thème + burger à droite */}
@@ -274,7 +276,7 @@ export function Header({
                 className="px-4 pb-2"
               >
                 <AvailabilityBadge
-                  available={personalInfo.available}
+                  available={available}
                   className="inline-flex"
                   onClick={() => setIsMobileMenuOpen(false)}
                 />

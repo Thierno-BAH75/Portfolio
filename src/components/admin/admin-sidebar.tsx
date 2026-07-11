@@ -11,6 +11,7 @@ import {
   GraduationCap,
   Award,
   UserCog,
+  Mail,
   Menu,
   X,
 } from "lucide-react";
@@ -24,10 +25,19 @@ const NAV_ITEMS = [
   { href: "/admin/skills", label: "Compétences", icon: Wrench },
   { href: "/admin/education", label: "Formations", icon: GraduationCap },
   { href: "/admin/certifications", label: "Certifications", icon: Award },
+  { href: "/admin/messages", label: "Messages", icon: Mail },
   { href: "/admin/settings", label: "Infos perso", icon: UserCog },
 ];
 
-function NavLinks({ pathname, onNavigate }: { pathname: string; onNavigate?: () => void }) {
+function NavLinks({
+  pathname,
+  unreadCount,
+  onNavigate,
+}: {
+  pathname: string;
+  unreadCount: number;
+  onNavigate?: () => void;
+}) {
   return (
     <nav className="flex-1 space-y-1 px-3">
       {NAV_ITEMS.map((item) => {
@@ -47,6 +57,11 @@ function NavLinks({ pathname, onNavigate }: { pathname: string; onNavigate?: () 
           >
             <Icon size={17} className={active ? "text-cyan-400" : ""} />
             {item.label}
+            {item.href === "/admin/messages" && unreadCount > 0 && (
+              <span className="ml-auto inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-gradient-to-r from-violet-600 to-cyan-500 text-white text-[10px] font-semibold">
+                {unreadCount}
+              </span>
+            )}
           </Link>
         );
       })}
@@ -54,7 +69,7 @@ function NavLinks({ pathname, onNavigate }: { pathname: string; onNavigate?: () 
   );
 }
 
-export function AdminSidebar({ userEmail }: { userEmail: string }) {
+export function AdminSidebar({ userEmail, unreadCount = 0 }: { userEmail: string; unreadCount?: number }) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -65,10 +80,13 @@ export function AdminSidebar({ userEmail }: { userEmail: string }) {
         <span className="font-semibold text-sm gradient-text">Admin</span>
         <button
           onClick={() => setMobileOpen(true)}
-          className="p-2 text-muted-foreground hover:text-foreground"
+          className="p-2 text-muted-foreground hover:text-foreground relative"
           aria-label="Ouvrir le menu"
         >
           <Menu size={20} />
+          {unreadCount > 0 && (
+            <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-cyan-400" />
+          )}
         </button>
       </div>
 
@@ -80,7 +98,7 @@ export function AdminSidebar({ userEmail }: { userEmail: string }) {
           </Link>
         </div>
         <div className="flex-1 py-4 flex flex-col">
-          <NavLinks pathname={pathname} />
+          <NavLinks pathname={pathname} unreadCount={unreadCount} />
         </div>
         <div className="p-3 border-t border-border space-y-2">
           <p className="px-3 text-xs text-muted-foreground truncate">{userEmail}</p>
@@ -107,7 +125,7 @@ export function AdminSidebar({ userEmail }: { userEmail: string }) {
               </button>
             </div>
             <div className="flex-1 py-4 flex flex-col overflow-y-auto">
-              <NavLinks pathname={pathname} onNavigate={() => setMobileOpen(false)} />
+              <NavLinks pathname={pathname} unreadCount={unreadCount} onNavigate={() => setMobileOpen(false)} />
             </div>
             <div className="p-3 border-t border-border space-y-2">
               <p className="px-3 text-xs text-muted-foreground truncate">{userEmail}</p>

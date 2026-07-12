@@ -81,8 +81,12 @@ export function AdminSidebar({ userEmail, unreadCount = 0 }: { userEmail: string
 
   return (
     <>
-      {/* Barre mobile avec bouton hamburger */}
-      <div className="lg:hidden flex items-center justify-between h-14 px-4 border-b border-border bg-card">
+      {/* Barre mobile avec bouton hamburger. Seuil md (768px), pas lg
+          (1024px) : une vraie fenêtre desktop non maximisée tombe très
+          souvent sous 1024px, ce qui faisait disparaître la sidebar en
+          entier (bug rapporté après connexion) alors que 768px laisse
+          largement la place pour les 256px de la sidebar + le contenu. */}
+      <div className="md:hidden flex items-center justify-between h-14 px-4 border-b border-border bg-card">
         <span className="font-semibold text-sm gradient-text">Admin</span>
         <button
           onClick={() => setMobileOpen(true)}
@@ -97,7 +101,7 @@ export function AdminSidebar({ userEmail, unreadCount = 0 }: { userEmail: string
       </div>
 
       {/* Sidebar desktop */}
-      <aside className="hidden lg:flex flex-col w-64 flex-shrink-0 border-r border-border bg-card h-screen sticky top-0">
+      <aside className="hidden md:flex flex-col w-64 flex-shrink-0 border-r border-border bg-card h-screen sticky top-0">
         <div className="h-16 flex items-center px-5 border-b border-border">
           <Link href="/admin" className="font-bold text-lg gradient-text">
             Panneau Admin
@@ -114,7 +118,7 @@ export function AdminSidebar({ userEmail, unreadCount = 0 }: { userEmail: string
 
       {/* Sidebar mobile (overlay) */}
       {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 z-[200]">
+        <div className="md:hidden fixed inset-0 z-[200]">
           <div
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={() => setMobileOpen(false)}

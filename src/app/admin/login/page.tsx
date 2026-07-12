@@ -1,13 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Lock, Mail, Shield, Database, Key, CheckCircle2, AlertCircle, KeyRound } from "lucide-react";
+import { ArrowLeft, Lock, Mail, Shield, Database, Key, CheckCircle2, AlertCircle, KeyRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { createSupabaseBrowserClient } from "@/lib/supabase-browser";
 import { logConnectionEvent } from "@/lib/actions/security";
+import { useI18n } from "@/i18n";
 
 const features = [
   {
@@ -26,6 +28,7 @@ const features = [
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const { t } = useI18n();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -147,6 +150,17 @@ export default function AdminLoginPage() {
         style={{ background: "radial-gradient(ellipse at top left, rgba(139,92,246,0.15) 0%, transparent 55%)" }} />
       <div className="absolute inset-0 pointer-events-none"
         style={{ background: "radial-gradient(ellipse at bottom right, rgba(6,182,212,0.12) 0%, transparent 55%)" }} />
+
+      {/* Retour au site public — /admin/* n'a ni header ni sidebar tant que
+          l'utilisateur n'est pas connecté, seul le bouton "retour" du
+          navigateur permettait de repartir sans ce lien */}
+      <Link
+        href="/"
+        className="absolute top-6 left-6 z-20 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <ArrowLeft size={15} />
+        {t.adminLogin.backToSite}
+      </Link>
 
       <motion.div
         initial={{ opacity: 0, y: 32 }}

@@ -19,10 +19,12 @@ interface PublicChromeProps {
 // Le panneau admin est un outil de travail, pas une vitrine : il a son
 // propre layout (sidebar) et ne doit pas porter le header/footer/widget de
 // chat du site public — sur mobile ils se superposaient au hamburger de la
-// sidebar admin. Le reste du site garde ce chrome inchangé.
+// sidebar admin. Exception : /admin/login n'a pas encore de sidebar (page
+// pré-connexion), donc pas de conflit — elle garde le chrome public complet
+// comme n'importe quelle autre page du site.
 export function PublicChrome({ personalInfo, socialLinks, children }: PublicChromeProps) {
   const pathname = usePathname();
-  const isAdmin = pathname?.startsWith("/admin");
+  const isAdmin = pathname?.startsWith("/admin") && pathname !== "/admin/login";
 
   if (isAdmin) {
     return <>{children}</>;

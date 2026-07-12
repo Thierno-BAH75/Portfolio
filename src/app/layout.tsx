@@ -116,8 +116,9 @@ export default async function RootLayout({
           {/* <html lang> suit la langue active (défaut : fr) */}
           <LanguageSync />
 
-          {/* Header/Footer/Preloader/curseur/chat : absents sur /admin/*,
-              qui a son propre layout sobre (voir public-chrome.tsx) */}
+          {/* Header/Footer/Preloader/curseur/chat : absents sur /admin/*
+              (son propre layout sobre, voir public-chrome.tsx), sauf sur
+              /admin/login qui garde le chrome public complet */}
           <PublicChrome personalInfo={personalInfo} socialLinks={socialLinks}>
             {children}
           </PublicChrome>

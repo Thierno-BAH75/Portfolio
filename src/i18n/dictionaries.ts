@@ -218,9 +218,6 @@ const fr = {
     keywords: "Réseaux • Cybersécurité • Cloud",
     rights: "Tous droits réservés.",
   },
-  adminLogin: {
-    backToSite: "Retour au site",
-  },
   veille: {
     title: "Veille Techno",
     subtitleIntro:
@@ -503,9 +500,6 @@ const en: DeepDict<typeof fr> = {
     explore: "Explore",
     keywords: "Networking • Cybersecurity • Cloud",
     rights: "All rights reserved.",
-  },
-  adminLogin: {
-    backToSite: "Back to site",
   },
   veille: {
     title: "Tech Watch",

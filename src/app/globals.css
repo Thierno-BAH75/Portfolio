@@ -220,9 +220,15 @@ body {
     display: contents;
   }
 
-  *,
-  *::before,
-  *::after {
+  /* Scopé à body:has(.custom-cursor) — CustomCursor n'est monté que sur les
+     routes publiques (public-chrome.tsx), jamais sous /admin/*. Sans ce
+     :has(), la règle s'appliquait à tout le document quel que soit le
+     media query, masquant le curseur natif sur /admin/* sans qu'aucun
+     remplacement stylisé n'existe pour le remplacer. */
+  body:has(.custom-cursor),
+  body:has(.custom-cursor) *,
+  body:has(.custom-cursor) *::before,
+  body:has(.custom-cursor) *::after {
     cursor: none !important;
   }
 }

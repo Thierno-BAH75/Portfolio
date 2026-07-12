@@ -274,8 +274,16 @@ export function Header({
             <AdminLoginButton />
           </div>
 
-          {/* Tablette/mobile — connexion + langue + thème + burger à droite */}
+          {/* Tablette/mobile — connexion + langue + thème + burger à droite.
+              GitHub/LinkedIn dès md (768px) : en dessous du seuil xl (1280px)
+              du cluster desktop complet, ces icônes disparaissaient sinon
+              entièrement de la barre (repli uniquement dans le menu burger),
+              alors que ce seuil est courant sur de vraies fenêtres desktop
+              (fenêtre non maximisée, écran partagé, mise à l'échelle OS). */}
           <div className="flex xl:hidden items-center gap-1 pr-1 col-start-3 row-start-1 justify-self-end">
+            <div className="hidden md:flex items-center">
+              <SocialIcons socialLinks={socialLinks} size={16} />
+            </div>
             <AdminLoginButton compact />
             <LangToggle />
             <ThemeToggle />

@@ -256,7 +256,7 @@ export function Header({
           </div>
 
           {/* Actions — colonne droite : connexion | badge dispo | réseaux | langue · thème */}
-          <div className="hidden xl:flex items-center gap-2 pr-1 justify-self-end">
+          <div className="hidden xl:flex items-center gap-3 pr-1 justify-self-end">
             <AdminLoginButton />
             <VSeparator />
             <AvailabilityBadge available={available} className="flex" short />

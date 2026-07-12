@@ -12,6 +12,12 @@ function toRow(values: SkillFormValues) {
     icon: values.icon,
     category: values.category,
     display_order: values.displayOrder,
+    proof_experience_id: values.proofExperienceId || null,
+    is_certified: values.isCertified ?? false,
+    // Une certification liée n'a de sens que si le toggle "certifié" est
+    // actif — nettoyée côté serveur pour éviter les états incohérents
+    related_certification_id: (values.isCertified && values.relatedCertificationId) || null,
+    is_learning: values.isLearning ?? false,
   };
 }
 

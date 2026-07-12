@@ -51,6 +51,10 @@ export default async function Home() {
         skillsByCategory={skillsByCategory}
         projectCount={allProjects.length}
         certificationCount={certifications.length}
+        experiences={experiences}
+        certifications={certifications}
+        featuredProjects={featuredProjects}
+        personalInfo={personalInfo}
       />
       <Experience education={education} experiences={experiences} />
       <CertificationsPreview certifications={certifications} />

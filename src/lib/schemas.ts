@@ -110,6 +110,11 @@ export const skillSchema = z.object({
   icon: z.string().min(1),
   category: z.enum(skillCategories),
   displayOrder: z.number().int().min(0),
+  // Preuves choisies à la main : expérience attestante et/ou certification
+  proofExperienceId: z.string().uuid().optional().or(z.literal("")),
+  isCertified: z.boolean().optional(),
+  relatedCertificationId: z.string().uuid().optional().or(z.literal("")),
+  isLearning: z.boolean().optional(),
 });
 
 export type SkillFormValues = z.infer<typeof skillSchema>;

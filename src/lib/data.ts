@@ -86,6 +86,7 @@ function rowToEducation(row: Record<string, unknown>): Education {
 
 function rowToCertification(row: Record<string, unknown>): Certification {
   return {
+    id: row.id as string,
     name: row.name as Localized,
     issuer: row.issuer as string,
     date: row.date as string,
@@ -100,6 +101,11 @@ function rowToSkill(row: Record<string, unknown>): Skill {
     name: row.name as Skill["name"],
     icon: row.icon as string,
     category: row.category as SkillCategory,
+    proofExperienceId: (row.proof_experience_id as string) ?? undefined,
+    isCertified: (row.is_certified as boolean) ?? false,
+    relatedCertificationId: (row.related_certification_id as string) ?? undefined,
+    isLearning: (row.is_learning as boolean) ?? false,
+    updatedAt: (row.updated_at as string) ?? undefined,
   };
 }
 

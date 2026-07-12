@@ -26,7 +26,17 @@ export type AdminEducation = Education & { displayOrder: number };
 
 export type AdminCertification = Certification & { id: string; displayOrder: number };
 
-export type AdminSkill = { id: string; name: Skill["name"]; icon: string; category: Skill["category"]; displayOrder: number };
+export type AdminSkill = {
+  id: string;
+  name: Skill["name"];
+  icon: string;
+  category: Skill["category"];
+  displayOrder: number;
+  proofExperienceId: string | null;
+  isCertified: boolean;
+  relatedCertificationId: string | null;
+  isLearning: boolean;
+};
 
 export interface AdminPersonalInfo extends PersonalInfo {
   github?: string;
@@ -135,6 +145,10 @@ function rowToAdminSkill(row: Record<string, unknown>): AdminSkill {
     icon: row.icon as string,
     category: row.category as Skill["category"],
     displayOrder: row.display_order as number,
+    proofExperienceId: (row.proof_experience_id as string) ?? null,
+    isCertified: (row.is_certified as boolean) ?? false,
+    relatedCertificationId: (row.related_certification_id as string) ?? null,
+    isLearning: (row.is_learning as boolean) ?? false,
   };
 }
 

@@ -54,6 +54,15 @@ export interface Skill {
   name: string | Localized;
   icon: string;
   category: SkillCategory;
+  // Preuves choisies en admin (jamais déduites automatiquement) :
+  // expérience qui atteste de la compétence et/ou certification qui la valide
+  proofExperienceId?: string;
+  isCertified?: boolean;
+  relatedCertificationId?: string;
+  // Affichée dans la sous-section "En cours d'apprentissage", hors grille
+  // des compétences maîtrisées
+  isLearning?: boolean;
+  updatedAt?: string;
 }
 
 export type SkillCategory =
@@ -94,6 +103,9 @@ export interface Education {
 }
 
 export interface Certification {
+  // Absent des données statiques de secours (générées sans base) — présent
+  // dès que la certification vient de Supabase
+  id?: string;
   name: Localized;
   issuer: string;
   date: string;

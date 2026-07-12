@@ -215,10 +215,13 @@ export function Header({
             [1fr_auto_1fr] : les colonnes latérales s'équilibrent,
             la nav reste au centre exact du header. */}
         <div className="grid grid-cols-[1fr_auto_1fr] items-center h-16 lg:h-20">
-          {/* Logo — colonne gauche */}
+          {/* Logo — colonne gauche. whitespace-nowrap : la colonne droite (plus
+              large, avec le cluster d'actions) force par le grid [1fr_auto_1fr]
+              cette colonne à rétrécir avant tout, ce qui casserait le nom sur
+              deux lignes sans ce garde-fou. */}
           <Link href="/" className="flex items-center pl-1 justify-self-start">
             <motion.span
-              className="text-xl lg:text-2xl font-bold gradient-text"
+              className="text-xl lg:text-2xl font-bold gradient-text whitespace-nowrap"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -235,7 +238,7 @@ export function Header({
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "relative px-3 py-2 text-sm font-medium transition-colors group",
+                    "relative px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors group",
                     active
                       ? "text-foreground"
                       : "text-muted-foreground hover:text-foreground"
@@ -257,6 +260,10 @@ export function Header({
 
           {/* Actions — colonne droite : thème · langue | réseaux | badge dispo | connexion */}
           <div className="hidden xl:flex items-center gap-3 pr-1 justify-self-end">
+            {/* Séparateur de groupe nav ↔ actions — nettement plus visible que
+                les VSeparator internes (plus haut, plus opaque, marge dédiée
+                de chaque côté) pour bien lire la coupure entre les deux zones */}
+            <span aria-hidden="true" className="h-6 w-px bg-border ml-4 mr-4" />
             <ThemeToggle />
             <LangToggle />
             <VSeparator />

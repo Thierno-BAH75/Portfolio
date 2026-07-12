@@ -1,4 +1,12 @@
-import { Hero, About, Skills, Projects, Experience, Contact } from "@/components/sections";
+import {
+  Hero,
+  About,
+  Skills,
+  Projects,
+  Experience,
+  CertificationsPreview,
+  Contact,
+} from "@/components/sections";
 import {
   getPersonalInfo,
   getSocialLinks,
@@ -44,7 +52,8 @@ export default async function Home() {
         projectCount={allProjects.length}
         certificationCount={certifications.length}
       />
-      <Experience education={education} experiences={experiences} certifications={certifications} />
+      <Experience education={education} experiences={experiences} />
+      <CertificationsPreview certifications={certifications} />
       <Projects featuredProjects={featuredProjects} />
       <Contact personalInfo={personalInfo} socialLinks={socialLinks} />
     </>

@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Github, Linkedin } from "lucide-react";
+import { Menu, X, Github, Linkedin, LogIn } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { navItems } from "@/data/experience";
 import type { PersonalInfo } from "@/lib/data";
@@ -81,6 +81,27 @@ function AvailabilityBadge({
         <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
       </span>
       {short ? t.header.availableShort : t.header.availableFull}
+    </Link>
+  );
+}
+
+// Bouton de connexion admin — bordure violet→cyan discrète au repos,
+// se remplit du dégradé au survol. Pas de rendu sur /admin/* : PublicChrome
+// ne monte pas Header du tout sur ces routes.
+function AdminLoginButton({ compact = false }: { compact?: boolean }) {
+  const { t } = useI18n();
+
+  return (
+    <Link
+      href="/admin/login"
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-full border border-violet-500/40 bg-violet-500/5 font-medium text-foreground/90 whitespace-nowrap transition-all hover:border-transparent hover:bg-gradient-to-r hover:from-violet-600 hover:to-cyan-500 hover:text-white hover:shadow-[0_0_14px_rgba(139,92,246,0.35)]",
+        compact ? "p-2" : "px-3 py-1.5 text-xs"
+      )}
+      aria-label={t.header.login}
+    >
+      <LogIn size={compact ? 16 : 14} />
+      {!compact && t.header.login}
     </Link>
   );
 }
@@ -234,8 +255,9 @@ export function Header({
             })}
           </div>
 
-          {/* Actions — colonne droite : langue · thème | réseaux | badge CTA */}
+          {/* Actions — colonne droite : connexion | langue · thème | réseaux | badge CTA */}
           <div className="hidden xl:flex items-center gap-2 pr-1 justify-self-end">
+            <AdminLoginButton />
             <LangToggle />
             <ThemeToggle />
             <VSeparator />
@@ -244,8 +266,9 @@ export function Header({
             <AvailabilityBadge available={available} className="flex" short />
           </div>
 
-          {/* Tablette/mobile — langue + thème + burger à droite */}
+          {/* Tablette/mobile — connexion + langue + thème + burger à droite */}
           <div className="flex xl:hidden items-center gap-1 pr-1 col-start-3 row-start-1 justify-self-end">
+            <AdminLoginButton compact />
             <LangToggle />
             <ThemeToggle />
             <button

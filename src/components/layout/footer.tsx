@@ -99,17 +99,11 @@ export function Footer({
         {/* Séparateur */}
         <div className="my-8 lg:my-10 border-t border-border/60" />
 
-        {/* Zone basse : copyright + lien discret */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+        {/* Zone basse : copyright */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 text-center">
           <p className="text-xs text-muted-foreground">
             &copy; {currentYear} {personalInfo.name}. {t.footer.rights}
           </p>
-          <Link
-            href="/admin"
-            className="text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors"
-          >
-            {t.footer.admin}
-          </Link>
         </div>
       </div>
     </footer>

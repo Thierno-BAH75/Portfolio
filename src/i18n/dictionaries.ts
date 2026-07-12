@@ -12,6 +12,7 @@ const fr = {
     availableShort: "Disponible",
     availableFull: "Disponible · Alternance",
     contact: "Me contacter",
+    login: "Connexion",
   },
   hero: {
     titles: [
@@ -160,6 +161,17 @@ const fr = {
       apprenticeship: "Alternance",
       contract: "CDD",
     },
+    seekingPlaceholder: "Recherche d'alternance en cours",
+  },
+  certifications: {
+    eyebrow: "Certifications",
+    titleStart: "Mes",
+    titleGradient: "certifications",
+    subtitle:
+      "Les certifications qui valident mes compétences en réseaux, systèmes et cybersécurité.",
+    obtainedOn: "Obtenue",
+    expiresOn: "Expire",
+    viewAll: "Voir toutes mes certifications",
   },
   contact: {
     eyebrow: "Contact",
@@ -204,7 +216,6 @@ const fr = {
     explore: "Explorer",
     keywords: "Réseaux • Cybersécurité • Cloud",
     rights: "Tous droits réservés.",
-    admin: "Admin",
   },
   veille: {
     title: "Veille Techno",
@@ -283,6 +294,7 @@ const en: DeepDict<typeof fr> = {
     availableShort: "Available",
     availableFull: "Available · Work-study",
     contact: "Get in touch",
+    login: "Login",
   },
   hero: {
     titles: [
@@ -431,6 +443,17 @@ const en: DeepDict<typeof fr> = {
       apprenticeship: "Apprenticeship",
       contract: "Fixed-term",
     },
+    seekingPlaceholder: "Currently seeking a work-study role",
+  },
+  certifications: {
+    eyebrow: "Certifications",
+    titleStart: "My",
+    titleGradient: "certifications",
+    subtitle:
+      "The certifications that validate my skills in networking, systems and cybersecurity.",
+    obtainedOn: "Obtained",
+    expiresOn: "Expires",
+    viewAll: "View all my certifications",
   },
   contact: {
     eyebrow: "Contact",
@@ -475,7 +498,6 @@ const en: DeepDict<typeof fr> = {
     explore: "Explore",
     keywords: "Networking • Cybersecurity • Cloud",
     rights: "All rights reserved.",
-    admin: "Admin",
   },
   veille: {
     title: "Tech Watch",

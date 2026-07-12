@@ -139,6 +139,7 @@ export const certificationSchema = z.object({
   date: z.string().min(1, "La date d'obtention est requise"),
   expiry: z.string().optional(),
   icon: z.string().min(1),
+  pdfUrl: z.string().optional(),
   displayOrder: z.number().int().min(0),
 });
 

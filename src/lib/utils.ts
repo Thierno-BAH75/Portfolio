@@ -1,8 +1,16 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import type { Certification } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
+}
+
+// Tri explicite par date d'obtention décroissante (format "AAAA-MM", donc
+// comparable en chaîne) — ne se fie jamais à display_order, qui peut être
+// incohérent avec la chronologie réelle.
+export function sortCertificationsByDate(certifications: Certification[]): Certification[] {
+  return [...certifications].sort((a, b) => b.date.localeCompare(a.date));
 }
 
 export function formatDate(

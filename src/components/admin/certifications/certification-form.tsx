@@ -16,6 +16,7 @@ const EMPTY_VALUES: CertificationFormValues = {
   date: "",
   expiry: "",
   icon: "shield",
+  pdfUrl: "",
   displayOrder: 0,
 };
 
@@ -105,6 +106,10 @@ export function CertificationForm({ mode, certificationId, initial }: Certificat
             <label className="text-xs font-medium text-muted-foreground">Ordre d&apos;affichage</label>
             <Input type="number" {...register("displayOrder", { valueAsNumber: true })} />
           </div>
+        </div>
+        <div className="space-y-1.5">
+          <label className="text-xs font-medium text-muted-foreground">Lien du PDF / justificatif (optionnel)</label>
+          <Input placeholder="https://..." {...register("pdfUrl")} />
         </div>
       </section>
 

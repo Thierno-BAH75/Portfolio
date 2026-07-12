@@ -255,15 +255,16 @@ export function Header({
             })}
           </div>
 
-          {/* Actions — colonne droite : connexion | langue · thème | réseaux | badge CTA */}
+          {/* Actions — colonne droite : connexion | badge dispo | réseaux | langue · thème */}
           <div className="hidden xl:flex items-center gap-2 pr-1 justify-self-end">
             <AdminLoginButton />
-            <LangToggle />
-            <ThemeToggle />
+            <VSeparator />
+            <AvailabilityBadge available={available} className="flex" short />
             <VSeparator />
             <SocialIcons socialLinks={socialLinks} />
             <VSeparator />
-            <AvailabilityBadge available={available} className="flex" short />
+            <LangToggle />
+            <ThemeToggle />
           </div>
 
           {/* Tablette/mobile — connexion + langue + thème + burger à droite */}

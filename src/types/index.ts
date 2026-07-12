@@ -99,6 +99,7 @@ export interface Certification {
   date: string;
   expiry?: string;
   icon: string;
+  pdfUrl?: string;
 }
 
 export interface SocialLink {

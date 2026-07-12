@@ -5,6 +5,7 @@ import { Award } from "lucide-react";
 import { SectionBackground } from "@/components/ui/section-background";
 import { CertificationCard } from "@/components/certifications/certification-card";
 import { useI18n } from "@/i18n";
+import { sortCertificationsByDate } from "@/lib/utils";
 import type { Certification } from "@/types";
 
 export function CertificationsPageClient({
@@ -13,6 +14,7 @@ export function CertificationsPageClient({
   certifications: Certification[];
 }) {
   const { t } = useI18n();
+  const sortedCertifications = sortCertificationsByDate(certifications);
 
   return (
     <div className="relative min-h-screen pt-24 pb-20 overflow-hidden">
@@ -45,7 +47,7 @@ export function CertificationsPageClient({
 
         {/* Grille */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6 max-w-5xl mx-auto">
-          {certifications.map((cert, index) => (
+          {sortedCertifications.map((cert, index) => (
             <CertificationCard key={cert.name.fr} cert={cert} index={index} />
           ))}
         </div>

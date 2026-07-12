@@ -172,6 +172,7 @@ const fr = {
     obtainedOn: "Obtenue",
     expiresOn: "Expire",
     viewAll: "Voir toutes mes certifications",
+    viewCertificate: "Voir certification",
   },
   contact: {
     eyebrow: "Contact",
@@ -454,6 +455,7 @@ const en: DeepDict<typeof fr> = {
     obtainedOn: "Obtained",
     expiresOn: "Expires",
     viewAll: "View all my certifications",
+    viewCertificate: "View certificate",
   },
   contact: {
     eyebrow: "Contact",

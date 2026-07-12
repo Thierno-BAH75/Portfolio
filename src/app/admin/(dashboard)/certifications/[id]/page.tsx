@@ -14,6 +14,7 @@ export default async function EditCertificationPage({ params }: { params: Promis
     date: certification.date,
     expiry: certification.expiry ?? "",
     icon: certification.icon,
+    pdfUrl: certification.pdfUrl ?? "",
     displayOrder: certification.displayOrder,
   };
 

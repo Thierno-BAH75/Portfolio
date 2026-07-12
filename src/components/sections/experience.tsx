@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useMemo, useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
   Briefcase,
@@ -17,6 +17,9 @@ import type { Education, Experience as ExperienceType } from "@/types";
 import { useI18n } from "@/i18n";
 
 const VISIBLE_ACHIEVEMENTS = 2;
+// Colonne professionnelle tronquée par défaut : les postes les plus récents
+// suffisent à donner le ton, le reste est derrière « Voir plus ».
+const VISIBLE_EXPERIENCES = 3;
 
 const STATUS_CLASSES: Record<NonNullable<Education["status"]>, string> = {
   validated: "border-green-500/30 bg-green-500/10 text-green-500",
@@ -61,6 +64,26 @@ function ColumnHeader({
   );
 }
 
+// Ligne verticale en dégradé + colonne d'items : la ligne (top-1/bottom-1)
+// suit toujours la hauteur réelle du conteneur, donc s'allonge naturellement
+// quand le contenu se déplie (Voir plus de la colonne professionnelle).
+function TimelineShell({ children }: { children: React.ReactNode }) {
+  const reduce = useReducedMotion();
+
+  return (
+    <div className="relative pl-8">
+      <motion.div
+        className="absolute left-[5px] top-1 bottom-1 w-[2px] rounded-full bg-gradient-to-b from-violet-500 to-cyan-400"
+        initial={reduce ? false : { scaleY: 0, originY: 0 }}
+        whileInView={reduce ? undefined : { scaleY: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+      />
+      <div className="space-y-8">{children}</div>
+    </div>
+  );
+}
+
 function TimelineDot() {
   const reduce = useReducedMotion();
 
@@ -72,61 +95,6 @@ function TimelineDot() {
       viewport={{ once: true }}
       transition={{ duration: 0.35, delay: 0.15 }}
     />
-  );
-}
-
-// Ligne verticale dégradée d'une colonne entière — élément de grille à part
-// entière, placé sur toutes les lignes (row-span complet) pour traverser
-// visuellement les éventuelles cellules vides. Desktop uniquement : en
-// mobile les deux colonnes sont fusionnées en une seule liste, une ligne
-// "par colonne" n'aurait plus de sens.
-function ColumnLine({ column, totalRows }: { column: 1 | 2; totalRows: number }) {
-  const reduce = useReducedMotion();
-
-  return (
-    <motion.div
-      aria-hidden="true"
-      className="hidden lg:block ml-[5px] w-[2px] rounded-full bg-gradient-to-b from-violet-500 to-cyan-400"
-      style={{ gridColumn: column, gridRow: `1 / ${totalRows + 1}` }}
-      initial={reduce ? false : { scaleY: 0, originY: 0 }}
-      whileInView={reduce ? undefined : { scaleY: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 1.2, ease: "easeOut" }}
-    />
-  );
-}
-
-// Emplacement d'une carte dans la grille : pl-8 fait la place au point de
-// timeline (dessiné par chaque carte elle-même, cf. TimelineDot) — inerte
-// tant que le parent n'est pas en display:grid (mobile = flex-col, l'empan
-// ligne/colonne est simplement ignoré par le navigateur).
-function TimelineNode({
-  column,
-  row,
-  children,
-}: {
-  column: 1 | 2;
-  row: number;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="relative pl-8 lg:self-start" style={{ gridColumn: column, gridRow: row }}>
-      {children}
-    </div>
-  );
-}
-
-function SeekingPlaceholder() {
-  const { t } = useI18n();
-
-  return (
-    <div className="relative">
-      <TimelineDot />
-      <div className="rounded-xl border border-dashed border-border/60 px-5 py-4 flex items-center gap-2.5 text-sm text-muted-foreground">
-        <Sparkles size={15} className="text-amber-400 shrink-0" />
-        {t.experience.seekingPlaceholder}
-      </div>
-    </div>
   );
 }
 
@@ -300,69 +268,6 @@ function ExperienceCard({
   );
 }
 
-interface RowDef {
-  key: string;
-  education?: Education;
-  experiences: ExperienceType[];
-  seekingPlaceholder?: boolean;
-}
-
-function findEdu(list: Education[], keyword: string): Education | undefined {
-  return list.find((e) => e.degree.fr.toLowerCase().includes(keyword));
-}
-
-function findExp(list: ExperienceType[], keyword: string): ExperienceType | undefined {
-  return list.find((e) => e.company.toLowerCase().includes(keyword));
-}
-
-// Appariement scolaire ↔ professionnel par période — propre à ce parcours
-// précis (le schéma Supabase n'a aucune notion de "ligne" partagée entre les
-// deux tables), donc identifié par mots-clés stables (diplôme / entreprise)
-// plutôt que par un ordre de tri générique. Toute entrée qui ne correspond à
-// aucun mot-clé connu (nouvelle formation ou expérience ajoutée en admin)
-// est ajoutée en fin de grille sur sa propre ligne plutôt que d'être
-// silencieusement perdue.
-function buildRows(education: Education[], experiences: ExperienceType[]): RowDef[] {
-  const bts = findEdu(education, "bts sio");
-  const licencePro = findEdu(education, "licence pro");
-  const mastereCare = findEdu(education, "care");
-  const masterIrs = findEdu(education, "irs");
-
-  const w3tel = findExp(experiences, "w3tel");
-  const cortechs = findExp(experiences, "cortechs");
-  const hfb = findExp(experiences, "franco-britannique");
-  const kiss = findExp(experiences, "kiss");
-  const axa = findExp(experiences, "axa");
-
-  const matchedEduIds = new Set(
-    [bts, licencePro, mastereCare, masterIrs].filter((e): e is Education => !!e).map((e) => e.id)
-  );
-  const matchedExpIds = new Set(
-    [w3tel, cortechs, hfb, kiss, axa].filter((e): e is ExperienceType => !!e).map((e) => e.id)
-  );
-
-  const rows: RowDef[] = [
-    {
-      key: "bts",
-      education: bts,
-      experiences: [w3tel, cortechs].filter((e): e is ExperienceType => !!e),
-    },
-    { key: "licence-pro", education: licencePro, experiences: hfb ? [hfb] : [] },
-    { key: "mastere-care", education: mastereCare, experiences: kiss ? [kiss] : [] },
-    { key: "axa", experiences: axa ? [axa] : [] },
-    { key: "master-irs", education: masterIrs, experiences: [], seekingPlaceholder: true },
-  ];
-
-  education
-    .filter((e) => !matchedEduIds.has(e.id))
-    .forEach((e) => rows.push({ key: `edu-${e.id}`, education: e, experiences: [] }));
-  experiences
-    .filter((e) => !matchedExpIds.has(e.id))
-    .forEach((e) => rows.push({ key: `exp-${e.id}`, experiences: [e] }));
-
-  return rows.filter((r) => r.education || r.experiences.length > 0 || r.seekingPlaceholder);
-}
-
 export function Experience({
   education,
   experiences,
@@ -371,9 +276,12 @@ export function Experience({
   experiences: ExperienceType[];
 }) {
   const fade = useFadeProps();
+  const reduce = useReducedMotion();
   const { t } = useI18n();
-  const rows = useMemo(() => buildRows(education, experiences), [education, experiences]);
-  const totalRows = rows.length;
+  const [showAllExperiences, setShowAllExperiences] = useState(false);
+
+  const visibleExperiences = experiences.slice(0, VISIBLE_EXPERIENCES);
+  const hiddenExperiences = experiences.slice(VISIBLE_EXPERIENCES);
 
   return (
     <section className="relative overflow-hidden py-20 lg:py-32" id="experience">
@@ -391,50 +299,64 @@ export function Experience({
           <p className="text-muted-foreground mt-4">{t.experience.subtitle}</p>
         </motion.div>
 
-        <div className="max-w-6xl mx-auto">
-          {/* En-têtes de colonnes — desktop uniquement : en mobile les cartes
-              scolaires/professionnelles sont déjà groupées par ligne, un
-              label de colonne séparé n'apporterait rien. */}
-          <div className="hidden lg:grid lg:grid-cols-2 lg:gap-x-10">
+        {/* Double timeline */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-10 max-w-6xl mx-auto">
+          <div>
             <ColumnHeader icon={GraduationCap} label={t.experience.school} />
-            <ColumnHeader icon={Briefcase} label={t.experience.professional} />
+            <TimelineShell>
+              {education.map((edu, index) => (
+                <EducationCard key={edu.id} edu={edu} index={index} />
+              ))}
+            </TimelineShell>
           </div>
 
-          {/* Grille alignée ligne par ligne : chaque paire scolaire/pro
-              partage la même row-track CSS, qui se dimensionne automatiquement
-              sur la carte la plus haute des deux — c'est ce qui garantit
-              l'alignement, sans mesure JS. En mobile, simple pile (flex-col) :
-              l'ordre du DOM (une ligne = école puis pro) assure le groupement. */}
-          <div className="flex flex-col gap-8 lg:grid lg:grid-cols-2 lg:gap-x-10 lg:gap-y-10">
-            <ColumnLine column={1} totalRows={totalRows} />
-            <ColumnLine column={2} totalRows={totalRows} />
-
-            {rows.map((row, i) => {
-              const rowNumber = i + 1;
-              return (
-                <Fragment key={row.key}>
-                  {row.education && (
-                    <TimelineNode column={1} row={rowNumber}>
-                      <EducationCard edu={row.education} index={i} />
-                    </TimelineNode>
-                  )}
-                  {row.experiences.length > 0 && (
-                    <TimelineNode column={2} row={rowNumber}>
-                      <div className="flex flex-col gap-4">
-                        {row.experiences.map((exp, j) => (
-                          <ExperienceCard key={exp.id} exp={exp} index={i + j} />
+          <div>
+            <ColumnHeader icon={Briefcase} label={t.experience.professional} />
+            <TimelineShell>
+              {visibleExperiences.map((exp, index) => (
+                <ExperienceCard key={exp.id} exp={exp} index={index} />
+              ))}
+              {hiddenExperiences.length > 0 && (
+                <AnimatePresence initial={false}>
+                  {showAllExperiences && (
+                    <motion.div
+                      className="overflow-hidden"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: reduce ? 0 : 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      <div className="space-y-8">
+                        {hiddenExperiences.map((exp, index) => (
+                          <ExperienceCard
+                            key={exp.id}
+                            exp={exp}
+                            index={visibleExperiences.length + index}
+                          />
                         ))}
                       </div>
-                    </TimelineNode>
+                    </motion.div>
                   )}
-                  {row.seekingPlaceholder && (
-                    <TimelineNode column={2} row={rowNumber}>
-                      <SeekingPlaceholder />
-                    </TimelineNode>
-                  )}
-                </Fragment>
-              );
-            })}
+                </AnimatePresence>
+              )}
+            </TimelineShell>
+
+            {hiddenExperiences.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setShowAllExperiences((v) => !v)}
+                aria-expanded={showAllExperiences}
+                className="mt-6 pl-8 flex items-center gap-1.5 text-sm font-medium text-cyan-400 hover:text-cyan-300 transition-colors"
+              >
+                {showAllExperiences
+                  ? t.experience.seeLess
+                  : `${t.experience.seeMore} (${hiddenExperiences.length})`}
+                <ChevronDown
+                  size={16}
+                  className={cn("transition-transform", showAllExperiences && "rotate-180")}
+                />
+              </button>
+            )}
           </div>
         </div>
       </div>

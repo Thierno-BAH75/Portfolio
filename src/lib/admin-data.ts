@@ -186,6 +186,7 @@ function rowToAdminCertification(row: Record<string, unknown>): AdminCertificati
     date: row.date as string,
     expiry: (row.expiry as string) ?? undefined,
     icon: row.icon as string,
+    pdfUrl: (row.pdf_url as string) ?? undefined,
     displayOrder: row.display_order as number,
   };
 }

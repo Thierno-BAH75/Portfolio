@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { FileText, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatDate } from "@/lib/utils";
 import { resolveLucideIcon } from "@/lib/lucide-icon";
@@ -77,6 +78,29 @@ export function CertificationCard({
                 {t.certifications.expiresOn} {formatDate(cert.expiry, locale)}
               </span>
             )}
+          </div>
+        )}
+
+        {!compact && cert.pdfUrl && (
+          <div className="flex items-center gap-4 pt-1">
+            <a
+              href={cert.pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-cyan-400 hover:text-cyan-300 transition-colors"
+            >
+              <FileText size={14} />
+              {t.certifications.viewCertificate}
+            </a>
+            <a
+              href={cert.pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t.certifications.viewCertificate}
+              className="inline-flex items-center justify-center w-7 h-7 rounded-md border border-border/60 text-muted-foreground hover:text-cyan-400 hover:border-cyan-400/50 transition-colors shrink-0"
+            >
+              <ExternalLink size={13} />
+            </a>
           </div>
         )}
       </div>

@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { SectionBackground } from "@/components/ui/section-background";
 import { CertificationCard } from "@/components/certifications/certification-card";
 import { useI18n } from "@/i18n";
+import { sortCertificationsByDate } from "@/lib/utils";
 import type { Certification } from "@/types";
 
 export function CertificationsPreview({
@@ -14,6 +15,7 @@ export function CertificationsPreview({
   certifications: Certification[];
 }) {
   const { t } = useI18n();
+  const sortedCertifications = sortCertificationsByDate(certifications);
 
   return (
     <section className="relative overflow-hidden py-16 sm:py-20 lg:py-32" id="certifications">
@@ -40,7 +42,7 @@ export function CertificationsPreview({
 
         {/* Grille compacte */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 max-w-4xl mx-auto mb-10">
-          {certifications.map((cert, index) => (
+          {sortedCertifications.map((cert, index) => (
             <CertificationCard key={cert.name.fr} cert={cert} index={index} compact />
           ))}
         </div>

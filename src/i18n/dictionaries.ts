@@ -327,6 +327,13 @@ const fr = {
       analyzeMine: "Analyser {domain} à la place",
       useCasesLabel: "Cas d'usage",
       contextLabel: "Contexte professionnel",
+      remediationLabel: "Remédiation :",
+      severity: {
+        critical: "Critique",
+        high: "Élevée",
+        medium: "Moyenne",
+        low: "Faible",
+      },
     },
     cards: {
       securityHeaders: {
@@ -370,6 +377,12 @@ const fr = {
       intro:
         "Analyse en direct des en-têtes de sécurité HTTP renvoyés par ce site, via une route API serveur qui ne peut cibler que son propre domaine.",
       analyze: "Analyser",
+      statsStatusLabel: "Statut HTTP",
+      statsPresentLabel: "En-têtes présents",
+      statsMissingLabel: "Manquants",
+      sectionPresentTitle: "Déjà en place",
+      sectionMissingTitle: "À corriger",
+      missingRemediation: "Ajoutez cet en-tête à la configuration de votre serveur.",
       headerInfo: {
         "content-security-policy":
           "Restreint les sources de scripts, styles et ressources autorisées, limitant les attaques XSS et d'injection de contenu.",
@@ -411,6 +424,9 @@ const fr = {
       scan: "Lancer la simulation",
       open: "ouvert",
       closed: "fermé",
+      statsScannedLabel: "Ports scannés",
+      statsOpenLabel: "Ports ouverts",
+      statsClosedLabel: "Ports fermés",
       footnote:
         "Résultat pseudo-aléatoire dérivé du texte saisi — ne reflète l'état d'aucune machine réelle.",
     },
@@ -457,8 +473,6 @@ const fr = {
     vulnDatabase: {
       intro:
         "Vulnérabilités majeures et publiquement documentées — contenu strictement informatif, aucun code d'exploit.",
-      remediationLabel: "Remédiation :",
-      severity: { critical: "Critique", high: "Élevée" },
       entries: {
         eternalblue: {
           name: "EternalBlue (MS17-010)",
@@ -906,6 +920,13 @@ const en: DeepDict<typeof fr> = {
       analyzeMine: "Analyze {domain} instead",
       useCasesLabel: "Use cases",
       contextLabel: "Professional context",
+      remediationLabel: "Remediation:",
+      severity: {
+        critical: "Critical",
+        high: "High",
+        medium: "Medium",
+        low: "Low",
+      },
     },
     cards: {
       securityHeaders: {
@@ -949,6 +970,12 @@ const en: DeepDict<typeof fr> = {
       intro:
         "Live analysis of the HTTP security headers returned by this site, via a server API route that can only ever target its own domain.",
       analyze: "Analyze",
+      statsStatusLabel: "HTTP status",
+      statsPresentLabel: "Headers present",
+      statsMissingLabel: "Missing",
+      sectionPresentTitle: "Already in place",
+      sectionMissingTitle: "To fix",
+      missingRemediation: "Add this header to your server configuration.",
       headerInfo: {
         "content-security-policy":
           "Restricts allowed sources for scripts, styles and resources, limiting XSS and content-injection attacks.",
@@ -989,6 +1016,9 @@ const en: DeepDict<typeof fr> = {
       scan: "Run simulation",
       open: "open",
       closed: "closed",
+      statsScannedLabel: "Ports scanned",
+      statsOpenLabel: "Ports open",
+      statsClosedLabel: "Ports closed",
       footnote:
         "Pseudo-random result derived from the entered text — does not reflect the state of any real machine.",
     },
@@ -1035,8 +1065,6 @@ const en: DeepDict<typeof fr> = {
     vulnDatabase: {
       intro:
         "Major, publicly documented vulnerabilities — strictly informational content, no exploit code.",
-      remediationLabel: "Remediation:",
-      severity: { critical: "Critical", high: "High" },
       entries: {
         eternalblue: {
           name: "EternalBlue (MS17-010)",

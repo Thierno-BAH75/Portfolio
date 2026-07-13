@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AlertTriangle, Mail, RefreshCw, Shuffle } from "lucide-react";
 import { useI18n } from "@/i18n";
+import { ToolActionButton } from "./tool-ui";
 
 const SCENARIO_IDS = ["banking", "corporate", "delivery", "itSupport"] as const;
 
@@ -26,17 +27,13 @@ export function PhishingSimulator() {
     <div className="space-y-4">
       <p className="text-xs text-muted-foreground">{t.tools.phishing.intro}</p>
 
-      <div className="flex items-center justify-between gap-2">
-        <span className="text-[11px] uppercase tracking-wide text-muted-foreground font-medium">
+      <div className="space-y-2">
+        <span className="inline-block text-[11px] uppercase tracking-wide text-muted-foreground font-medium">
           {t.tools.phishing.sectorLabel}: {scenario.sector}
         </span>
-        <button
-          onClick={next}
-          className="flex items-center gap-1.5 h-8 px-3 rounded-lg text-xs font-medium bg-gradient-to-r from-violet-600 to-cyan-500 text-white hover:shadow-[0_0_16px_rgba(139,92,246,0.4)] transition-all"
-        >
-          <Shuffle size={12} />
+        <ToolActionButton icon={Shuffle} type="button" onClick={next}>
           {t.tools.phishing.newScenario}
-        </button>
+        </ToolActionButton>
       </div>
 
       <div className="rounded-lg border border-border/60 bg-background/50 overflow-hidden">

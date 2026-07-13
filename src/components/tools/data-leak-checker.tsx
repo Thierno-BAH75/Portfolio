@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { AlertCircle, CheckCircle2, ExternalLink, Info } from "lucide-react";
+import { AlertCircle, CheckCircle2, ExternalLink, Info, Search } from "lucide-react";
 import { useI18n } from "@/i18n";
+import { ToolActionButton, ToolInput } from "./tool-ui";
 
 // Jeu de données 100% fixe et mocké : faits historiques publics de fuites de
 // données largement documentées, utilisés uniquement pour illustrer un
@@ -70,21 +71,15 @@ export function DataLeakChecker() {
           e.preventDefault();
           run();
         }}
-        className="flex flex-wrap gap-2"
+        className="space-y-2"
       >
-        <input
+        <ToolInput
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="email@exemple.com"
-          className="flex-1 min-w-[180px] h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/40 focus:border-transparent"
         />
-        <button
-          type="submit"
-          className="h-9 px-4 rounded-lg text-sm font-medium bg-gradient-to-r from-violet-600 to-cyan-500 text-white hover:shadow-[0_0_16px_rgba(139,92,246,0.4)] transition-all"
-        >
-          {t.tools.dataLeak.check}
-        </button>
+        <ToolActionButton icon={Search}>{t.tools.dataLeak.check}</ToolActionButton>
       </form>
 
       {result && (

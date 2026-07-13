@@ -56,9 +56,10 @@ export default function OutilsPage() {
         </motion.div>
 
         {/* Grille de cartes */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 items-start">
           <ToolCard
             icon={ShieldCheck}
+            category="live"
             title={t.tools.cards.securityHeaders.title}
             description={t.tools.cards.securityHeaders.description}
             badge={t.tools.badges.live}
@@ -68,6 +69,7 @@ export default function OutilsPage() {
 
           <ToolCard
             icon={Lock}
+            category="simulation"
             title={t.tools.cards.sslChecker.title}
             description={t.tools.cards.sslChecker.description}
             badge={t.tools.badges.simulation}
@@ -77,6 +79,7 @@ export default function OutilsPage() {
 
           <ToolCard
             icon={Radar}
+            category="simulation"
             title={t.tools.cards.portScan.title}
             description={t.tools.cards.portScan.description}
             badge={t.tools.badges.simulation}
@@ -86,6 +89,7 @@ export default function OutilsPage() {
 
           <ToolCard
             icon={Bug}
+            category="reference"
             title={t.tools.cards.burpReference.title}
             description={t.tools.cards.burpReference.description}
             badge={t.tools.badges.reference}
@@ -95,6 +99,7 @@ export default function OutilsPage() {
 
           <ToolCard
             icon={Gauge}
+            category="interactive"
             title={t.tools.cards.riskCalculator.title}
             description={t.tools.cards.riskCalculator.description}
             badge={t.tools.badges.interactive}
@@ -104,6 +109,7 @@ export default function OutilsPage() {
 
           <ToolCard
             icon={Database}
+            category="reference"
             title={t.tools.cards.vulnDatabase.title}
             description={t.tools.cards.vulnDatabase.description}
             badge={t.tools.badges.reference}
@@ -113,6 +119,7 @@ export default function OutilsPage() {
 
           <ToolCard
             icon={Fish}
+            category="educational"
             title={t.tools.cards.phishing.title}
             description={t.tools.cards.phishing.description}
             badge={t.tools.badges.educational}
@@ -122,6 +129,7 @@ export default function OutilsPage() {
 
           <ToolCard
             icon={Droplets}
+            category="simulation"
             title={t.tools.cards.dataLeak.title}
             description={t.tools.cards.dataLeak.description}
             badge={t.tools.badges.simulation}
@@ -131,6 +139,7 @@ export default function OutilsPage() {
 
           <ToolCard
             icon={Network}
+            category="reference"
             title={t.tools.cards.wiresharkReference.title}
             description={t.tools.cards.wiresharkReference.description}
             badge={t.tools.badges.reference}

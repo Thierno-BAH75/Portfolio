@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { AlertTriangle, CircleDot, Circle } from "lucide-react";
+import { useMemo, useState } from "react";
+import { AlertTriangle, CircleDot, Circle, Radar } from "lucide-react";
 import { useI18n } from "@/i18n";
+import { ToolActionButton, ToolInput, ToolStatGrid, type ToolStat } from "./tool-ui";
 
 const CANDIDATE_PORTS = [
   { port: 21, service: "FTP" },
@@ -57,6 +58,17 @@ export function PortScanSimulator() {
     setResults(simulate(value));
   };
 
+  const stats: ToolStat[] = useMemo(() => {
+    if (!results) return [];
+    const openCount = results.filter((r) => r.status === "open").length;
+    const closedCount = results.length - openCount;
+    return [
+      { value: results.length, label: t.tools.portScan.statsScannedLabel, tone: "neutral" },
+      { value: openCount, label: t.tools.portScan.statsOpenLabel, tone: openCount > 0 ? "warn" : "good" },
+      { value: closedCount, label: t.tools.portScan.statsClosedLabel, tone: "good" },
+    ];
+  }, [results, t]);
+
   return (
     <div className="space-y-4">
       <div className="flex items-start gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3.5 py-2.5 text-xs text-amber-200">
@@ -71,28 +83,23 @@ export function PortScanSimulator() {
           e.preventDefault();
           run();
         }}
-        className="flex flex-wrap gap-2"
+        className="space-y-2"
       >
-        <input
+        <ToolInput
           type="text"
           value={target}
           onChange={(e) => setTarget(e.target.value)}
           placeholder={t.tools.portScan.placeholder}
-          className="flex-1 min-w-[180px] h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/40 focus:border-transparent"
         />
-        <button
-          type="submit"
-          className="h-9 px-4 rounded-lg text-sm font-medium bg-gradient-to-r from-violet-600 to-cyan-500 text-white hover:shadow-[0_0_16px_rgba(139,92,246,0.4)] transition-all"
-        >
-          {t.tools.portScan.scan}
-        </button>
+        <ToolActionButton icon={Radar}>{t.tools.portScan.scan}</ToolActionButton>
       </form>
 
       {results && (
-        <div className="space-y-2">
+        <div className="space-y-3">
           <p className="font-mono text-xs text-muted-foreground">
             $ nmap-sim {scannedTarget}
           </p>
+          <ToolStatGrid stats={stats} />
           <div className="rounded-lg border border-border/60 bg-background/50 divide-y divide-border/60">
             {results.map((r) => (
               <div key={r.port} className="flex items-center gap-2.5 px-3.5 py-2 font-mono text-xs">

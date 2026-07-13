@@ -1,8 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CheckCircle2, XCircle, ExternalLink, Loader2 } from "lucide-react";
+import { CheckCircle2, ExternalLink, Search } from "lucide-react";
 import { useI18n } from "@/i18n";
+import {
+  ToolActionButton,
+  ToolInput,
+  ToolStatGrid,
+  ToolSeverityList,
+  type ToolStat,
+  type Severity,
+  type SeverityItem,
+} from "./tool-ui";
 
 const HEADER_KEYS = [
   "content-security-policy",
@@ -13,6 +22,19 @@ const HEADER_KEYS = [
   "permissions-policy",
   "x-xss-protection",
 ] as const;
+
+// Sévérité indicative de l'absence de chaque en-tête — jugement défensif
+// standard (CSP/HSTS/anti-clickjacking priment sur les mécanismes annexes
+// ou dépréciés comme X-XSS-Protection), pas une donnée renvoyée par l'API
+const HEADER_SEVERITY: Record<(typeof HEADER_KEYS)[number], Severity> = {
+  "content-security-policy": "critical",
+  "strict-transport-security": "high",
+  "x-frame-options": "high",
+  "x-content-type-options": "medium",
+  "permissions-policy": "medium",
+  "referrer-policy": "low",
+  "x-xss-protection": "low",
+};
 
 interface ApiResult {
   url: string;
@@ -72,6 +94,35 @@ export function SecurityHeadersAnalyzer() {
     }
   };
 
+  const presentKeys = result ? HEADER_KEYS.filter((k) => result.headers[k] !== undefined) : [];
+  const missingKeys = result ? HEADER_KEYS.filter((k) => result.headers[k] === undefined) : [];
+
+  const stats: ToolStat[] = result
+    ? [
+        { value: result.status, label: t.tools.securityHeaders.statsStatusLabel, tone: "neutral" },
+        {
+          value: `${presentKeys.length}/${HEADER_KEYS.length}`,
+          label: t.tools.securityHeaders.statsPresentLabel,
+          tone: presentKeys.length === HEADER_KEYS.length ? "good" : presentKeys.length === 0 ? "bad" : "warn",
+        },
+        {
+          value: missingKeys.length,
+          label: t.tools.securityHeaders.statsMissingLabel,
+          tone: missingKeys.length === 0 ? "good" : "bad",
+        },
+      ]
+    : [];
+
+  const missingItems: SeverityItem[] = missingKeys.map((key) => ({
+    key,
+    severity: HEADER_SEVERITY[key],
+    severityLabel: t.tools.common.severity[HEADER_SEVERITY[key]],
+    title: key,
+    description: t.tools.securityHeaders.headerInfo[key],
+    remediationLabel: t.tools.common.remediationLabel,
+    remediation: t.tools.securityHeaders.missingRemediation,
+  }));
+
   return (
     <div className="space-y-4">
       <p className="text-xs text-muted-foreground">{t.tools.securityHeaders.intro}</p>
@@ -81,22 +132,17 @@ export function SecurityHeadersAnalyzer() {
           e.preventDefault();
           runCheck(input);
         }}
-        className="flex flex-wrap gap-2"
+        className="space-y-2"
       >
-        <input
+        <ToolInput
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder={ownHost || "…"}
-          className="flex-1 min-w-[180px] h-9 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/40 focus:border-transparent"
         />
-        <button
-          type="submit"
-          disabled={loading}
-          className="h-9 px-4 rounded-lg text-sm font-medium bg-gradient-to-r from-violet-600 to-cyan-500 text-white hover:shadow-[0_0_16px_rgba(139,92,246,0.4)] transition-all disabled:opacity-50"
-        >
-          {loading ? <Loader2 size={14} className="animate-spin" /> : t.tools.securityHeaders.analyze}
-        </button>
+        <ToolActionButton icon={Search} loading={loading}>
+          {t.tools.securityHeaders.analyze}
+        </ToolActionButton>
       </form>
 
       {foreignDomain && (
@@ -128,39 +174,44 @@ export function SecurityHeadersAnalyzer() {
       {error && <p className="text-xs text-red-400">{error}</p>}
 
       {result && (
-        <div className="space-y-3">
-          <p className="text-xs text-muted-foreground">
-            <span className="text-green-400 font-medium">{result.status}</span> · {result.url}
-          </p>
-          <div className="space-y-2">
-            {HEADER_KEYS.map((key) => {
-              const value = result.headers[key];
-              const present = value !== undefined;
-              return (
-                <div
-                  key={key}
-                  className="rounded-lg border border-border/60 bg-background/50 px-3.5 py-2.5"
-                >
-                  <div className="flex items-start gap-2">
-                    {present ? (
+        <div className="space-y-4">
+          <p className="text-xs text-muted-foreground truncate">{result.url}</p>
+          <ToolStatGrid stats={stats} />
+
+          {missingItems.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+                {t.tools.securityHeaders.sectionMissingTitle}
+              </p>
+              <ToolSeverityList items={missingItems} />
+            </div>
+          )}
+
+          {presentKeys.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+                {t.tools.securityHeaders.sectionPresentTitle}
+              </p>
+              <div className="space-y-2">
+                {presentKeys.map((key) => (
+                  <div
+                    key={key}
+                    className="rounded-lg border border-green-500/20 bg-green-500/5 px-3.5 py-2.5"
+                  >
+                    <div className="flex items-start gap-2">
                       <CheckCircle2 size={14} className="text-green-500 shrink-0 mt-0.5" />
-                    ) : (
-                      <XCircle size={14} className="text-muted-foreground shrink-0 mt-0.5" />
-                    )}
-                    <div className="min-w-0">
-                      <p className="font-mono text-xs font-medium">{key}</p>
-                      {present && (
-                        <p className="font-mono text-[11px] text-cyan-400 break-all mt-0.5">{value}</p>
-                      )}
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {t.tools.securityHeaders.headerInfo[key]}
-                      </p>
+                      <div className="min-w-0">
+                        <p className="font-mono text-xs font-medium">{key}</p>
+                        <p className="font-mono text-[11px] text-cyan-400 break-all mt-0.5">
+                          {result.headers[key]}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -4,13 +4,19 @@ import { useState, type ReactNode } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ChevronDown, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { CATEGORY_STYLES, type ToolCategory } from "./tool-ui";
 
 // Carte au style établi du site (bordure fine → anneau dégradé violet→cyan
 // au survol) qui se déplie sur place pour révéler l'outil — même pattern
 // que les panneaux dépliables déjà utilisés ailleurs (achievements des
 // expériences, preuves des compétences en admin).
+//
+// Hauteur d'en-tête figée (titre + sous-titre + description clampés) pour
+// que les 9 cartes s'alignent proprement en grille sans sauter d'une ligne
+// à l'autre, quelle que soit la longueur du texte.
 export function ToolCard({
   icon: Icon,
+  category,
   title,
   description,
   badge,
@@ -18,6 +24,7 @@ export function ToolCard({
   defaultOpen = false,
 }: {
   icon: LucideIcon;
+  category: ToolCategory;
   title: string;
   description: string;
   badge?: string;
@@ -26,6 +33,7 @@ export function ToolCard({
 }) {
   const [open, setOpen] = useState(defaultOpen);
   const reduce = useReducedMotion();
+  const styles = CATEGORY_STYLES[category];
 
   return (
     <div
@@ -59,19 +67,29 @@ export function ToolCard({
           aria-expanded={open}
           className="w-full flex items-start gap-3.5 p-5 text-left"
         >
-          <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500/15 to-cyan-500/15 border border-violet-500/25 text-violet-400 shrink-0">
-            <Icon size={18} />
+          <span
+            className={cn(
+              "flex items-center justify-center w-11 h-11 rounded-2xl border shrink-0",
+              styles.icon
+            )}
+          >
+            <Icon size={19} />
           </span>
-          <span className="min-w-0 flex-1">
-            <span className="flex items-center gap-2 flex-wrap">
-              <span className="font-semibold text-sm">{title}</span>
-              {badge && (
-                <span className="text-[10px] font-medium uppercase tracking-wide px-1.5 py-0.5 rounded-full border border-cyan-500/25 bg-cyan-500/10 text-cyan-400">
-                  {badge}
-                </span>
-              )}
+          <span className="min-w-0 flex-1 flex flex-col justify-center min-h-[92px] sm:min-h-[80px]">
+            <span className="font-semibold text-sm leading-snug line-clamp-2">{title}</span>
+            {badge && (
+              <span
+                className={cn(
+                  "block text-[10px] font-semibold uppercase tracking-wider mt-1",
+                  styles.label
+                )}
+              >
+                {badge}
+              </span>
+            )}
+            <span className="block text-xs text-muted-foreground mt-1.5 leading-relaxed line-clamp-2">
+              {description}
             </span>
-            <span className="block text-xs text-muted-foreground mt-1">{description}</span>
           </span>
           <ChevronDown
             size={16}

@@ -307,6 +307,272 @@ const fr = {
       "Quelle est sa stack technique ?",
     ],
   },
+  tools: {
+    eyebrow: "Cybersécurité pratique",
+    titleStart: "Mini-outils",
+    titleGradient: "réseau & sécurité",
+    subtitle:
+      "Une boîte à outils pédagogique — démonstrations et simulations 100% côté client, sans jamais cibler un domaine tiers.",
+    badges: {
+      live: "Analyse réelle",
+      simulation: "Simulation",
+      reference: "Référence",
+      interactive: "Interactif",
+      educational: "Pédagogique",
+    },
+    common: {
+      fetchError: "Erreur : impossible de récupérer les données.",
+      ownDomainOnly:
+        "Vous avez saisi « {domain} » : cet outil analyse uniquement mon propre site en démonstration. Pour un vrai scan de ce domaine, utilisez",
+      analyzeMine: "Analyser {domain} à la place",
+      useCasesLabel: "Cas d'usage",
+      contextLabel: "Contexte professionnel",
+    },
+    cards: {
+      securityHeaders: {
+        title: "Analyseur d'en-têtes de sécurité HTTP",
+        description: "Analyse en direct des en-têtes de sécurité de ce site (CSP, HSTS, etc.).",
+      },
+      sslChecker: {
+        title: "Testeur SSL/TLS",
+        description: "Démonstration pédagogique de ce que vérifierait un vrai testeur TLS.",
+      },
+      portScan: {
+        title: "Simulateur de scan de ports",
+        description: "Simulation éducative façon Nmap — aucune requête réseau réelle.",
+      },
+      burpReference: {
+        title: "Burp Suite",
+        description: "Fiche de présentation de l'outil de test d'intrusion web.",
+      },
+      riskCalculator: {
+        title: "Calculateur de risques cybersécurité",
+        description: "Score de risque agrégé à partir de 4 curseurs, calcul 100% côté client.",
+      },
+      vulnDatabase: {
+        title: "Base de connaissances vulnérabilités critiques",
+        description: "Fiches informatives sur des CVE majeures et connues du grand public.",
+      },
+      phishing: {
+        title: "Simulateur de sensibilisation au phishing",
+        description: "Génère des scénarios fictifs d'emails de phishing avec red flags expliqués.",
+      },
+      dataLeak: {
+        title: "Vérificateur de fuites de données",
+        description: "Simulation éducative basée sur un jeu de données fixe — aucune vraie API.",
+      },
+      wiresharkReference: {
+        title: "Wireshark",
+        description: "Fiche de présentation de l'analyseur de protocoles réseau.",
+      },
+    },
+    securityHeaders: {
+      intro:
+        "Analyse en direct des en-têtes de sécurité HTTP renvoyés par ce site, via une route API serveur qui ne peut cibler que son propre domaine.",
+      analyze: "Analyser",
+      headerInfo: {
+        "content-security-policy":
+          "Restreint les sources de scripts, styles et ressources autorisées, limitant les attaques XSS et d'injection de contenu.",
+        "strict-transport-security":
+          "Force le navigateur à toujours utiliser HTTPS pour ce domaine, empêchant le retour vers HTTP.",
+        "x-frame-options":
+          "Empêche le site d'être chargé dans une iframe tierce, protégeant contre le clickjacking.",
+        "x-content-type-options":
+          "Empêche le navigateur de deviner le type MIME, réduisant les risques d'exécution de contenu imprévu.",
+        "referrer-policy":
+          "Contrôle les informations de provenance envoyées lors de la navigation vers un autre site.",
+        "permissions-policy":
+          "Restreint l'accès aux API sensibles du navigateur (caméra, micro, géolocalisation, etc.).",
+        "x-xss-protection":
+          "Ancien mécanisme de filtrage XSS des navigateurs, aujourd'hui largement remplacé par la CSP.",
+      },
+    },
+    sslChecker: {
+      intro:
+        "Démonstration pédagogique illustrant ce que vérifierait un vrai testeur SSL/TLS (protocoles supportés, validité du certificat). Aucune connexion réseau réelle n'est effectuée.",
+      analyze: "Vérifier",
+      simulatedNote:
+        "Résultat simulé à des fins pédagogiques — aucune connexion TLS réelle n'est établie.",
+      protocol: "Protocole",
+      cipher: "Suite cryptographique",
+      certValid: "Certificat valide",
+      certValidYes: "Oui",
+      issuedOn: "Émis le",
+      expiresOn: "Expire le",
+      legacyProtocols: "Protocoles obsolètes",
+      legacyDisabled: "Désactivés",
+    },
+    portScan: {
+      warning: "Simulation éducative — aucun scan réel n'est effectué contre une cible externe.",
+      intro:
+        "Saisissez un nom de domaine ou une IP fictive : le résultat est généré localement, de façon déterministe, à titre d'illustration.",
+      defaultTarget: "cible-exemple.local",
+      placeholder: "ex. cible-exemple.local",
+      scan: "Lancer la simulation",
+      open: "ouvert",
+      closed: "fermé",
+      footnote:
+        "Résultat pseudo-aléatoire dérivé du texte saisi — ne reflète l'état d'aucune machine réelle.",
+    },
+    burpReference: {
+      useCases: [
+        "Interception et modification de requêtes HTTP/HTTPS via proxy",
+        "Recherche de vulnérabilités web (injections, XSS, contrôle d'accès)",
+        "Automatisation de tests avec le Repeater et l'Intruder",
+      ],
+      context:
+        "Outil utilisé en formation et en environnement de test pour l'analyse de la sécurité des applications web, dans le cadre d'exercices encadrés et de CTF.",
+    },
+    wiresharkReference: {
+      useCases: [
+        "Capture et inspection de trafic réseau (TCP/IP, HTTP, DNS, TLS…)",
+        "Diagnostic de problèmes réseau et détection d'anomalies",
+        "Analyse pédagogique de protocoles lors de travaux pratiques",
+      ],
+      context:
+        "Utilisé en formation réseau pour comprendre le fonctionnement des protocoles et diagnostiquer des incidents — une capture n'est bien sûr pas possible depuis un navigateur.",
+    },
+    riskCalculator: {
+      intro:
+        "Ajustez les 4 curseurs pour obtenir un score de risque indicatif. Calcul entièrement local — aucune donnée n'est envoyée.",
+      factors: {
+        network: "Risque réseau",
+        users: "Risque utilisateurs",
+        data: "Risque données",
+        compliance: "Risque conformité",
+      },
+      levels: {
+        low: "Risque faible",
+        medium: "Risque moyen",
+        high: "Risque élevé",
+        critical: "Risque critique",
+      },
+      levelHints: {
+        low: "Le niveau global de vigilance semble adapté. Continuez le suivi régulier.",
+        medium: "Quelques axes méritent une attention renforcée avant qu'ils ne deviennent critiques.",
+        high: "Plusieurs facteurs demandent une action corrective rapide.",
+        critical: "Situation à traiter en priorité — plusieurs facteurs de risque cumulés.",
+      },
+    },
+    vulnDatabase: {
+      intro:
+        "Vulnérabilités majeures et publiquement documentées — contenu strictement informatif, aucun code d'exploit.",
+      remediationLabel: "Remédiation :",
+      severity: { critical: "Critique", high: "Élevée" },
+      entries: {
+        eternalblue: {
+          name: "EternalBlue (MS17-010)",
+          description:
+            "Faille dans l'implémentation du protocole SMBv1 de Windows, exploitée notamment par le ransomware WannaCry en 2017 pour se propager sans interaction utilisateur.",
+          remediation:
+            "Appliquer les correctifs Microsoft, désactiver SMBv1 et segmenter le réseau.",
+        },
+        log4shell: {
+          name: "Log4Shell",
+          description:
+            "Vulnérabilité d'exécution de code à distance dans la bibliothèque de journalisation Java Log4j, exploitable via une simple chaîne de caractères journalisée.",
+          remediation:
+            "Mettre à jour Log4j vers une version corrigée et surveiller les tentatives d'exploitation dans les journaux.",
+        },
+        heartbleed: {
+          name: "Heartbleed",
+          description:
+            "Faille dans la bibliothèque OpenSSL permettant de lire des zones de mémoire du serveur, exposant potentiellement clés privées et données sensibles.",
+          remediation:
+            "Mettre à jour OpenSSL, régénérer les certificats et clés, puis invalider les sessions actives.",
+        },
+        shellshock: {
+          name: "Shellshock",
+          description:
+            "Vulnérabilité dans l'interpréteur de commandes Bash permettant l'exécution de code arbitraire via des variables d'environnement forgées.",
+          remediation:
+            "Mettre à jour Bash et limiter l'exposition des scripts CGI et systèmes concernés.",
+        },
+        proxylogon: {
+          name: "ProxyLogon",
+          description:
+            "Chaîne de vulnérabilités sur Microsoft Exchange Server permettant un accès non authentifié et l'exécution de code à distance.",
+          remediation:
+            "Appliquer les correctifs Microsoft et auditer les serveurs Exchange exposés à internet.",
+        },
+      },
+    },
+    phishing: {
+      intro:
+        "Générez un scénario fictif d'email de phishing pour vous entraîner à repérer les signaux d'alerte. Aucune entreprise réelle n'est utilisée, aucun lien n'est cliquable.",
+      sectorLabel: "Secteur",
+      newScenario: "Nouveau scénario",
+      fictionalNote: "Exemple entièrement fictif — à des fins de sensibilisation uniquement.",
+      from: "De",
+      subject: "Objet",
+      redFlagsLabel: "Signaux d'alerte à repérer",
+      footnote: "Cliquez sur « Nouveau scénario » pour générer un autre exemple.",
+      scenarios: {
+        banking: {
+          sector: "Banque",
+          sender: "securite@banque-nordis.example",
+          subject: "Action requise : votre compte va être suspendu",
+          body:
+            "Cher client,\n\nNous avons détecté une activité inhabituelle sur votre compte. Pour éviter la suspension sous 24h, veuillez confirmer votre identité en cliquant sur le lien ci-dessous et en renseignant vos identifiants.\n\nL'équipe sécurité — Banque Nordis (fictive)",
+          redFlags: [
+            "Urgence artificielle (« sous 24h ») pour pousser à agir sans réfléchir",
+            "Demande de confirmer des identifiants par email — une banque ne le fait jamais",
+            "Domaine d'expéditeur générique et non officiel",
+            "Formule de politesse impersonnelle (« Cher client »)",
+          ],
+        },
+        corporate: {
+          sector: "Entreprise",
+          sender: "direction@groupe-altavia.example",
+          subject: "Virement urgent à valider avant 17h",
+          body:
+            "Bonjour,\n\nJe suis en réunion et j'ai besoin que vous traitiez en urgence un virement pour un nouveau fournisseur. Répondez-moi rapidement, je vous enverrai les coordonnées bancaires par ce canal.\n\nMerci,\nLa Direction (fictif)",
+          redFlags: [
+            "Usurpation d'un dirigeant pour créer une pression hiérarchique",
+            "Demande financière urgente hors procédure habituelle",
+            "Indisponibilité prétendue de l'expéditeur pour éviter toute vérification",
+            "Canal de communication inhabituel pour une demande financière",
+          ],
+        },
+        delivery: {
+          sector: "Livraison",
+          sender: "no-reply@colis-expresstrack.example",
+          subject: "Votre colis est en attente — frais de douane à régler",
+          body:
+            "Bonjour,\n\nVotre colis ne peut être livré tant que des frais de douane de 2,99 € ne sont pas réglés. Cliquez sur le lien ci-dessous pour procéder au paiement et débloquer la livraison.\n\nService client — ExpressTrack (fictif)",
+          redFlags: [
+            "Petit montant demandé pour paraître anodin et inciter au clic rapide",
+            "Aucune référence de commande ou de numéro de suivi vérifiable",
+            "Nom de service de livraison générique et non officiel",
+            "Lien de paiement externe non lié à un site de suivi connu",
+          ],
+        },
+        itSupport: {
+          sector: "Support IT",
+          sender: "support-it@helpdesk-corpnet.example",
+          subject: "Votre mot de passe expire aujourd'hui",
+          body:
+            "Bonjour,\n\nVotre mot de passe professionnel expire dans quelques heures. Merci de le renouveler immédiatement via le portail ci-dessous pour éviter la perte d'accès à votre messagerie.\n\nSupport informatique (fictif)",
+          redFlags: [
+            "Pression temporelle sur un sujet technique habituellement planifié à l'avance",
+            "Lien vers un portail de connexion externe imitant l'outil interne",
+            "Adresse d'expéditeur ne correspondant pas au domaine interne habituel",
+            "Aucune personnalisation (nom, service, identifiant) dans le message",
+          ],
+        },
+      },
+    },
+    dataLeak: {
+      simulatedNote: "Simulation éducative — pour une vérification réelle, utilisez",
+      intro:
+        "Simulation basée sur un jeu de données fixe, non connecté à une vraie base de fuites — aucun appel à une API externe.",
+      check: "Vérifier",
+      noneFound: "Aucune fuite trouvée dans ce jeu de données simulé.",
+      found: "{count} fuite(s) trouvée(s) dans ce jeu de données simulé :",
+      footnote:
+        "Résultat déterministe généré localement à partir de l'email saisi — ne reflète aucune fuite réelle.",
+    },
+  },
 };
 
 // Toute feuille est string ou string[] ; toute clé de `fr` doit exister dans `en`
@@ -619,6 +885,266 @@ const en: DeepDict<typeof fr> = {
       "What's his educational background?",
       "What's his tech stack?",
     ],
+  },
+  tools: {
+    eyebrow: "Hands-on cybersecurity",
+    titleStart: "Network & security",
+    titleGradient: "mini-tools",
+    subtitle:
+      "An educational toolbox — demos and simulations run 100% client-side, and never target a third-party domain.",
+    badges: {
+      live: "Live analysis",
+      simulation: "Simulation",
+      reference: "Reference",
+      interactive: "Interactive",
+      educational: "Educational",
+    },
+    common: {
+      fetchError: "Error: unable to fetch data.",
+      ownDomainOnly:
+        "You entered “{domain}”: this tool only analyzes my own site as a demo. For a real scan of that domain, use",
+      analyzeMine: "Analyze {domain} instead",
+      useCasesLabel: "Use cases",
+      contextLabel: "Professional context",
+    },
+    cards: {
+      securityHeaders: {
+        title: "HTTP Security Headers Analyzer",
+        description: "Live analysis of this site's security headers (CSP, HSTS, etc.).",
+      },
+      sslChecker: {
+        title: "SSL/TLS Checker",
+        description: "Educational demo of what a real TLS tester would check.",
+      },
+      portScan: {
+        title: "Port Scan Simulator",
+        description: "Nmap-style educational simulation — no real network requests.",
+      },
+      burpReference: {
+        title: "Burp Suite",
+        description: "Overview card for the web penetration testing tool.",
+      },
+      riskCalculator: {
+        title: "Cybersecurity Risk Calculator",
+        description: "Aggregated risk score from 4 sliders, fully computed client-side.",
+      },
+      vulnDatabase: {
+        title: "Critical Vulnerability Knowledge Base",
+        description: "Informational sheets on major, publicly known CVEs.",
+      },
+      phishing: {
+        title: "Phishing Awareness Simulator",
+        description: "Generates fictional phishing email scenarios with red flags explained.",
+      },
+      dataLeak: {
+        title: "Data Leak Checker",
+        description: "Educational simulation based on a fixed dataset — no real API call.",
+      },
+      wiresharkReference: {
+        title: "Wireshark",
+        description: "Overview card for the network protocol analyzer.",
+      },
+    },
+    securityHeaders: {
+      intro:
+        "Live analysis of the HTTP security headers returned by this site, via a server API route that can only ever target its own domain.",
+      analyze: "Analyze",
+      headerInfo: {
+        "content-security-policy":
+          "Restricts allowed sources for scripts, styles and resources, limiting XSS and content-injection attacks.",
+        "strict-transport-security":
+          "Forces the browser to always use HTTPS for this domain, preventing downgrade to HTTP.",
+        "x-frame-options":
+          "Prevents the site from being loaded in a third-party iframe, protecting against clickjacking.",
+        "x-content-type-options":
+          "Prevents the browser from guessing the MIME type, reducing the risk of unintended content execution.",
+        "referrer-policy":
+          "Controls what referrer information is sent when navigating to another site.",
+        "permissions-policy":
+          "Restricts access to sensitive browser APIs (camera, microphone, geolocation, etc.).",
+        "x-xss-protection":
+          "Legacy browser XSS filtering mechanism, now largely superseded by CSP.",
+      },
+    },
+    sslChecker: {
+      intro:
+        "Educational demo illustrating what a real SSL/TLS tester would check (supported protocols, certificate validity). No real network connection is ever made.",
+      analyze: "Check",
+      simulatedNote: "Simulated result for educational purposes — no real TLS connection is established.",
+      protocol: "Protocol",
+      cipher: "Cipher suite",
+      certValid: "Certificate valid",
+      certValidYes: "Yes",
+      issuedOn: "Issued on",
+      expiresOn: "Expires on",
+      legacyProtocols: "Legacy protocols",
+      legacyDisabled: "Disabled",
+    },
+    portScan: {
+      warning: "Educational simulation — no real scan is performed against an external target.",
+      intro:
+        "Enter a fictional domain name or IP: the result is generated locally and deterministically, purely for illustration.",
+      defaultTarget: "example-target.local",
+      placeholder: "e.g. example-target.local",
+      scan: "Run simulation",
+      open: "open",
+      closed: "closed",
+      footnote:
+        "Pseudo-random result derived from the entered text — does not reflect the state of any real machine.",
+    },
+    burpReference: {
+      useCases: [
+        "Intercepting and modifying HTTP/HTTPS requests via proxy",
+        "Finding web vulnerabilities (injections, XSS, access control issues)",
+        "Automating tests with the Repeater and Intruder",
+      ],
+      context:
+        "Tool used in training and test environments for web application security analysis, as part of supervised exercises and CTFs.",
+    },
+    wiresharkReference: {
+      useCases: [
+        "Capturing and inspecting network traffic (TCP/IP, HTTP, DNS, TLS…)",
+        "Diagnosing network issues and detecting anomalies",
+        "Educational protocol analysis during hands-on labs",
+      ],
+      context:
+        "Used in network training to understand how protocols work and diagnose incidents — a live capture is of course not possible from a browser.",
+    },
+    riskCalculator: {
+      intro:
+        "Adjust the 4 sliders to get an indicative risk score. Fully local computation — no data is ever sent anywhere.",
+      factors: {
+        network: "Network risk",
+        users: "Users risk",
+        data: "Data risk",
+        compliance: "Compliance risk",
+      },
+      levels: {
+        low: "Low risk",
+        medium: "Medium risk",
+        high: "High risk",
+        critical: "Critical risk",
+      },
+      levelHints: {
+        low: "The overall vigilance level looks appropriate. Keep up regular monitoring.",
+        medium: "A few areas deserve closer attention before they become critical.",
+        high: "Several factors call for prompt corrective action.",
+        critical: "Situation to address as a priority — several risk factors are compounding.",
+      },
+    },
+    vulnDatabase: {
+      intro:
+        "Major, publicly documented vulnerabilities — strictly informational content, no exploit code.",
+      remediationLabel: "Remediation:",
+      severity: { critical: "Critical", high: "High" },
+      entries: {
+        eternalblue: {
+          name: "EternalBlue (MS17-010)",
+          description:
+            "Flaw in Windows' SMBv1 protocol implementation, notably exploited by the WannaCry ransomware in 2017 to spread without user interaction.",
+          remediation: "Apply Microsoft's patches, disable SMBv1, and segment the network.",
+        },
+        log4shell: {
+          name: "Log4Shell",
+          description:
+            "Remote code execution vulnerability in the Log4j Java logging library, exploitable via a simple logged string.",
+          remediation: "Update Log4j to a patched version and monitor logs for exploitation attempts.",
+        },
+        heartbleed: {
+          name: "Heartbleed",
+          description:
+            "Flaw in the OpenSSL library allowing an attacker to read server memory, potentially exposing private keys and sensitive data.",
+          remediation: "Update OpenSSL, regenerate certificates and keys, and invalidate active sessions.",
+        },
+        shellshock: {
+          name: "Shellshock",
+          description:
+            "Vulnerability in the Bash command interpreter allowing arbitrary code execution via crafted environment variables.",
+          remediation: "Update Bash and limit exposure of affected CGI scripts and systems.",
+        },
+        proxylogon: {
+          name: "ProxyLogon",
+          description:
+            "Chain of vulnerabilities in Microsoft Exchange Server enabling unauthenticated access and remote code execution.",
+          remediation: "Apply Microsoft's patches and audit internet-facing Exchange servers.",
+        },
+      },
+    },
+    phishing: {
+      intro:
+        "Generate a fictional phishing email scenario to practice spotting warning signs. No real company is ever used, no link is clickable.",
+      sectorLabel: "Sector",
+      newScenario: "New scenario",
+      fictionalNote: "Entirely fictional example — for awareness purposes only.",
+      from: "From",
+      subject: "Subject",
+      redFlagsLabel: "Red flags to spot",
+      footnote: "Click “New scenario” to generate another example.",
+      scenarios: {
+        banking: {
+          sector: "Banking",
+          sender: "security@nordis-bank.example",
+          subject: "Action required: your account will be suspended",
+          body:
+            "Dear customer,\n\nWe detected unusual activity on your account. To avoid suspension within 24h, please confirm your identity by clicking the link below and entering your credentials.\n\nSecurity Team — Nordis Bank (fictional)",
+          redFlags: [
+            "Artificial urgency (“within 24h”) to push you into acting without thinking",
+            "Asks you to confirm credentials by email — a bank never does this",
+            "Generic, non-official sender domain",
+            "Impersonal greeting (“Dear customer”)",
+          ],
+        },
+        corporate: {
+          sector: "Corporate",
+          sender: "management@altavia-group.example",
+          subject: "Urgent transfer to approve before 5pm",
+          body:
+            "Hi,\n\nI'm in a meeting and need you to urgently process a transfer for a new supplier. Reply quickly, I'll send the bank details through this channel.\n\nThanks,\nManagement (fictional)",
+          redFlags: [
+            "Impersonating an executive to create hierarchical pressure",
+            "Urgent financial request outside the usual process",
+            "Claimed unavailability of the sender to avoid any verification",
+            "Unusual communication channel for a financial request",
+          ],
+        },
+        delivery: {
+          sector: "Delivery",
+          sender: "no-reply@expresstrack-parcel.example",
+          subject: "Your parcel is on hold — customs fee due",
+          body:
+            "Hello,\n\nYour parcel cannot be delivered until a customs fee of €2.99 is paid. Click the link below to pay and release the delivery.\n\nCustomer service — ExpressTrack (fictional)",
+          redFlags: [
+            "Small amount requested to seem harmless and encourage a quick click",
+            "No verifiable order reference or tracking number",
+            "Generic, non-official delivery service name",
+            "External payment link unrelated to any known tracking site",
+          ],
+        },
+        itSupport: {
+          sector: "IT Support",
+          sender: "it-support@corpnet-helpdesk.example",
+          subject: "Your password expires today",
+          body:
+            "Hello,\n\nYour work password expires in a few hours. Please renew it immediately via the portal below to avoid losing access to your mailbox.\n\nIT Support (fictional)",
+          redFlags: [
+            "Time pressure on a technical matter that's usually scheduled in advance",
+            "Link to an external login portal mimicking the internal tool",
+            "Sender address not matching the usual internal domain",
+            "No personalization (name, department, ID) in the message",
+          ],
+        },
+      },
+    },
+    dataLeak: {
+      simulatedNote: "Educational simulation — for a real check, use",
+      intro:
+        "Simulation based on a fixed dataset, not connected to any real breach database — no external API call.",
+      check: "Check",
+      noneFound: "No breach found in this simulated dataset.",
+      found: "{count} breach(es) found in this simulated dataset:",
+      footnote:
+        "Deterministic result generated locally from the entered email — does not reflect any real breach.",
+    },
   },
 };
 

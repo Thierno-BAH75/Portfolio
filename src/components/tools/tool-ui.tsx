@@ -86,6 +86,22 @@ export function ToolInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
 }
 
 // ============================================================
+// Zone de texte partagée — même langage visuel que ToolInput, pour
+// le contenu multi-lignes (générateur de hash, encodeur Base64).
+// ============================================================
+export function ToolTextarea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
+  return (
+    <textarea
+      {...props}
+      className={cn(
+        "w-full min-h-[88px] rounded-lg border border-border bg-background px-3.5 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-violet-500/40 focus:border-transparent resize-y",
+        props.className
+      )}
+    />
+  );
+}
+
+// ============================================================
 // Rangée de mini-cartes statistiques (résultats numériques : ports
 // scannés/ouverts/fermés, en-têtes présents/manquants, etc.)
 // ============================================================
@@ -99,6 +115,7 @@ const STAT_TONE_CLASSES: Record<StatTone, string> = {
 };
 
 const GRID_COLS: Record<number, string> = {
+  1: "grid-cols-1",
   2: "grid-cols-2",
   3: "grid-cols-3",
   4: "grid-cols-4",

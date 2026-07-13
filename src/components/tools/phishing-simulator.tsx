@@ -1,40 +1,48 @@
 "use client";
 
 import { useState } from "react";
-import { AlertTriangle, Mail, RefreshCw, Shuffle } from "lucide-react";
+import { AlertTriangle, Mail, Sparkles } from "lucide-react";
 import { useI18n } from "@/i18n";
 import { ToolActionButton } from "./tool-ui";
+import { Select } from "@/components/ui/select";
 
-const SCENARIO_IDS = ["banking", "corporate", "delivery", "itSupport"] as const;
+const SECTORS = ["banking", "corporate", "ecommerce", "socialMedia"] as const;
+const DIFFICULTIES = ["easy", "medium", "hard"] as const;
 
 export function PhishingSimulator() {
   const { t } = useI18n();
-  const [index, setIndex] = useState(0);
+  const [sector, setSector] = useState<(typeof SECTORS)[number]>("banking");
+  const [difficulty, setDifficulty] = useState<(typeof DIFFICULTIES)[number]>("medium");
+  const [applied, setApplied] = useState({ sector, difficulty });
 
-  const next = () => {
-    setIndex((prev) => {
-      let n = Math.floor(Math.random() * SCENARIO_IDS.length);
-      if (SCENARIO_IDS.length > 1 && n === prev) {
-        n = (n + 1) % SCENARIO_IDS.length;
-      }
-      return n;
-    });
-  };
-
-  const scenario = t.tools.phishing.scenarios[SCENARIO_IDS[index]];
+  const scenario = t.tools.phishing.scenarios[applied.sector][applied.difficulty];
 
   return (
     <div className="space-y-4">
       <p className="text-xs text-muted-foreground">{t.tools.phishing.intro}</p>
 
-      <div className="space-y-2">
-        <span className="inline-block text-[11px] uppercase tracking-wide text-muted-foreground font-medium">
-          {t.tools.phishing.sectorLabel}: {scenario.sector}
-        </span>
-        <ToolActionButton icon={Shuffle} type="button" onClick={next}>
-          {t.tools.phishing.newScenario}
-        </ToolActionButton>
+      <div className="grid grid-cols-2 gap-2">
+        <div>
+          <label className="block text-xs font-medium mb-1">{t.tools.phishing.sectorLabel}</label>
+          <Select value={sector} onChange={(e) => setSector(e.target.value as (typeof SECTORS)[number])}>
+            {SECTORS.map((s) => (
+              <option key={s} value={s}>{t.tools.phishing.sectors[s]}</option>
+            ))}
+          </Select>
+        </div>
+        <div>
+          <label className="block text-xs font-medium mb-1">{t.tools.phishing.difficultyLabel}</label>
+          <Select value={difficulty} onChange={(e) => setDifficulty(e.target.value as (typeof DIFFICULTIES)[number])}>
+            {DIFFICULTIES.map((d) => (
+              <option key={d} value={d}>{t.tools.phishing.difficulties[d]}</option>
+            ))}
+          </Select>
+        </div>
       </div>
+
+      <ToolActionButton icon={Sparkles} type="button" onClick={() => setApplied({ sector, difficulty })}>
+        {t.tools.phishing.generate}
+      </ToolActionButton>
 
       <div className="rounded-lg border border-border/60 bg-background/50 overflow-hidden">
         <div className="flex items-center gap-2 px-3.5 py-2 border-b border-border/60 bg-muted/30">
@@ -70,11 +78,6 @@ export function PhishingSimulator() {
           ))}
         </ul>
       </div>
-
-      <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground italic">
-        <RefreshCw size={11} />
-        {t.tools.phishing.footnote}
-      </p>
     </div>
   );
 }

@@ -12,6 +12,16 @@ import {
   Fish,
   Droplets,
   Network,
+  Waypoints,
+  Binary,
+  Plug,
+  Zap,
+  KeyRound,
+  Hash,
+  Key,
+  Code2,
+  HardDrive,
+  Clock,
 } from "lucide-react";
 import { SectionBackground } from "@/components/ui/section-background";
 import { ToolCard } from "@/components/tools/tool-card";
@@ -24,6 +34,16 @@ import { VulnerabilityDatabase } from "@/components/tools/vulnerability-database
 import { PhishingSimulator } from "@/components/tools/phishing-simulator";
 import { DataLeakChecker } from "@/components/tools/data-leak-checker";
 import { WiresharkReference } from "@/components/tools/wireshark-reference";
+import { SubnetCalculator } from "@/components/tools/subnet-calculator";
+import { AddressConverter } from "@/components/tools/address-converter";
+import { PortLookup } from "@/components/tools/port-lookup";
+import { BandwidthCalculator } from "@/components/tools/bandwidth-calculator";
+import { PasswordStrengthAnalyzer } from "@/components/tools/password-strength-analyzer";
+import { HashGenerator } from "@/components/tools/hash-generator";
+import { PasswordGenerator } from "@/components/tools/password-generator";
+import { Base64Codec } from "@/components/tools/base64-codec";
+import { RaidCalculator } from "@/components/tools/raid-calculator";
+import { CronCalculator } from "@/components/tools/cron-calculator";
 import { useI18n } from "@/i18n";
 
 export default function OutilsPage() {
@@ -145,6 +165,106 @@ export default function OutilsPage() {
             badge={t.tools.badges.reference}
           >
             <WiresharkReference />
+          </ToolCard>
+
+          <ToolCard
+            icon={Waypoints}
+            category="interactive"
+            title={t.tools.cards.subnetCalculator.title}
+            description={t.tools.cards.subnetCalculator.description}
+            badge={t.tools.badges.interactive}
+          >
+            <SubnetCalculator />
+          </ToolCard>
+
+          <ToolCard
+            icon={Binary}
+            category="interactive"
+            title={t.tools.cards.addressConverter.title}
+            description={t.tools.cards.addressConverter.description}
+            badge={t.tools.badges.interactive}
+          >
+            <AddressConverter />
+          </ToolCard>
+
+          <ToolCard
+            icon={Plug}
+            category="reference"
+            title={t.tools.cards.portLookup.title}
+            description={t.tools.cards.portLookup.description}
+            badge={t.tools.badges.reference}
+          >
+            <PortLookup />
+          </ToolCard>
+
+          <ToolCard
+            icon={Zap}
+            category="interactive"
+            title={t.tools.cards.bandwidthCalculator.title}
+            description={t.tools.cards.bandwidthCalculator.description}
+            badge={t.tools.badges.interactive}
+          >
+            <BandwidthCalculator />
+          </ToolCard>
+
+          <ToolCard
+            icon={KeyRound}
+            category="interactive"
+            title={t.tools.cards.passwordStrength.title}
+            description={t.tools.cards.passwordStrength.description}
+            badge={t.tools.badges.interactive}
+          >
+            <PasswordStrengthAnalyzer />
+          </ToolCard>
+
+          <ToolCard
+            icon={Hash}
+            category="interactive"
+            title={t.tools.cards.hashGenerator.title}
+            description={t.tools.cards.hashGenerator.description}
+            badge={t.tools.badges.interactive}
+          >
+            <HashGenerator />
+          </ToolCard>
+
+          <ToolCard
+            icon={Key}
+            category="interactive"
+            title={t.tools.cards.passwordGenerator.title}
+            description={t.tools.cards.passwordGenerator.description}
+            badge={t.tools.badges.interactive}
+          >
+            <PasswordGenerator />
+          </ToolCard>
+
+          <ToolCard
+            icon={Code2}
+            category="interactive"
+            title={t.tools.cards.base64Codec.title}
+            description={t.tools.cards.base64Codec.description}
+            badge={t.tools.badges.interactive}
+          >
+            <Base64Codec />
+          </ToolCard>
+
+          <ToolCard
+            icon={HardDrive}
+            category="interactive"
+            title={t.tools.cards.raidCalculator.title}
+            description={t.tools.cards.raidCalculator.description}
+            badge={t.tools.badges.interactive}
+          >
+            <RaidCalculator />
+          </ToolCard>
+
+          <ToolCard
+            icon={Clock}
+            category="interactive"
+            title={t.tools.cards.cronCalculator.title}
+            description={t.tools.cards.cronCalculator.description}
+            badge={t.tools.badges.interactive}
+          >
+            <CronCalculator />
           </ToolCard>
         </div>
       </div>

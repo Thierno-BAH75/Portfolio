@@ -372,6 +372,46 @@ const fr = {
         title: "Wireshark",
         description: "Fiche de présentation de l'analyseur de protocoles réseau.",
       },
+      subnetCalculator: {
+        title: "Calculateur de sous-réseaux",
+        description: "IP + masque → adresse réseau, broadcast, plage d'hôtes utilisables.",
+      },
+      addressConverter: {
+        title: "Convertisseur d'adresses",
+        description: "Conversion simultanée décimal / binaire / hexadécimal, dans les deux sens.",
+      },
+      portLookup: {
+        title: "Lookup de ports courants",
+        description: "Recherche par numéro ou nom de service : protocole et usage.",
+      },
+      bandwidthCalculator: {
+        title: "Calculateur de bande passante",
+        description: "Taille de fichier + vitesse → temps de transfert estimé.",
+      },
+      passwordStrength: {
+        title: "Analyseur de force de mot de passe",
+        description: "Entropie et temps de cassage estimé, calcul 100% local.",
+      },
+      hashGenerator: {
+        title: "Générateur de hash",
+        description: "MD5, SHA-1, SHA-256, SHA-512 à partir d'un texte, calcul local.",
+      },
+      passwordGenerator: {
+        title: "Générateur de mot de passe sécurisé",
+        description: "Options personnalisables, génération cryptographiquement sûre.",
+      },
+      base64Codec: {
+        title: "Encodeur / décodeur Base64",
+        description: "Conversion texte ↔ Base64 dans les deux sens, en direct.",
+      },
+      raidCalculator: {
+        title: "Calculateur RAID",
+        description: "Type, disques et taille → capacité utile et tolérance de panne.",
+      },
+      cronCalculator: {
+        title: "Calculateur CRON",
+        description: "Expression cron → explication en clair et prochaines exécutions.",
+      },
     },
     securityHeaders: {
       intro:
@@ -438,6 +478,68 @@ const fr = {
       ],
       context:
         "Outil utilisé en formation et en environnement de test pour l'analyse de la sécurité des applications web, dans le cadre d'exercices encadrés et de CTF.",
+      simulation: {
+        warning: "Simulation éducative — aucune requête n'est envoyée vers l'URL saisie.",
+        intro:
+          "Aperçu de ce que renverrait un scan Burp Suite typique — résultat entièrement simulé et déterministe, à des fins de démonstration.",
+        urlLabel: "URL cible",
+        urlPlaceholder: "https://exemple.com",
+        scanTypeLabel: "Type de scan",
+        scanTypeHeaders: "En-têtes et configuration",
+        scanTypeFull: "Audit complet",
+        run: "Lancer la simulation",
+        statsRiskLabel: "Risque global",
+        statsVulnsLabel: "Vulnérabilités trouvées",
+        statsTestsLabel: "Tests effectués",
+        riskLevels: {
+          low: "Faible",
+          medium: "Moyen",
+          high: "Élevé",
+          critical: "Critique",
+        },
+        findings: {
+          missingCsp: {
+            title: "Content-Security-Policy manquant",
+            description: "Aucune politique de sécurité du contenu détectée, ce qui augmente l'exposition aux attaques XSS.",
+            remediation: "Définir une CSP restrictive limitant les sources de scripts et de ressources.",
+          },
+          missingXFrameOptions: {
+            title: "X-Frame-Options manquant",
+            description: "Le site pourrait être intégré dans une iframe tierce à des fins de clickjacking.",
+            remediation: "Ajouter X-Frame-Options ou une directive frame-ancestors dans la CSP.",
+          },
+          missingHsts: {
+            title: "Strict-Transport-Security manquant",
+            description: "Le navigateur n'est pas forcé d'utiliser HTTPS pour ce domaine.",
+            remediation: "Activer HSTS avec une durée suffisante et l'option includeSubDomains.",
+          },
+          outdatedTls: {
+            title: "Configuration TLS obsolète",
+            description: "Des protocoles ou suites cryptographiques dépréciés semblent encore acceptés.",
+            remediation: "Désactiver TLS 1.0/1.1 et les suites de chiffrement faibles côté serveur.",
+          },
+          verboseErrorMessages: {
+            title: "Messages d'erreur trop verbeux",
+            description: "Les pages d'erreur exposent des détails techniques (stack trace, versions) utiles à un attaquant.",
+            remediation: "Afficher des pages d'erreur génériques en production et journaliser les détails côté serveur.",
+          },
+          weakSessionCookie: {
+            title: "Cookies de session mal protégés",
+            description: "Les attributs Secure et HttpOnly semblent absents sur le cookie de session.",
+            remediation: "Ajouter les attributs Secure, HttpOnly et SameSite sur tous les cookies sensibles.",
+          },
+          missingRateLimiting: {
+            title: "Absence de limitation de débit",
+            description: "Aucune limitation détectée sur les tentatives de connexion, facilitant les attaques par force brute.",
+            remediation: "Mettre en place un rate limiting et un verrouillage progressif après échecs répétés.",
+          },
+          directoryListing: {
+            title: "Listing de répertoire activé",
+            description: "Le contenu d'un répertoire semble accessible sans page d'index, exposant sa structure.",
+            remediation: "Désactiver le listing de répertoire côté serveur web.",
+          },
+        },
+      },
     },
     wiresharkReference: {
       useCases: [
@@ -447,6 +549,64 @@ const fr = {
       ],
       context:
         "Utilisé en formation réseau pour comprendre le fonctionnement des protocoles et diagnostiquer des incidents — une capture n'est bien sûr pas possible depuis un navigateur.",
+      tabs: {
+        protocols: "Protocoles",
+        attacks: "Attaques réseau",
+        defense: "Défense",
+      },
+      protocolsData: {
+        tcpip: { name: "TCP/IP", description: "Suite de protocoles fondamentale d'Internet, base du transport fiable et de l'adressage." },
+        udp: { name: "UDP", description: "Transport sans connexion, rapide mais sans garantie de livraison ni de vérification d'origine." },
+        http: { name: "HTTP/HTTPS", description: "Protocole web ; en clair (HTTP) le trafic est lisible en clair, HTTPS le chiffre via TLS." },
+        dns: { name: "DNS", description: "Résolution de noms de domaine, historiquement en clair et vulnérable au spoofing/empoisonnement de cache." },
+        ssh: { name: "SSH", description: "Accès distant chiffré, remplace Telnet pour l'administration sécurisée des systèmes." },
+        smb: { name: "SMB", description: "Partage de fichiers Windows, cible historique de vulnérabilités critiques (ex. EternalBlue)." },
+        arp: { name: "ARP", description: "Résolution d'adresses MAC sur le réseau local, sans authentification — trivialement falsifiable." },
+      },
+      attacksData: {
+        arpSpoofing: {
+          title: "ARP Spoofing",
+          description: "Falsification de réponses ARP pour associer sa propre adresse MAC à l'IP d'une victime et intercepter son trafic local.",
+        },
+        dnsSpoofing: {
+          title: "DNS Spoofing",
+          description: "Falsification de réponses DNS pour rediriger une victime vers un serveur malveillant à son insu.",
+        },
+        mitm: {
+          title: "Man-in-the-Middle",
+          description: "Interception et éventuelle altération des communications entre deux parties qui pensent communiquer directement.",
+        },
+        synFlood: {
+          title: "SYN Flood",
+          description: "Saturation d'un serveur par un grand nombre de requêtes de connexion TCP incomplètes.",
+        },
+        ddos: {
+          title: "DDoS / Amplification",
+          description: "Submersion d'une cible par un trafic massif distribué, parfois amplifié via des services tiers mal configurés.",
+        },
+      },
+      defenseData: {
+        vlanSegmentation: {
+          title: "Segmentation VLAN",
+          description: "Isoler les segments réseau limite la portée d'une compromission et la propagation d'attaques locales.",
+        },
+        tlsEncryption: {
+          title: "Chiffrement TLS",
+          description: "Chiffrer les communications rend leur interception inutile sans les clés correspondantes.",
+        },
+        firewallFiltering: {
+          title: "Filtrage / pare-feu",
+          description: "Restreindre les flux autorisés réduit la surface d'attaque exposée sur le réseau.",
+        },
+        monitoringIds: {
+          title: "Monitoring / IDS",
+          description: "La détection d'intrusion et la supervision permettent d'identifier une activité anormale rapidement.",
+        },
+        updates: {
+          title: "Mises à jour régulières",
+          description: "Corriger les vulnérabilités connues limite les vecteurs d'attaque disponibles pour un adversaire.",
+        },
+      },
     },
     riskCalculator: {
       intro:
@@ -513,66 +673,172 @@ const fr = {
     },
     phishing: {
       intro:
-        "Générez un scénario fictif d'email de phishing pour vous entraîner à repérer les signaux d'alerte. Aucune entreprise réelle n'est utilisée, aucun lien n'est cliquable.",
+        "Choisissez un secteur et un niveau de difficulté pour générer un scénario fictif d'email de phishing et vous entraîner à repérer les signaux d'alerte. Aucune entreprise réelle n'est utilisée, aucun lien n'est cliquable.",
       sectorLabel: "Secteur",
-      newScenario: "Nouveau scénario",
+      difficultyLabel: "Difficulté",
+      generate: "Générer",
       fictionalNote: "Exemple entièrement fictif — à des fins de sensibilisation uniquement.",
       from: "De",
       subject: "Objet",
       redFlagsLabel: "Signaux d'alerte à repérer",
-      footnote: "Cliquez sur « Nouveau scénario » pour générer un autre exemple.",
+      sectors: {
+        banking: "Bancaire",
+        corporate: "Professionnel / Entreprise",
+        ecommerce: "E-commerce",
+        socialMedia: "Réseaux sociaux",
+      },
+      difficulties: {
+        easy: "Facile",
+        medium: "Moyen",
+        hard: "Difficile",
+      },
       scenarios: {
         banking: {
-          sector: "Banque",
-          sender: "securite@banque-nordis.example",
-          subject: "Action requise : votre compte va être suspendu",
-          body:
-            "Cher client,\n\nNous avons détecté une activité inhabituelle sur votre compte. Pour éviter la suspension sous 24h, veuillez confirmer votre identité en cliquant sur le lien ci-dessous et en renseignant vos identifiants.\n\nL'équipe sécurité — Banque Nordis (fictive)",
-          redFlags: [
-            "Urgence artificielle (« sous 24h ») pour pousser à agir sans réfléchir",
-            "Demande de confirmer des identifiants par email — une banque ne le fait jamais",
-            "Domaine d'expéditeur générique et non officiel",
-            "Formule de politesse impersonnelle (« Cher client »)",
-          ],
+          easy: {
+            sender: "securite@banque-nordis-alertes.example",
+            subject: "URGENT!!! VOTRE COMPTE VA ETRE BLOKER",
+            body:
+              "Cher client,\n\nVotre compte a été SUSPENDU pour des raisons de securite. Vous devez confirmer vos information dans les 2 heure sinon votre compte sera fermé définitivement !!!\n\nCliquez ici pour reactiver votre compte et entrer votre mot de passe.\n\nCordialement,\nLe Service",
+            redFlags: [
+              "Fautes d'orthographe multiples (« bloker », « securite », « information »)",
+              "Urgence extrême et menace immédiate (« 2 heures », majuscules, points d'exclamation)",
+              "Demande explicite du mot de passe",
+              "Signature vague sans nom ni service précis",
+            ],
+          },
+          medium: {
+            sender: "securite@banque-nordis.example",
+            subject: "Action requise : votre compte va être suspendu",
+            body:
+              "Cher client,\n\nNous avons détecté une activité inhabituelle sur votre compte. Pour éviter la suspension sous 24h, veuillez confirmer votre identité en cliquant sur le lien ci-dessous et en renseignant vos identifiants.\n\nL'équipe sécurité — Banque Nordis (fictive)",
+            redFlags: [
+              "Urgence artificielle (« sous 24h ») pour pousser à agir sans réfléchir",
+              "Demande de confirmer des identifiants par email — une banque ne le fait jamais",
+              "Domaine d'expéditeur générique et non officiel",
+              "Formule de politesse impersonnelle (« Cher client »)",
+            ],
+          },
+          hard: {
+            sender: "notifications@nordis-banque.example",
+            subject: "Confirmation de votre dernière connexion",
+            body:
+              "Bonjour,\n\nNous avons enregistré une connexion à votre espace client le 12 mars depuis un nouvel appareil. Si vous êtes à l'origine de cette connexion, aucune action n'est nécessaire. Dans le cas contraire, vous pouvez vérifier l'activité récente de votre compte depuis votre espace habituel.\n\nL'équipe Banque Nordis",
+            redFlags: [
+              "Nom de domaine discrètement inversé par rapport à l'habituel (« nordis-banque » au lieu de « banque-nordis »)",
+              "Ton rassurant qui incite à ne rien vérifier activement",
+              "Aucune faute, aucune urgence visible — seul l'examen attentif du domaine trahit l'email",
+            ],
+          },
         },
         corporate: {
-          sector: "Entreprise",
-          sender: "direction@groupe-altavia.example",
-          subject: "Virement urgent à valider avant 17h",
-          body:
-            "Bonjour,\n\nJe suis en réunion et j'ai besoin que vous traitiez en urgence un virement pour un nouveau fournisseur. Répondez-moi rapidement, je vous enverrai les coordonnées bancaires par ce canal.\n\nMerci,\nLa Direction (fictif)",
-          redFlags: [
-            "Usurpation d'un dirigeant pour créer une pression hiérarchique",
-            "Demande financière urgente hors procédure habituelle",
-            "Indisponibilité prétendue de l'expéditeur pour éviter toute vérification",
-            "Canal de communication inhabituel pour une demande financière",
-          ],
+          easy: {
+            sender: "direction@groupe-altavia-fr.example",
+            subject: "URGENT - VIREMENT A FAIRE MAINTENANT !!",
+            body:
+              "Bonjour,\n\nJe suis en reunion tres important et j'ai besoin que tu fasse un virement URGENT pour un fournisseur avant 15h !! C'est tres urgent, repond moi vite je peux pas parler au telephone la.\n\nMerci\nLa direction",
+            redFlags: [
+              "Fautes grammaticales et d'orthographe nombreuses (« tres important », « fasse », « repond moi »)",
+              "Urgence artificielle extrême avec majuscules et points d'exclamation",
+              "Tutoiement inhabituel pour une communication de direction",
+              "Prétexte pour éviter tout contact vocal de vérification",
+            ],
+          },
+          medium: {
+            sender: "direction@groupe-altavia.example",
+            subject: "Virement urgent à valider avant 17h",
+            body:
+              "Bonjour,\n\nJe suis en réunion et j'ai besoin que vous traitiez en urgence un virement pour un nouveau fournisseur. Répondez-moi rapidement, je vous enverrai les coordonnées bancaires par ce canal.\n\nMerci,\nLa Direction (fictif)",
+            redFlags: [
+              "Usurpation d'un dirigeant pour créer une pression hiérarchique",
+              "Demande financière urgente hors procédure habituelle",
+              "Indisponibilité prétendue de l'expéditeur pour éviter toute vérification",
+              "Canal de communication inhabituel pour une demande financière",
+            ],
+          },
+          hard: {
+            sender: "j.martin@groupe-altavia.example",
+            subject: "Petite question rapide",
+            body:
+              "Bonjour,\n\nEs-tu disponible dans les prochaines minutes ? J'ai besoin de valider rapidement un paiement fournisseur avant la clôture comptable et je préfère faire ça avec toi directement plutôt que par le circuit habituel, ça ira plus vite.\n\nMerci d'avance,\nJulien",
+            redFlags: [
+              "Contourne discrètement la procédure de validation habituelle, sans le présenter comme suspect",
+              "Ton naturel, crédible, sans urgence agressive ni faute apparente",
+              "Nom et adresse d'expéditeur plausibles — seul le contournement de procédure est un indice",
+            ],
+          },
         },
-        delivery: {
-          sector: "Livraison",
-          sender: "no-reply@colis-expresstrack.example",
-          subject: "Votre colis est en attente — frais de douane à régler",
-          body:
-            "Bonjour,\n\nVotre colis ne peut être livré tant que des frais de douane de 2,99 € ne sont pas réglés. Cliquez sur le lien ci-dessous pour procéder au paiement et débloquer la livraison.\n\nService client — ExpressTrack (fictif)",
-          redFlags: [
-            "Petit montant demandé pour paraître anodin et inciter au clic rapide",
-            "Aucune référence de commande ou de numéro de suivi vérifiable",
-            "Nom de service de livraison générique et non officiel",
-            "Lien de paiement externe non lié à un site de suivi connu",
-          ],
+        ecommerce: {
+          easy: {
+            sender: "commande@shop-online-livraison.example",
+            subject: "PROBLEME AVEC VOTRE COMMANDE - ACTION IMMEDIATE !!!",
+            body:
+              "Bonjour,\n\nIl y a un probleme avec le paiement de votre commande N°38291. Vous devez mettre a jour vos information de paiement immediatement sinon votre commande sera ANNULER !!!\n\nCliquez ici maintenant pour eviter l'annulation.\n\nLe service client",
+            redFlags: [
+              "Fautes d'orthographe (« probleme », « ANNULER », « eviter »)",
+              "Numéro de commande générique impossible à vérifier",
+              "Urgence exagérée avec majuscules et points d'exclamation multiples",
+              "Demande de mise à jour des informations de paiement par email",
+            ],
+          },
+          medium: {
+            sender: "no-reply@shopnexa-commandes.example",
+            subject: "Votre commande est en attente de confirmation",
+            body:
+              "Bonjour,\n\nVotre commande récente n'a pas pu être finalisée en raison d'un souci de paiement. Merci de confirmer vos informations bancaires sous 48h pour éviter l'annulation automatique de la commande.\n\nL'équipe ShopNexa (fictive)",
+            redFlags: [
+              "Souci de paiement vague et non détaillé",
+              "Délai de 48h créant une pression modérée",
+              "Demande de confirmation d'informations bancaires par email",
+              "Nom de boutique générique difficile à vérifier indépendamment",
+            ],
+          },
+          hard: {
+            sender: "suivi@shopnexa.example",
+            subject: "Votre colis a été expédié",
+            body:
+              "Bonjour,\n\nBonne nouvelle : votre commande vient d'être expédiée et devrait arriver sous 3 à 5 jours ouvrés. Vous pouvez suivre son acheminement depuis votre espace client habituel.\n\nMerci pour votre confiance,\nL'équipe ShopNexa",
+            redFlags: [
+              "Ton neutre et positif, sans urgence apparente — ce qui le rend crédible",
+              "Pertinent seulement si aucune commande récente ne correspond réellement",
+              "Invite à se rendre sur un « espace client habituel » sans fournir de lien direct vérifiable",
+            ],
+          },
         },
-        itSupport: {
-          sector: "Support IT",
-          sender: "support-it@helpdesk-corpnet.example",
-          subject: "Votre mot de passe expire aujourd'hui",
-          body:
-            "Bonjour,\n\nVotre mot de passe professionnel expire dans quelques heures. Merci de le renouveler immédiatement via le portail ci-dessous pour éviter la perte d'accès à votre messagerie.\n\nSupport informatique (fictif)",
-          redFlags: [
-            "Pression temporelle sur un sujet technique habituellement planifié à l'avance",
-            "Lien vers un portail de connexion externe imitant l'outil interne",
-            "Adresse d'expéditeur ne correspondant pas au domaine interne habituel",
-            "Aucune personnalisation (nom, service, identifiant) dans le message",
-          ],
+        socialMedia: {
+          easy: {
+            sender: "support@social-verification-center.example",
+            subject: "ALERTE : Votre compte sera SUPPRIMER dans 24H",
+            body:
+              "Attention,\n\nNous avons detecté une activité suspecte sur votre compte. Votre compte sera SUPPRIMER definitivement dans 24H si vous ne confirmer pas votre identité maintenant !!\n\nCliquez sur le lien pour verifier votre compte et eviter la suppression.\n\nL'equipe de securite",
+            redFlags: [
+              "Fautes d'orthographe répétées (« confirmer », « verifier », « L'equipe »)",
+              "Nom de domaine générique et non officiel",
+              "Menace de suppression définitive sous 24h",
+              "Ton alarmiste dès la salutation (« Attention »)",
+            ],
+          },
+          medium: {
+            sender: "no-reply@socialhub-security.example",
+            subject: "Connexion inhabituelle détectée sur votre compte",
+            body:
+              "Bonjour,\n\nNous avons remarqué une connexion depuis un appareil non reconnu. Si ce n'était pas vous, sécurisez votre compte immédiatement en confirmant votre mot de passe via le lien ci-dessous.\n\nL'équipe SocialHub (fictif)",
+            redFlags: [
+              "Demande de confirmer un mot de passe existant — aucun réseau social légitime ne le fait par email",
+              "Nom de plateforme générique et fictif, difficile à rattacher à un vrai service",
+              "Pression modérée autour d'une « connexion suspecte » non détaillée",
+            ],
+          },
+          hard: {
+            sender: "notification@socialhub.example",
+            subject: "Quelqu'un vous a mentionné dans un commentaire",
+            body:
+              "Bonjour,\n\nVous avez été mentionné(e) dans un commentaire par un contact. Connectez-vous à votre compte habituel pour voir la conversation complète et y répondre si vous le souhaitez.\n\nL'équipe SocialHub",
+            redFlags: [
+              "Prétexte anodin et plausible qui abaisse naturellement la vigilance",
+              "Aucune urgence, aucune faute visible",
+              "Invite à se reconnecter plutôt que de fournir un lien direct, ce qui paraît plus légitime",
+            ],
+          },
         },
       },
     },
@@ -585,6 +851,154 @@ const fr = {
       found: "{count} fuite(s) trouvée(s) dans ce jeu de données simulé :",
       footnote:
         "Résultat déterministe généré localement à partir de l'email saisi — ne reflète aucune fuite réelle.",
+    },
+    subnetCalculator: {
+      intro: "Calcule la plage d'adresses d'un sous-réseau à partir d'une IP et d'un masque (CIDR ou décimal). Calcul entièrement local.",
+      ipLabel: "Adresse IP",
+      maskLabel: "Masque (/24 ou 255.255.255.0)",
+      statsNetworkLabel: "Adresse réseau",
+      statsBroadcastLabel: "Broadcast",
+      statsHostsLabel: "Hôtes utilisables",
+      usableRangeLabel: "Plage utilisable :",
+      invalidInput: "IP ou masque invalide.",
+    },
+    addressConverter: {
+      intro: "Conversion en direct entre décimal, binaire et hexadécimal — modifiez n'importe quel champ.",
+      decimalLabel: "Décimal",
+      binaryLabel: "Binaire",
+      hexLabel: "Hexadécimal",
+    },
+    portLookup: {
+      intro: "Recherchez un port par numéro ou un service par nom, parmi les ports les plus courants.",
+      placeholder: "ex. 443 ou HTTPS",
+      noResults: "Aucun port ne correspond à cette recherche.",
+      footnote: "Liste statique des ports les plus courants — aucune vérification réseau réelle.",
+      usages: {
+        "20": "Transfert de données FTP",
+        "21": "Contrôle de connexion FTP",
+        "22": "Accès distant sécurisé (SSH)",
+        "23": "Accès distant non chiffré (obsolète)",
+        "25": "Envoi d'emails (SMTP)",
+        "53": "Résolution de noms de domaine (DNS)",
+        "67": "Attribution d'adresses IP côté serveur (DHCP)",
+        "68": "Attribution d'adresses IP côté client (DHCP)",
+        "80": "Trafic web non chiffré (HTTP)",
+        "110": "Réception d'emails (POP3)",
+        "123": "Synchronisation d'horloge réseau (NTP)",
+        "143": "Réception d'emails avec synchronisation (IMAP)",
+        "161": "Supervision réseau (SNMP)",
+        "389": "Annuaire d'entreprise (LDAP)",
+        "443": "Trafic web chiffré (HTTPS)",
+        "445": "Partage de fichiers Windows (SMB)",
+        "465": "Envoi d'emails chiffré (SMTPS)",
+        "514": "Journalisation réseau centralisée (Syslog)",
+        "587": "Soumission d'emails sortants authentifiée",
+        "636": "Annuaire d'entreprise chiffré (LDAPS)",
+        "993": "Réception d'emails chiffrée (IMAPS)",
+        "995": "Réception d'emails chiffrée (POP3S)",
+        "1433": "Base de données Microsoft SQL Server",
+        "3306": "Base de données MySQL",
+        "3389": "Bureau à distance Windows (RDP)",
+        "5432": "Base de données PostgreSQL",
+        "5900": "Contrôle d'écran à distance (VNC)",
+        "6379": "Base de données en mémoire Redis",
+        "8080": "Trafic web alternatif (proxy, applications)",
+        "27017": "Base de données MongoDB",
+      },
+    },
+    bandwidthCalculator: {
+      intro: "Estime le temps de transfert d'un fichier en fonction de sa taille et de la vitesse de connexion.",
+      sizeLabel: "Taille du fichier",
+      speedLabel: "Vitesse de connexion",
+      resultLabel: "Résultat estimé",
+      statsTimeLabel: "Temps estimé",
+      statsSpeedLabel: "Débit utilisé",
+      units: { s: "s", m: "min", h: "h", d: "j" },
+    },
+    passwordStrength: {
+      intro: "Analyse locale d'un mot de passe — jamais envoyé nulle part, calcul entièrement dans le navigateur.",
+      placeholder: "Saisissez un mot de passe à analyser",
+      show: "Afficher",
+      hide: "Masquer",
+      criteria: {
+        minLength: "Au moins 8 caractères",
+        recommendedLength: "12 caractères ou plus (recommandé)",
+        mixedCase: "Mélange de minuscules et majuscules",
+        digit: "Au moins un chiffre",
+        symbol: "Au moins un caractère spécial",
+      },
+      statsEntropyLabel: "Entropie",
+      statsCrackTimeLabel: "Temps de cassage estimé",
+      statsLengthLabel: "Longueur",
+      levels: {
+        weak: "Faible",
+        fair: "Moyen",
+        good: "Bon",
+        strong: "Fort",
+      },
+      units: {
+        second: "seconde(s)",
+        minute: "minute(s)",
+        hour: "heure(s)",
+        day: "jour(s)",
+        year: "an(s)",
+      },
+    },
+    hashGenerator: {
+      intro: "Calcule plusieurs empreintes cryptographiques d'un texte, entièrement dans le navigateur (Web Crypto API + implémentation MD5 locale).",
+      placeholder: "Saisissez le texte à hacher…",
+      copy: "Copier",
+    },
+    passwordGenerator: {
+      intro: "Génère un mot de passe aléatoire cryptographiquement sûr (crypto.getRandomValues), selon vos critères.",
+      lengthLabel: "Longueur",
+      optionUpper: "Majuscules (A-Z)",
+      optionDigits: "Chiffres (0-9)",
+      optionSymbols: "Caractères spéciaux",
+      generate: "Générer",
+      statsStrengthLabel: "Force",
+      statsEntropyLabel: "Entropie",
+      statsLengthLabel: "Longueur",
+      levels: {
+        weak: "Faible",
+        fair: "Moyen",
+        good: "Bon",
+        strong: "Fort",
+      },
+    },
+    base64Codec: {
+      intro: "Encodage et décodage Base64 dans les deux sens, en direct et entièrement local.",
+      textLabel: "Texte",
+      textPlaceholder: "Saisissez du texte à encoder…",
+      base64Label: "Base64",
+      base64Placeholder: "Ou collez du Base64 à décoder…",
+      invalidBase64: "Base64 invalide — impossible de décoder.",
+    },
+    raidCalculator: {
+      intro: "Calcule la capacité utile et la tolérance de panne selon le type de RAID, le nombre de disques et leur taille.",
+      typeLabel: "Type de RAID",
+      disksLabel: "Nombre de disques",
+      sizeLabel: "Taille par disque (TB)",
+      totalLabel: "Capacité brute totale",
+      statsUsableLabel: "Capacité utile",
+      statsToleranceLabel: "Disque(s) tolérés en panne",
+      statsEfficiencyLabel: "Efficacité",
+      invalidInput: "Configuration invalide — ce type de RAID nécessite au moins {min} disques (nombre pair pour le RAID 10).",
+    },
+    cronCalculator: {
+      intro: "Traduit une expression cron en explication lisible et calcule ses 5 prochaines exécutions, entièrement en local.",
+      nextRunsLabel: "5 prochaines exécutions",
+      noUpcoming: "Aucune exécution trouvée dans les prochains mois.",
+      invalidExpression: "Expression cron invalide — format attendu : minute heure jour mois jour-semaine.",
+      explain: {
+        everyMinute: "S'exécute toutes les minutes.",
+        everyHourAt: "S'exécute toutes les heures, à la minute {minute}.",
+        dailyAt: "S'exécute tous les jours à {time}.",
+        generic: "S'exécute selon un horaire personnalisé.",
+        onDays: "Les jours suivants : {days}.",
+        onDayOfMonth: "Le(s) jour(s) {days} du mois.",
+        inMonths: "En {months}.",
+      },
     },
   },
 };
@@ -965,6 +1379,46 @@ const en: DeepDict<typeof fr> = {
         title: "Wireshark",
         description: "Overview card for the network protocol analyzer.",
       },
+      subnetCalculator: {
+        title: "Subnet Calculator",
+        description: "IP + mask → network address, broadcast, usable host range.",
+      },
+      addressConverter: {
+        title: "Address Converter",
+        description: "Simultaneous decimal / binary / hexadecimal conversion, both ways.",
+      },
+      portLookup: {
+        title: "Common Port Lookup",
+        description: "Search by number or service name: protocol and typical usage.",
+      },
+      bandwidthCalculator: {
+        title: "Bandwidth Calculator",
+        description: "File size + speed → estimated transfer time.",
+      },
+      passwordStrength: {
+        title: "Password Strength Analyzer",
+        description: "Entropy and estimated crack time, 100% local computation.",
+      },
+      hashGenerator: {
+        title: "Hash Generator",
+        description: "MD5, SHA-1, SHA-256, SHA-512 from a text, computed locally.",
+      },
+      passwordGenerator: {
+        title: "Secure Password Generator",
+        description: "Customizable options, cryptographically secure generation.",
+      },
+      base64Codec: {
+        title: "Base64 Encoder / Decoder",
+        description: "Text ↔ Base64 conversion both ways, live.",
+      },
+      raidCalculator: {
+        title: "RAID Calculator",
+        description: "Type, disks and size → usable capacity and fault tolerance.",
+      },
+      cronCalculator: {
+        title: "CRON Calculator",
+        description: "Cron expression → plain-English explanation and next runs.",
+      },
     },
     securityHeaders: {
       intro:
@@ -1030,6 +1484,68 @@ const en: DeepDict<typeof fr> = {
       ],
       context:
         "Tool used in training and test environments for web application security analysis, as part of supervised exercises and CTFs.",
+      simulation: {
+        warning: "Educational simulation — no request is ever sent to the entered URL.",
+        intro:
+          "A preview of what a typical Burp Suite scan would return — entirely simulated and deterministic, for demonstration purposes.",
+        urlLabel: "Target URL",
+        urlPlaceholder: "https://example.com",
+        scanTypeLabel: "Scan type",
+        scanTypeHeaders: "Headers and configuration",
+        scanTypeFull: "Full audit",
+        run: "Run simulation",
+        statsRiskLabel: "Overall risk",
+        statsVulnsLabel: "Vulnerabilities found",
+        statsTestsLabel: "Tests performed",
+        riskLevels: {
+          low: "Low",
+          medium: "Medium",
+          high: "High",
+          critical: "Critical",
+        },
+        findings: {
+          missingCsp: {
+            title: "Missing Content-Security-Policy",
+            description: "No content security policy detected, increasing exposure to XSS attacks.",
+            remediation: "Define a restrictive CSP limiting allowed script and resource sources.",
+          },
+          missingXFrameOptions: {
+            title: "Missing X-Frame-Options",
+            description: "The site could be embedded in a third-party iframe for clickjacking purposes.",
+            remediation: "Add X-Frame-Options or a frame-ancestors directive in the CSP.",
+          },
+          missingHsts: {
+            title: "Missing Strict-Transport-Security",
+            description: "The browser is not forced to use HTTPS for this domain.",
+            remediation: "Enable HSTS with a sufficient duration and the includeSubDomains option.",
+          },
+          outdatedTls: {
+            title: "Outdated TLS configuration",
+            description: "Deprecated protocols or cipher suites still appear to be accepted.",
+            remediation: "Disable TLS 1.0/1.1 and weak cipher suites on the server.",
+          },
+          verboseErrorMessages: {
+            title: "Overly verbose error messages",
+            description: "Error pages expose technical details (stack trace, versions) useful to an attacker.",
+            remediation: "Show generic error pages in production and log details server-side.",
+          },
+          weakSessionCookie: {
+            title: "Weakly protected session cookies",
+            description: "The Secure and HttpOnly attributes appear to be missing on the session cookie.",
+            remediation: "Add the Secure, HttpOnly and SameSite attributes on all sensitive cookies.",
+          },
+          missingRateLimiting: {
+            title: "No rate limiting",
+            description: "No limitation detected on login attempts, making brute-force attacks easier.",
+            remediation: "Implement rate limiting and progressive lockout after repeated failures.",
+          },
+          directoryListing: {
+            title: "Directory listing enabled",
+            description: "A directory's contents appear accessible without an index page, exposing its structure.",
+            remediation: "Disable directory listing on the web server.",
+          },
+        },
+      },
     },
     wiresharkReference: {
       useCases: [
@@ -1039,6 +1555,64 @@ const en: DeepDict<typeof fr> = {
       ],
       context:
         "Used in network training to understand how protocols work and diagnose incidents — a live capture is of course not possible from a browser.",
+      tabs: {
+        protocols: "Protocols",
+        attacks: "Network attacks",
+        defense: "Defense",
+      },
+      protocolsData: {
+        tcpip: { name: "TCP/IP", description: "Internet's foundational protocol suite, the basis for reliable transport and addressing." },
+        udp: { name: "UDP", description: "Connectionless transport — fast, but with no delivery guarantee or origin verification." },
+        http: { name: "HTTP/HTTPS", description: "Web protocol; plaintext (HTTP) traffic is readable in the clear, HTTPS encrypts it via TLS." },
+        dns: { name: "DNS", description: "Domain name resolution, historically unencrypted and vulnerable to spoofing/cache poisoning." },
+        ssh: { name: "SSH", description: "Encrypted remote access, replaces Telnet for secure system administration." },
+        smb: { name: "SMB", description: "Windows file sharing, a historical target for critical vulnerabilities (e.g. EternalBlue)." },
+        arp: { name: "ARP", description: "MAC address resolution on the local network, with no authentication — trivially spoofable." },
+      },
+      attacksData: {
+        arpSpoofing: {
+          title: "ARP Spoofing",
+          description: "Forging ARP replies to associate one's own MAC address with a victim's IP and intercept their local traffic.",
+        },
+        dnsSpoofing: {
+          title: "DNS Spoofing",
+          description: "Forging DNS responses to redirect a victim to a malicious server without their knowledge.",
+        },
+        mitm: {
+          title: "Man-in-the-Middle",
+          description: "Intercepting, and potentially altering, communications between two parties who believe they are talking directly.",
+        },
+        synFlood: {
+          title: "SYN Flood",
+          description: "Overwhelming a server with a large number of incomplete TCP connection requests.",
+        },
+        ddos: {
+          title: "DDoS / Amplification",
+          description: "Flooding a target with massive distributed traffic, sometimes amplified via misconfigured third-party services.",
+        },
+      },
+      defenseData: {
+        vlanSegmentation: {
+          title: "VLAN segmentation",
+          description: "Isolating network segments limits the scope of a compromise and the spread of local attacks.",
+        },
+        tlsEncryption: {
+          title: "TLS encryption",
+          description: "Encrypting communications makes intercepting them useless without the corresponding keys.",
+        },
+        firewallFiltering: {
+          title: "Filtering / firewall",
+          description: "Restricting allowed traffic flows reduces the attack surface exposed on the network.",
+        },
+        monitoringIds: {
+          title: "Monitoring / IDS",
+          description: "Intrusion detection and monitoring make it possible to identify abnormal activity quickly.",
+        },
+        updates: {
+          title: "Regular updates",
+          description: "Patching known vulnerabilities limits the attack vectors available to an adversary.",
+        },
+      },
     },
     riskCalculator: {
       intro:
@@ -1100,66 +1674,172 @@ const en: DeepDict<typeof fr> = {
     },
     phishing: {
       intro:
-        "Generate a fictional phishing email scenario to practice spotting warning signs. No real company is ever used, no link is clickable.",
+        "Pick a sector and a difficulty level to generate a fictional phishing email scenario and practice spotting warning signs. No real company is ever used, no link is clickable.",
       sectorLabel: "Sector",
-      newScenario: "New scenario",
+      difficultyLabel: "Difficulty",
+      generate: "Generate",
       fictionalNote: "Entirely fictional example — for awareness purposes only.",
       from: "From",
       subject: "Subject",
       redFlagsLabel: "Red flags to spot",
-      footnote: "Click “New scenario” to generate another example.",
+      sectors: {
+        banking: "Banking",
+        corporate: "Corporate / Professional",
+        ecommerce: "E-commerce",
+        socialMedia: "Social media",
+      },
+      difficulties: {
+        easy: "Easy",
+        medium: "Medium",
+        hard: "Hard",
+      },
       scenarios: {
         banking: {
-          sector: "Banking",
-          sender: "security@nordis-bank.example",
-          subject: "Action required: your account will be suspended",
-          body:
-            "Dear customer,\n\nWe detected unusual activity on your account. To avoid suspension within 24h, please confirm your identity by clicking the link below and entering your credentials.\n\nSecurity Team — Nordis Bank (fictional)",
-          redFlags: [
-            "Artificial urgency (“within 24h”) to push you into acting without thinking",
-            "Asks you to confirm credentials by email — a bank never does this",
-            "Generic, non-official sender domain",
-            "Impersonal greeting (“Dear customer”)",
-          ],
+          easy: {
+            sender: "security@nordis-bank-alerts.example",
+            subject: "URGENT!!! YOUR ACCOUNT WILL BE BLOCKD",
+            body:
+              "Dear customer,\n\nYour account has been SUSPENDED for security reasons. You must confirm your informations within 2 hour or your account will be closed permanently !!!\n\nClick here to reactivate your account and enter your password.\n\nRegards,\nThe Service",
+            redFlags: [
+              "Multiple spelling errors (“BLOCKD”, “informations”, “2 hour”)",
+              "Extreme urgency and immediate threat (“2 hours”, caps, exclamation marks)",
+              "Explicit request for the password",
+              "Vague signature with no name or specific department",
+            ],
+          },
+          medium: {
+            sender: "security@nordis-bank.example",
+            subject: "Action required: your account will be suspended",
+            body:
+              "Dear customer,\n\nWe detected unusual activity on your account. To avoid suspension within 24h, please confirm your identity by clicking the link below and entering your credentials.\n\nSecurity Team — Nordis Bank (fictional)",
+            redFlags: [
+              "Artificial urgency (“within 24h”) to push you into acting without thinking",
+              "Asks you to confirm credentials by email — a bank never does this",
+              "Generic, non-official sender domain",
+              "Impersonal greeting (“Dear customer”)",
+            ],
+          },
+          hard: {
+            sender: "notifications@bank-nordis.example",
+            subject: "Confirmation of your last login",
+            body:
+              "Hello,\n\nWe recorded a login to your online account on March 12 from a new device. If this was you, no action is needed. Otherwise, you can review your account's recent activity from your usual account portal.\n\nThe Nordis Bank Team",
+            redFlags: [
+              "Sender domain subtly reordered compared to the usual one (“bank-nordis” instead of “nordis-bank”)",
+              "Reassuring tone that discourages any active verification",
+              "No typos, no visible urgency — only close inspection of the domain gives it away",
+            ],
+          },
         },
         corporate: {
-          sector: "Corporate",
-          sender: "management@altavia-group.example",
-          subject: "Urgent transfer to approve before 5pm",
-          body:
-            "Hi,\n\nI'm in a meeting and need you to urgently process a transfer for a new supplier. Reply quickly, I'll send the bank details through this channel.\n\nThanks,\nManagement (fictional)",
-          redFlags: [
-            "Impersonating an executive to create hierarchical pressure",
-            "Urgent financial request outside the usual process",
-            "Claimed unavailability of the sender to avoid any verification",
-            "Unusual communication channel for a financial request",
-          ],
+          easy: {
+            sender: "management@altavia-group-hq.example",
+            subject: "URGENT - TRANSFER NEEDED NOW !!",
+            body:
+              "Hi,\n\nI'm in a very important meeting and need you to do a transfer URGENT for a supplier before 3pm !! Its very urgent, reply me fast i cant talk on the phone rn.\n\nThanks\nManagement",
+            redFlags: [
+              "Numerous grammar and spelling mistakes (“Its”, “reply me”, “rn”)",
+              "Extreme artificial urgency with caps and exclamation marks",
+              "Unusually casual tone for a message from management",
+              "Excuse to avoid any voice-call verification",
+            ],
+          },
+          medium: {
+            sender: "management@altavia-group.example",
+            subject: "Urgent transfer to approve before 5pm",
+            body:
+              "Hi,\n\nI'm in a meeting and need you to urgently process a transfer for a new supplier. Reply quickly, I'll send the bank details through this channel.\n\nThanks,\nManagement (fictional)",
+            redFlags: [
+              "Impersonating an executive to create hierarchical pressure",
+              "Urgent financial request outside the usual process",
+              "Claimed unavailability of the sender to avoid any verification",
+              "Unusual communication channel for a financial request",
+            ],
+          },
+          hard: {
+            sender: "j.martin@altavia-group.example",
+            subject: "Quick question",
+            body:
+              "Hi,\n\nAre you free in the next few minutes? I need to quickly validate a supplier payment before the accounting close and would rather handle it directly with you than through the usual process, it'll be faster.\n\nThanks in advance,\nJulien",
+            redFlags: [
+              "Quietly bypasses the usual approval process without framing it as suspicious",
+              "Natural, credible tone, no aggressive urgency, no visible typos",
+              "Plausible name and sender address — the process bypass is the only real clue",
+            ],
+          },
         },
-        delivery: {
-          sector: "Delivery",
-          sender: "no-reply@expresstrack-parcel.example",
-          subject: "Your parcel is on hold — customs fee due",
-          body:
-            "Hello,\n\nYour parcel cannot be delivered until a customs fee of €2.99 is paid. Click the link below to pay and release the delivery.\n\nCustomer service — ExpressTrack (fictional)",
-          redFlags: [
-            "Small amount requested to seem harmless and encourage a quick click",
-            "No verifiable order reference or tracking number",
-            "Generic, non-official delivery service name",
-            "External payment link unrelated to any known tracking site",
-          ],
+        ecommerce: {
+          easy: {
+            sender: "orders@shop-online-delivery.example",
+            subject: "PROBLEM WITH YOUR ORDER - IMMEDIATE ACTION !!!",
+            body:
+              "Hello,\n\nThere is a problem with the payment for your order N°38291. You must update your payment informations immediately or your order will be CANCELED !!!\n\nClick here now to avoid cancelation.\n\nCustomer service",
+            redFlags: [
+              "Spelling errors (“informations”, “CANCELED” inconsistency, “cancelation”)",
+              "Generic order number impossible to verify",
+              "Exaggerated urgency with multiple caps and exclamation marks",
+              "Request to update payment information by email",
+            ],
+          },
+          medium: {
+            sender: "no-reply@shopnexa-orders.example",
+            subject: "Your order is pending confirmation",
+            body:
+              "Hello,\n\nYour recent order could not be completed due to a payment issue. Please confirm your bank details within 48h to avoid automatic order cancellation.\n\nThe ShopNexa Team (fictional)",
+            redFlags: [
+              "Vague, undetailed payment issue",
+              "48h deadline creating moderate pressure",
+              "Request to confirm bank details by email",
+              "Generic store name hard to verify independently",
+            ],
+          },
+          hard: {
+            sender: "tracking@shopnexa.example",
+            subject: "Your parcel has shipped",
+            body:
+              "Hello,\n\nGood news: your order has just shipped and should arrive within 3 to 5 business days. You can track its progress from your usual account portal.\n\nThanks for shopping with us,\nThe ShopNexa Team",
+            redFlags: [
+              "Neutral, positive tone with no apparent urgency — precisely what makes it credible",
+              "Only relevant as a red flag if no recent order actually matches it",
+              "Points to a “usual account portal” without ever giving a directly verifiable link",
+            ],
+          },
         },
-        itSupport: {
-          sector: "IT Support",
-          sender: "it-support@corpnet-helpdesk.example",
-          subject: "Your password expires today",
-          body:
-            "Hello,\n\nYour work password expires in a few hours. Please renew it immediately via the portal below to avoid losing access to your mailbox.\n\nIT Support (fictional)",
-          redFlags: [
-            "Time pressure on a technical matter that's usually scheduled in advance",
-            "Link to an external login portal mimicking the internal tool",
-            "Sender address not matching the usual internal domain",
-            "No personalization (name, department, ID) in the message",
-          ],
+        socialMedia: {
+          easy: {
+            sender: "support@social-verification-center.example",
+            subject: "ALERT: Your account will be DELETD in 24H",
+            body:
+              "Attention,\n\nWe detected suspicious activity on your account. Your account will be DELETD permanently in 24H if you do not confirm your identity now !!\n\nClick the link to verifiy your account and avoid deletion.\n\nThe security team",
+            redFlags: [
+              "Repeated spelling errors (“DELETD”, “verifiy”)",
+              "Generic, non-official domain name",
+              "Threat of permanent deletion within 24h",
+              "Alarmist tone from the very first word (“Attention”)",
+            ],
+          },
+          medium: {
+            sender: "no-reply@socialhub-security.example",
+            subject: "Unusual login detected on your account",
+            body:
+              "Hello,\n\nWe noticed a login from an unrecognized device. If this wasn't you, secure your account immediately by confirming your password via the link below.\n\nThe SocialHub Team (fictional)",
+            redFlags: [
+              "Asks to confirm an existing password — no legitimate social network ever does this by email",
+              "Generic, fictional platform name, hard to tie to a real service",
+              "Moderate pressure built around an undetailed “suspicious login”",
+            ],
+          },
+          hard: {
+            sender: "notification@socialhub.example",
+            subject: "Someone mentioned you in a comment",
+            body:
+              "Hello,\n\nYou were mentioned in a comment by a contact. Log in to your usual account to see the full conversation and reply if you'd like.\n\nThe SocialHub Team",
+            redFlags: [
+              "Mundane, plausible pretext that naturally lowers vigilance",
+              "No urgency, no visible typos",
+              "Points to logging in rather than providing a direct link, which makes it look more legitimate",
+            ],
+          },
         },
       },
     },
@@ -1172,6 +1852,154 @@ const en: DeepDict<typeof fr> = {
       found: "{count} breach(es) found in this simulated dataset:",
       footnote:
         "Deterministic result generated locally from the entered email — does not reflect any real breach.",
+    },
+    subnetCalculator: {
+      intro: "Calculates a subnet's address range from an IP and a mask (CIDR or decimal). Fully local computation.",
+      ipLabel: "IP address",
+      maskLabel: "Mask (/24 or 255.255.255.0)",
+      statsNetworkLabel: "Network address",
+      statsBroadcastLabel: "Broadcast",
+      statsHostsLabel: "Usable hosts",
+      usableRangeLabel: "Usable range:",
+      invalidInput: "Invalid IP or mask.",
+    },
+    addressConverter: {
+      intro: "Live conversion between decimal, binary and hexadecimal — edit any field.",
+      decimalLabel: "Decimal",
+      binaryLabel: "Binary",
+      hexLabel: "Hexadecimal",
+    },
+    portLookup: {
+      intro: "Search a port by number or a service by name, among the most common ports.",
+      placeholder: "e.g. 443 or HTTPS",
+      noResults: "No port matches this search.",
+      footnote: "Static list of the most common ports — no real network check.",
+      usages: {
+        "20": "FTP data transfer",
+        "21": "FTP control connection",
+        "22": "Secure remote access (SSH)",
+        "23": "Unencrypted remote access (legacy)",
+        "25": "Sending emails (SMTP)",
+        "53": "Domain name resolution (DNS)",
+        "67": "IP address assignment, server side (DHCP)",
+        "68": "IP address assignment, client side (DHCP)",
+        "80": "Unencrypted web traffic (HTTP)",
+        "110": "Receiving emails (POP3)",
+        "123": "Network time synchronization (NTP)",
+        "143": "Receiving emails with sync (IMAP)",
+        "161": "Network monitoring (SNMP)",
+        "389": "Enterprise directory (LDAP)",
+        "443": "Encrypted web traffic (HTTPS)",
+        "445": "Windows file sharing (SMB)",
+        "465": "Encrypted email sending (SMTPS)",
+        "514": "Centralized network logging (Syslog)",
+        "587": "Authenticated outbound email submission",
+        "636": "Encrypted enterprise directory (LDAPS)",
+        "993": "Encrypted email receiving (IMAPS)",
+        "995": "Encrypted email receiving (POP3S)",
+        "1433": "Microsoft SQL Server database",
+        "3306": "MySQL database",
+        "3389": "Windows Remote Desktop (RDP)",
+        "5432": "PostgreSQL database",
+        "5900": "Remote screen control (VNC)",
+        "6379": "Redis in-memory database",
+        "8080": "Alternate web traffic (proxy, applications)",
+        "27017": "MongoDB database",
+      },
+    },
+    bandwidthCalculator: {
+      intro: "Estimates a file's transfer time based on its size and the connection speed.",
+      sizeLabel: "File size",
+      speedLabel: "Connection speed",
+      resultLabel: "Estimated result",
+      statsTimeLabel: "Estimated time",
+      statsSpeedLabel: "Speed used",
+      units: { s: "s", m: "min", h: "h", d: "d" },
+    },
+    passwordStrength: {
+      intro: "Local password analysis — never sent anywhere, computed entirely in the browser.",
+      placeholder: "Enter a password to analyze",
+      show: "Show",
+      hide: "Hide",
+      criteria: {
+        minLength: "At least 8 characters",
+        recommendedLength: "12 characters or more (recommended)",
+        mixedCase: "Mix of lowercase and uppercase",
+        digit: "At least one digit",
+        symbol: "At least one special character",
+      },
+      statsEntropyLabel: "Entropy",
+      statsCrackTimeLabel: "Estimated crack time",
+      statsLengthLabel: "Length",
+      levels: {
+        weak: "Weak",
+        fair: "Fair",
+        good: "Good",
+        strong: "Strong",
+      },
+      units: {
+        second: "second(s)",
+        minute: "minute(s)",
+        hour: "hour(s)",
+        day: "day(s)",
+        year: "year(s)",
+      },
+    },
+    hashGenerator: {
+      intro: "Computes several cryptographic digests of a text, entirely in the browser (Web Crypto API + local MD5 implementation).",
+      placeholder: "Enter the text to hash…",
+      copy: "Copy",
+    },
+    passwordGenerator: {
+      intro: "Generates a cryptographically secure random password (crypto.getRandomValues), based on your criteria.",
+      lengthLabel: "Length",
+      optionUpper: "Uppercase (A-Z)",
+      optionDigits: "Digits (0-9)",
+      optionSymbols: "Special characters",
+      generate: "Generate",
+      statsStrengthLabel: "Strength",
+      statsEntropyLabel: "Entropy",
+      statsLengthLabel: "Length",
+      levels: {
+        weak: "Weak",
+        fair: "Fair",
+        good: "Good",
+        strong: "Strong",
+      },
+    },
+    base64Codec: {
+      intro: "Base64 encoding and decoding both ways, live and entirely local.",
+      textLabel: "Text",
+      textPlaceholder: "Enter text to encode…",
+      base64Label: "Base64",
+      base64Placeholder: "Or paste Base64 to decode…",
+      invalidBase64: "Invalid Base64 — unable to decode.",
+    },
+    raidCalculator: {
+      intro: "Calculates usable capacity and fault tolerance based on RAID type, disk count and size.",
+      typeLabel: "RAID type",
+      disksLabel: "Number of disks",
+      sizeLabel: "Size per disk (TB)",
+      totalLabel: "Total raw capacity",
+      statsUsableLabel: "Usable capacity",
+      statsToleranceLabel: "Disk(s) tolerated failed",
+      statsEfficiencyLabel: "Efficiency",
+      invalidInput: "Invalid configuration — this RAID type requires at least {min} disks (even number for RAID 10).",
+    },
+    cronCalculator: {
+      intro: "Translates a cron expression into a plain-English explanation and computes its next 5 executions, entirely locally.",
+      nextRunsLabel: "Next 5 executions",
+      noUpcoming: "No execution found in the coming months.",
+      invalidExpression: "Invalid cron expression — expected format: minute hour day month weekday.",
+      explain: {
+        everyMinute: "Runs every minute.",
+        everyHourAt: "Runs every hour, at minute {minute}.",
+        dailyAt: "Runs every day at {time}.",
+        generic: "Runs on a custom schedule.",
+        onDays: "On the following days: {days}.",
+        onDayOfMonth: "On day(s) {days} of the month.",
+        inMonths: "In {months}.",
+      },
     },
   },
 };

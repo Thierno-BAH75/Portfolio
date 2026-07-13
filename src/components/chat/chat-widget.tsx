@@ -5,6 +5,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { MessageCircle, Send, X, Maximize2, Minimize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/i18n";
+import { ChatMarkdown } from "./chat-markdown";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -238,17 +239,24 @@ export function ChatWidget() {
                 >
                   <div
                     className={cn(
-                      "max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-wrap",
+                      "max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed",
                       // En agrandi : bulles plus larges en absolu (~630px) et padding plus confortable
                       expanded && "sm:max-w-[70%] sm:px-4 sm:py-3",
                       m.role === "user"
-                        ? "bg-gradient-to-br from-violet-600 to-cyan-600 text-white rounded-br-md"
+                        ? "bg-gradient-to-br from-violet-600 to-cyan-600 text-white rounded-br-md whitespace-pre-wrap"
                         : m.isError
-                          ? "bg-red-500/10 border border-red-500/30 text-red-400 rounded-bl-md"
+                          ? "bg-red-500/10 border border-red-500/30 text-red-400 rounded-bl-md whitespace-pre-wrap"
                           : "bg-muted/70 text-foreground rounded-bl-md"
                     )}
                   >
-                    {m.content}
+                    {/* Réponses de l'assistant : rendu Markdown léger (gras,
+                        titres, puces). Messages utilisateur et erreurs : texte
+                        brut avec retours à la ligne préservés. */}
+                    {m.role === "assistant" && !m.isError ? (
+                      <ChatMarkdown content={m.content} />
+                    ) : (
+                      m.content
+                    )}
                   </div>
                 </div>
               ))}

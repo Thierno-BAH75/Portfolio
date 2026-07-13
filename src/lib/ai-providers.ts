@@ -31,7 +31,12 @@ const TIMEOUT_MS = 10_000;
 // tout en restant largement dans la zone factuelle (rien à voir avec la
 // créativité libre d'une température élevée).
 const TEMPERATURE = 0.45;
-const MAX_TOKENS = 500;
+// Relevé de 500 à 800 : les réponses techniques désormais attendues
+// (structurées, avec titres, listes et exemple concret) dépasseraient
+// sinon le budget en pleine phrase. thinkingBudget reste à 0 côté Gemini
+// pour que ce budget serve entièrement au texte visible, pas à la
+// « réflexion » interne (qui retronquerait les réponses).
+const MAX_TOKENS = 800;
 
 // ── Gemini ───────────────────────────────────────────────────────────
 const geminiUrl = (model: string) =>

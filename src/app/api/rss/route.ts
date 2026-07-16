@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getVeilleSources } from "@/lib/data";
+import { isHttpUrl } from "@/lib/schemas";
 
 export interface RSSArticle {
   id: string;
@@ -53,7 +54,10 @@ function parseRSS(xml: string, source: string, domain: string): RSSArticle[] {
     const pubDateRaw = item.match(/<(?:pubDate|published|updated)>([\s\S]*?)<\/(?:pubDate|published|updated)>/)?.[1] ?? "";
 
     const title = extractCDATA(titleRaw).trim();
-    const link  = extractCDATA(linkRaw).trim();
+    // Lien issu d'un flux externe non fiable : on ne le rend que s'il est
+    // http/https (un flux compromis pourrait injecter un href javascript:).
+    const rawLink = extractCDATA(linkRaw).trim();
+    const link = isHttpUrl(rawLink) ? rawLink : "";
     const description = extractCDATA(descRaw)
       .replace(/<[^>]+>/g, "")
       .replace(/&nbsp;/g, " ")

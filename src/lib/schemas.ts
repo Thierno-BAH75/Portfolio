@@ -167,9 +167,52 @@ export const personalInfoSchema = z.object({
 export type PersonalInfoFormValues = z.infer<typeof personalInfoSchema>;
 
 // ── Veille ───────────────────────────────────────────────────────────
+// z.string().url() accepte des schémas dangereux (javascript:, file:) et des
+// hôtes internes — le constructeur URL les considère « valides ». On resserre.
+
+// Lien affiché (bookmark, articles) : http/https uniquement, jamais
+// javascript:/data:/file: (vecteur XSS sur un href rendu).
+export function isHttpUrl(raw: string): boolean {
+  try {
+    const u = new URL(raw);
+    return u.protocol === "http:" || u.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+// Source RSS fetchée côté serveur : https obligatoire + blocage des hôtes
+// internes/privés (anti-SSRF, dont l'adresse de métadonnées cloud
+// 169.254.169.254). Isomorphe (URL dispo navigateur + Node).
+export function isSafeRemoteHttpsUrl(raw: string): boolean {
+  let u: URL;
+  try {
+    u = new URL(raw);
+  } catch {
+    return false;
+  }
+  if (u.protocol !== "https:") return false;
+  const host = u.hostname.toLowerCase().replace(/^\[|\]$/g, "");
+  if (host === "localhost" || host.endsWith(".localhost")) return false;
+  if (host === "::1") return false; // loopback IPv6
+  if (/^fe80:/i.test(host)) return false; // link-local IPv6
+  if (/^f[cd][0-9a-f]{2}:/i.test(host)) return false; // ULA IPv6 (fc00::/7)
+  // IPv4 loopback / privées / link-local (dont métadonnées cloud)
+  if (/^0\./.test(host)) return false;
+  if (/^127\./.test(host)) return false;
+  if (/^10\./.test(host)) return false;
+  if (/^192\.168\./.test(host)) return false;
+  if (/^169\.254\./.test(host)) return false;
+  if (/^172\.(1[6-9]|2\d|3[01])\./.test(host)) return false;
+  return true;
+}
+
 export const veilleSourceSchema = z.object({
   name: z.string().min(1, "Le nom est requis"),
-  url: z.string().url("URL invalide"),
+  url: z
+    .string()
+    .url("URL invalide")
+    .refine(isSafeRemoteHttpsUrl, "URL invalide : https requis, adresses internes/privées interdites"),
   domain: z.string().min(1, "Le domaine est requis"),
   category: z.string().optional(),
   isActive: z.boolean(),
@@ -179,7 +222,7 @@ export const veilleSourceSchema = z.object({
 export type VeilleSourceFormValues = z.infer<typeof veilleSourceSchema>;
 
 export const veilleBookmarkSchema = z.object({
-  articleUrl: z.string().url("URL invalide"),
+  articleUrl: z.string().url("URL invalide").refine(isHttpUrl, "URL invalide : lien http/https requis"),
   articleTitle: z.string().min(1, "Le titre est requis"),
   sourceName: z.string().optional(),
   commentFr: z.string().optional(),

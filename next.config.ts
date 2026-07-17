@@ -47,6 +47,17 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   // Retire l'en-tête "X-Powered-By: Next.js" (fuite mineure de techno).
   poweredByHeader: false,
+  // Sous Turbopack, lucide-react (barrel export) n'était pas tree-shaké par
+  // route : chaque page qui en importe au moins une icône embarquait les
+  // ~1570 icônes de la lib entière (588 Ko x route). Réécrit chaque import
+  // nommé vers son module d'icône individuel — même effet que si le code
+  // avait été écrit `import X from "lucide-react/dist/esm/icons/x"`, sans
+  // toucher aux imports réels du code.
+  modularizeImports: {
+    "lucide-react": {
+      transform: "lucide-react/dist/esm/icons/{{ kebabCase member }}",
+    },
+  },
   images: {
     // Covers de projets en SVG (remplacés plus tard par de vraies captures
     // au même chemin) : SVG local, sandboxé sans script pour éviter tout XSS.

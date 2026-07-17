@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import {
   Wrench,
@@ -25,26 +26,69 @@ import {
 } from "lucide-react";
 import { SectionBackground } from "@/components/ui/section-background";
 import { ToolCard } from "@/components/tools/tool-card";
-import { SecurityHeadersAnalyzer } from "@/components/tools/security-headers-analyzer";
-import { SslTlsChecker } from "@/components/tools/ssl-tls-checker";
-import { PortScanSimulator } from "@/components/tools/port-scan-simulator";
-import { BurpSuiteReference } from "@/components/tools/burp-suite-reference";
-import { RiskCalculator } from "@/components/tools/risk-calculator";
-import { VulnerabilityDatabase } from "@/components/tools/vulnerability-database";
-import { PhishingSimulator } from "@/components/tools/phishing-simulator";
-import { DataLeakChecker } from "@/components/tools/data-leak-checker";
-import { WiresharkReference } from "@/components/tools/wireshark-reference";
-import { SubnetCalculator } from "@/components/tools/subnet-calculator";
-import { AddressConverter } from "@/components/tools/address-converter";
-import { PortLookup } from "@/components/tools/port-lookup";
-import { BandwidthCalculator } from "@/components/tools/bandwidth-calculator";
-import { PasswordStrengthAnalyzer } from "@/components/tools/password-strength-analyzer";
-import { HashGenerator } from "@/components/tools/hash-generator";
-import { PasswordGenerator } from "@/components/tools/password-generator";
-import { Base64Codec } from "@/components/tools/base64-codec";
-import { RaidCalculator } from "@/components/tools/raid-calculator";
-import { CronCalculator } from "@/components/tools/cron-calculator";
 import { useI18n } from "@/i18n";
+
+// Chaque outil n'est monté que lorsque sa carte est ouverte (ToolCard rend
+// ses children conditionnellement) — dynamic() va plus loin : le CODE de
+// chaque outil devient son propre chunk, téléchargé au clic plutôt
+// qu'embarqué dans le JS initial de /outils pour les 19 outils à la fois.
+const SecurityHeadersAnalyzer = dynamic(() =>
+  import("@/components/tools/security-headers-analyzer").then((m) => m.SecurityHeadersAnalyzer)
+);
+const SslTlsChecker = dynamic(() =>
+  import("@/components/tools/ssl-tls-checker").then((m) => m.SslTlsChecker)
+);
+const PortScanSimulator = dynamic(() =>
+  import("@/components/tools/port-scan-simulator").then((m) => m.PortScanSimulator)
+);
+const BurpSuiteReference = dynamic(() =>
+  import("@/components/tools/burp-suite-reference").then((m) => m.BurpSuiteReference)
+);
+const RiskCalculator = dynamic(() =>
+  import("@/components/tools/risk-calculator").then((m) => m.RiskCalculator)
+);
+const VulnerabilityDatabase = dynamic(() =>
+  import("@/components/tools/vulnerability-database").then((m) => m.VulnerabilityDatabase)
+);
+const PhishingSimulator = dynamic(() =>
+  import("@/components/tools/phishing-simulator").then((m) => m.PhishingSimulator)
+);
+const DataLeakChecker = dynamic(() =>
+  import("@/components/tools/data-leak-checker").then((m) => m.DataLeakChecker)
+);
+const WiresharkReference = dynamic(() =>
+  import("@/components/tools/wireshark-reference").then((m) => m.WiresharkReference)
+);
+const SubnetCalculator = dynamic(() =>
+  import("@/components/tools/subnet-calculator").then((m) => m.SubnetCalculator)
+);
+const AddressConverter = dynamic(() =>
+  import("@/components/tools/address-converter").then((m) => m.AddressConverter)
+);
+const PortLookup = dynamic(() =>
+  import("@/components/tools/port-lookup").then((m) => m.PortLookup)
+);
+const BandwidthCalculator = dynamic(() =>
+  import("@/components/tools/bandwidth-calculator").then((m) => m.BandwidthCalculator)
+);
+const PasswordStrengthAnalyzer = dynamic(() =>
+  import("@/components/tools/password-strength-analyzer").then((m) => m.PasswordStrengthAnalyzer)
+);
+const HashGenerator = dynamic(() =>
+  import("@/components/tools/hash-generator").then((m) => m.HashGenerator)
+);
+const PasswordGenerator = dynamic(() =>
+  import("@/components/tools/password-generator").then((m) => m.PasswordGenerator)
+);
+const Base64Codec = dynamic(() =>
+  import("@/components/tools/base64-codec").then((m) => m.Base64Codec)
+);
+const RaidCalculator = dynamic(() =>
+  import("@/components/tools/raid-calculator").then((m) => m.RaidCalculator)
+);
+const CronCalculator = dynamic(() =>
+  import("@/components/tools/cron-calculator").then((m) => m.CronCalculator)
+);
 
 export default function OutilsPage() {
   const { t } = useI18n();

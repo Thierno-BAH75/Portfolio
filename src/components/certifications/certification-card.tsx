@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { FileText, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatDate } from "@/lib/utils";
-import { resolveLucideIcon } from "@/lib/lucide-icon";
+import { ResolvedIcon } from "@/lib/lucide-icon";
 import { useI18n } from "@/i18n";
 import type { Certification } from "@/types";
 
@@ -22,7 +22,6 @@ export function CertificationCard({
 }) {
   const { t, tx, locale } = useI18n();
   const reduce = useReducedMotion();
-  const Icon = resolveLucideIcon(cert.icon);
 
   return (
     <motion.div
@@ -60,7 +59,7 @@ export function CertificationCard({
       >
         <div className="flex items-center gap-3">
           <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500/15 to-cyan-500/15 border border-violet-500/25 text-violet-400 shrink-0">
-            <Icon size={18} />
+            <ResolvedIcon name={cert.icon} size={18} />
           </span>
           <div className="min-w-0">
             <h3 className="font-semibold text-sm leading-snug">{tx(cert.name)}</h3>

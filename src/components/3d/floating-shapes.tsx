@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, MeshDistortMaterial, Sphere, Torus, Box } from "@react-three/drei";
 import * as THREE from "three";
@@ -150,13 +150,35 @@ function Scene() {
   );
 }
 
+// Aucune particule ni forme retirée ici — seule l'EXÉCUTION de la boucle de
+// rendu est mise en pause quand l'onglet n'est pas visible (économie
+// CPU/GPU/batterie). Le clock interne de Three.js continue de s'écouler
+// pendant la pause, donc l'animation reprend naturellement à sa position
+// réelle au retour sur l'onglet, sans saut visuel.
+function useFrameloopOnVisibility(): "always" | "never" {
+  const [frameloop, setFrameloop] = useState<"always" | "never">("always");
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      setFrameloop(document.hidden ? "never" : "always");
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, []);
+
+  return frameloop;
+}
+
 export function FloatingShapes() {
+  const frameloop = useFrameloopOnVisibility();
+
   return (
     <div className="absolute inset-0 -z-10">
       <Canvas
         camera={{ position: [0, 0, 8], fov: 45 }}
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true }}
+        frameloop={frameloop}
       >
         <Scene />
       </Canvas>

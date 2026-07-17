@@ -158,7 +158,7 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
           {/* Title — looping typewriter */}
           <motion.h1
             variants={itemVariants}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 min-h-[1.3em]"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 min-h-[2.6em]"
           >
             <LoopingTypewriter key={locale} titles={t.hero.titles} />
           </motion.h1>

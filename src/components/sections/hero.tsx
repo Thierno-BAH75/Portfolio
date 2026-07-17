@@ -12,6 +12,7 @@ import { Floating } from "@/components/animations";
 import type { PersonalInfo } from "@/lib/data";
 import { TechMarquee } from "./tech-marquee";
 import { useI18n } from "@/i18n";
+import { useHashLinkClick } from "@/hooks/use-hash-link-click";
 
 // Charger le composant 3D dynamiquement pour éviter les erreurs SSR
 const FloatingShapes = dynamic(
@@ -139,6 +140,7 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
   const containerRef = useRef<HTMLElement>(null);
   const { t, tx, locale } = useI18n();
   const canvasReady = useDeferredCanvasMount();
+  const handleHashClick = useHashLinkClick();
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
@@ -252,7 +254,9 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
                 className="w-full sm:w-auto min-w-[180px] bg-violet-600 hover:bg-violet-500 text-white shadow-lg hover:shadow-[0_0_20px_rgba(139,92,246,0.4)]"
                 asChild
               >
-                <Link href="/#contact">{t.hero.contact}</Link>
+                <Link href="/#contact" onClick={(e) => handleHashClick(e, "/#contact")}>
+                  {t.hero.contact}
+                </Link>
               </Button>
             </motion.div>
           </motion.div>

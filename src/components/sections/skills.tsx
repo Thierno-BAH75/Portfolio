@@ -8,6 +8,7 @@ import { Counter, StaggerChildren, StaggerItem } from "@/components/animations";
 import { SectionBackground } from "@/components/ui/section-background";
 import { SkillsTerminal } from "./skills-terminal";
 import { useI18n } from "@/i18n";
+import { useHashLinkClick } from "@/hooks/use-hash-link-click";
 import { cn } from "@/lib/utils";
 import type { PersonalInfo } from "@/lib/data";
 import type { Certification, Experience, Project, Skill, SkillCategory } from "@/types";
@@ -71,6 +72,7 @@ function SkillChip({
   reduceMotion: boolean | null;
 }) {
   const { t, tx, locale } = useI18n();
+  const handleHashClick = useHashLinkClick();
   const name = typeof skill.name === "string" ? skill.name : skill.name[locale];
 
   const proofExperience = skill.proofExperienceId
@@ -95,6 +97,7 @@ function SkillChip({
           {proofExperience && (
             <Link
               href="/#experience"
+              onClick={(e) => handleHashClick(e, "/#experience")}
               className="inline-flex items-center gap-1 max-w-[220px] truncate rounded-full border border-cyan-500/25 bg-cyan-500/10 px-1.5 py-0.5 text-[10px] font-medium text-cyan-400 hover:border-cyan-400/60 hover:bg-cyan-500/20 transition-colors"
             >
               <Briefcase size={9} className="shrink-0" />

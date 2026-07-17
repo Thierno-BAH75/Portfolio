@@ -12,6 +12,7 @@ import { ThemeToggle } from "./theme-toggle";
 import { useI18n, setLocale } from "@/i18n";
 import type { Locale, SocialLink } from "@/types";
 import { useRealtimeAvailability } from "@/hooks/use-realtime-availability";
+import { useHashLinkClick } from "@/hooks/use-hash-link-click";
 
 // Sections de la home suivies par le scroll-spy (ordre du DOM)
 const SPY_SECTION_IDS = ["accueil", "about", "experience", "contact"];
@@ -63,13 +64,20 @@ function AvailabilityBadge({
   short?: boolean;
 }) {
   const { t } = useI18n();
+  const handleHashClick = useHashLinkClick();
 
   if (!available) return null;
 
   return (
     <Link
       href="/#contact"
-      onClick={onClick}
+      onClick={(e) => {
+        // onClick n'est fourni que par l'instance du menu mobile (ferme le
+        // menu) — dans ce cas, laisser sa transition de fermeture terminer
+        // avant de démarrer le scroll (voir commentaire dans le hook).
+        handleHashClick(e, "/#contact", onClick ? 320 : 0);
+        onClick?.();
+      }}
       className={cn(
         // Seul CTA du header : hover affirmé (fond, bordure, halo)
         "items-center gap-2 px-3 py-1.5 rounded-full border border-green-500/30 bg-green-500/10 text-xs font-medium text-green-500 whitespace-nowrap transition-all hover:bg-green-500/25 hover:border-green-500/60 hover:shadow-[0_0_12px_rgba(34,197,94,0.3)]",
@@ -153,6 +161,7 @@ export function Header({
   const pathname = usePathname();
   const { tx } = useI18n();
   const available = useRealtimeAvailability(personalInfo.available);
+  const handleHashClick = useHashLinkClick();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -237,6 +246,7 @@ export function Header({
                 <Link
                   key={item.href}
                   href={item.href}
+                  onClick={(e) => handleHashClick(e, item.href)}
                   className={cn(
                     "relative px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors group",
                     active
@@ -335,7 +345,13 @@ export function Header({
                         ? "text-foreground bg-muted"
                         : "text-foreground hover:bg-muted"
                     )}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={(e) => {
+                      // 320ms : laisse le menu mobile terminer sa fermeture
+                      // (transition 300ms) avant de démarrer le scroll —
+                      // sinon la fermeture annule le scroll en cours.
+                      handleHashClick(e, item.href, 320);
+                      setIsMobileMenuOpen(false);
+                    }}
                   >
                     {tx(item.label)}
                   </Link>

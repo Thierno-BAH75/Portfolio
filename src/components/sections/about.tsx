@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import type { PersonalInfo } from "@/lib/data";
 import type { Certification } from "@/types";
 import { useI18n } from "@/i18n";
+import { useHashLinkClick } from "@/hooks/use-hash-link-click";
 
 const CV_PDF = "/CV_Alternance_BAH-Thierno_2026.pdf";
 
@@ -74,6 +75,7 @@ export function About({
 }) {
   const { t, tx } = useI18n();
   const fade = useFadeProps();
+  const handleHashClick = useHashLinkClick();
   const PHONE_HREF = `tel:+33${personalInfo.phone.replace(/\s/g, "").slice(1)}`;
   const cvHref = personalInfo.cvUrl || CV_PDF;
 
@@ -254,7 +256,9 @@ export function About({
                 </a>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <Link href="/#contact">{t.about.contact}</Link>
+                <Link href="/#contact" onClick={(e) => handleHashClick(e, "/#contact")}>
+                  {t.about.contact}
+                </Link>
               </Button>
             </motion.div>
           </div>

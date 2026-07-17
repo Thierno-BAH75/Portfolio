@@ -45,6 +45,8 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Retire l'en-tête "X-Powered-By: Next.js" (fuite mineure de techno).
+  poweredByHeader: false,
   images: {
     // Covers de projets en SVG (remplacés plus tard par de vraies captures
     // au même chemin) : SVG local, sandboxé sans script pour éviter tout XSS.

@@ -1,6 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getVeilleSources } from "@/lib/data";
 import { isHttpUrl } from "@/lib/schemas";
+import { createRateLimiter, getClientIp } from "@/lib/rate-limit";
+
+// 10 req/min/IP — chaque appel déclenche des fetch sortants vers plusieurs
+// flux tiers en parallèle, donc un abus ici amplifie la charge bien plus
+// qu'un simple GET (vecteur de DoS/amplification sans cette limite).
+const isRateLimited = createRateLimiter(60 * 1000, 10);
 
 export interface RSSArticle {
   id: string;
@@ -36,6 +42,21 @@ function extractCDATA(raw: string): string {
   return m ? m[1] : raw;
 }
 
+// Contenu textuel d'un flux externe non fiable : balises HTML retirées et
+// entités décodées, pour title ET description — un flux compromis ne doit
+// pas pouvoir injecter de balises dans le texte affiché tel quel.
+function stripHtmlAndDecodeEntities(raw: string): string {
+  return raw
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#\d+;/g, "")
+    .trim();
+}
+
 function parseRSS(xml: string, source: string, domain: string): RSSArticle[] {
   // Support both RSS <item> and Atom <entry>
   const itemPattern = xml.includes("<entry>")
@@ -53,21 +74,12 @@ function parseRSS(xml: string, source: string, domain: string): RSSArticle[] {
     const descRaw    = item.match(/<(?:description|summary|content)[^>]*>([\s\S]*?)<\/(?:description|summary|content)>/)?.[1] ?? "";
     const pubDateRaw = item.match(/<(?:pubDate|published|updated)>([\s\S]*?)<\/(?:pubDate|published|updated)>/)?.[1] ?? "";
 
-    const title = extractCDATA(titleRaw).trim();
+    const title = stripHtmlAndDecodeEntities(extractCDATA(titleRaw));
     // Lien issu d'un flux externe non fiable : on ne le rend que s'il est
     // http/https (un flux compromis pourrait injecter un href javascript:).
     const rawLink = extractCDATA(linkRaw).trim();
     const link = isHttpUrl(rawLink) ? rawLink : "";
-    const description = extractCDATA(descRaw)
-      .replace(/<[^>]+>/g, "")
-      .replace(/&nbsp;/g, " ")
-      .replace(/&amp;/g, "&")
-      .replace(/&lt;/g, "<")
-      .replace(/&gt;/g, ">")
-      .replace(/&quot;/g, '"')
-      .replace(/&#\d+;/g, "")
-      .trim()
-      .slice(0, 220);
+    const description = stripHtmlAndDecodeEntities(extractCDATA(descRaw)).slice(0, 220);
     const pubDate = pubDateRaw.trim();
     const tag = detectTag(title, description);
 
@@ -85,7 +97,12 @@ function parseRSS(xml: string, source: string, domain: string): RSSArticle[] {
   });
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const ip = getClientIp(request);
+  if (isRateLimited(ip)) {
+    return NextResponse.json({ error: "rate_limited" }, { status: 429 });
+  }
+
   const results: RSSArticle[] = [];
   const sources = await getVeilleSources();
 

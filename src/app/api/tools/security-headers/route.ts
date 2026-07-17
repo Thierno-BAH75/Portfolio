@@ -1,10 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 // Analyse réelle des en-têtes de sécurité HTTP — mais UNIQUEMENT de ce
-// site : la cible n'est jamais fournie par l'appelant, elle est dérivée du
-// Host de la requête entrante elle-même. Aucun paramètre de domaine
-// arbitraire n'existe sur cette route, donc aucune requête vers un tiers
-// n'est possible par construction.
+// site : la cible est une constante serveur figée (NEXT_PUBLIC_SITE_URL),
+// JAMAIS dérivée d'un en-tête de la requête entrante. Un en-tête comme
+// Host ou X-Forwarded-Host est entièrement sous le contrôle de l'appelant
+// dans une requête brute (curl, script) — les utiliser comme cible de
+// fetch() ouvrait un SSRF trivial (Host: exemple.com → le serveur
+// exécutait réellement une requête vers exemple.com).
 const EXPLAINED_HEADERS = [
   "content-security-policy",
   "strict-transport-security",
@@ -15,10 +17,10 @@ const EXPLAINED_HEADERS = [
   "x-xss-protection",
 ] as const;
 
-export async function GET(request: NextRequest) {
-  const host = request.headers.get("host") ?? "localhost:3000";
-  const proto = request.headers.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
-  const targetUrl = `${proto}://${host}/`;
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/+$/, "");
+
+export async function GET() {
+  const targetUrl = `${SITE_URL}/`;
 
   try {
     const res = await fetch(targetUrl, { method: "GET", cache: "no-store", redirect: "manual" });

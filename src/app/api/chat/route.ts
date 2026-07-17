@@ -2,38 +2,14 @@ import { NextRequest, NextResponse, after } from "next/server";
 import { buildSystemPrompt } from "@/lib/chat-context";
 import { generateReply, type ChatMessage } from "@/lib/ai-providers";
 import { logChatInteraction } from "@/lib/chat-logger";
+import { createRateLimiter, getClientIp } from "@/lib/rate-limit";
 import type { Locale } from "@/types";
 
 const MAX_MESSAGE_LENGTH = 500;
 const MAX_HISTORY_MESSAGES = 16; // 8 échanges user/assistant
 
-// Rate-limit simple par IP, en mémoire (~10 req/min). Même limite que le
-// formulaire de contact avant Formspree : suffisant pour un process unique,
-// non partagé entre instances serverless — à remplacer par un store partagé
-// (Redis/Upstash) si le trafic le justifie.
-const RATE_LIMIT_WINDOW_MS = 60 * 1000;
-const RATE_LIMIT_MAX_REQUESTS = 10;
-const requestLog = new Map<string, number[]>();
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const timestamps = (requestLog.get(ip) ?? []).filter(
-    (t) => now - t < RATE_LIMIT_WINDOW_MS
-  );
-  if (timestamps.length >= RATE_LIMIT_MAX_REQUESTS) {
-    requestLog.set(ip, timestamps);
-    return true;
-  }
-  timestamps.push(now);
-  requestLog.set(ip, timestamps);
-  return false;
-}
-
-function getClientIp(request: NextRequest): string {
-  const forwardedFor = request.headers.get("x-forwarded-for");
-  if (forwardedFor) return forwardedFor.split(",")[0].trim();
-  return request.headers.get("x-real-ip") ?? "unknown";
-}
+// ~10 req/min/IP — même limite que le formulaire de contact avant Formspree.
+const isRateLimited = createRateLimiter(60 * 1000, 10);
 
 function isValidMessage(m: unknown): m is ChatMessage {
   if (typeof m !== "object" || m === null) return false;

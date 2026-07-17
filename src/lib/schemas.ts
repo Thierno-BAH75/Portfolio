@@ -181,6 +181,23 @@ export function isHttpUrl(raw: string): boolean {
   }
 }
 
+// Une adresse IPv4-mapped IPv6 (::ffff:a.b.c.d, ou sa forme hex normalisée
+// ::ffff:xxxx:yyyy telle que produite par l'URL() de Node/du navigateur)
+// encode une vraie adresse IPv4 dans une syntaxe IPv6 — sans cette
+// extraction, elle passait entre les mailles des règles IPv4 ci-dessous
+// (ex. ::ffff:192.168.1.1 désigne bien 192.168.1.1, une IP privée).
+function extractIPv4MappedAddress(host: string): string | null {
+  const dotted = host.match(/^::ffff:(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/i);
+  if (dotted) return dotted[1];
+  const hex = host.match(/^::ffff:([0-9a-f]{1,4}):([0-9a-f]{1,4})$/i);
+  if (hex) {
+    const g1 = parseInt(hex[1], 16);
+    const g2 = parseInt(hex[2], 16);
+    return [(g1 >> 8) & 0xff, g1 & 0xff, (g2 >> 8) & 0xff, g2 & 0xff].join(".");
+  }
+  return null;
+}
+
 // Source RSS fetchée côté serveur : https obligatoire + blocage des hôtes
 // internes/privés (anti-SSRF, dont l'adresse de métadonnées cloud
 // 169.254.169.254). Isomorphe (URL dispo navigateur + Node).
@@ -197,13 +214,15 @@ export function isSafeRemoteHttpsUrl(raw: string): boolean {
   if (host === "::1") return false; // loopback IPv6
   if (/^fe80:/i.test(host)) return false; // link-local IPv6
   if (/^f[cd][0-9a-f]{2}:/i.test(host)) return false; // ULA IPv6 (fc00::/7)
-  // IPv4 loopback / privées / link-local (dont métadonnées cloud)
-  if (/^0\./.test(host)) return false;
-  if (/^127\./.test(host)) return false;
-  if (/^10\./.test(host)) return false;
-  if (/^192\.168\./.test(host)) return false;
-  if (/^169\.254\./.test(host)) return false;
-  if (/^172\.(1[6-9]|2\d|3[01])\./.test(host)) return false;
+  // IPv4 loopback / privées / link-local (dont métadonnées cloud) — testées
+  // à la fois sur l'hôte brut et sur son équivalent IPv4 si mappé en IPv6.
+  const ipv4Host = extractIPv4MappedAddress(host) ?? host;
+  if (/^0\./.test(ipv4Host)) return false;
+  if (/^127\./.test(ipv4Host)) return false;
+  if (/^10\./.test(ipv4Host)) return false;
+  if (/^192\.168\./.test(ipv4Host)) return false;
+  if (/^169\.254\./.test(ipv4Host)) return false;
+  if (/^172\.(1[6-9]|2\d|3[01])\./.test(ipv4Host)) return false;
   return true;
 }
 

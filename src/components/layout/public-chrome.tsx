@@ -18,6 +18,16 @@ import type { SocialLink } from "@/types";
 // sont animés. Ce composant est monté une seule fois par layout.tsx (il ne
 // remonte pas à chaque navigation), condition nécessaire pour qu'AnimatePresence
 // détecte réellement l'ancienne route sortante et anime l'entrée/sortie.
+//
+// Pas de mode="wait" : avec mode="wait", la page entrante ne monte qu'une
+// fois la sortie de l'ancienne terminée (~250ms) — un clic pendant cette
+// fenêtre atterrit sur du contenu qui n'existe pas encore ou sur l'ancienne
+// page en train de disparaître, ce qui se lit comme "le clic n'a rien fait".
+// Ici les deux se chevauchent : la page entrante est montée et cliquable
+// immédiatement, tandis que l'ancienne passe en position absolute (ne
+// pousse plus le contenu, évite le double-scroll pendant le fondu) et
+// pointer-events: none dès qu'elle commence à sortir, pour ne jamais
+// intercepter un clic destiné à la nouvelle page en dessous.
 const pageTransition = { duration: 0.25, ease: [0.22, 1, 0.36, 1] as const };
 
 interface PublicChromeProps {
@@ -47,16 +57,24 @@ export function PublicChrome({ personalInfo, socialLinks, children }: PublicChro
       <CustomCursor />
       <ScrollProgress />
       <Header personalInfo={personalInfo} socialLinks={socialLinks} />
-      <main className="min-h-screen">
+      <main className="min-h-screen relative">
         {reduceMotion ? (
           children
         ) : (
-          <AnimatePresence mode="wait" initial={false}>
+          <AnimatePresence initial={false}>
             <motion.div
               key={pathname}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
+              exit={{
+                opacity: 0,
+                y: -8,
+                position: "absolute",
+                pointerEvents: "none",
+                top: 0,
+                left: 0,
+                right: 0,
+              }}
               transition={pageTransition}
             >
               {children}

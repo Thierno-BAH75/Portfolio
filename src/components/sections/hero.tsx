@@ -48,6 +48,50 @@ const ERASING_SPEED = 28;
 const PAUSE_TYPED   = 2000;
 const PAUSE_ERASED  = 350;
 
+// Le wrapper `hidden sm:block` masque déjà la scène 3D sous ce seuil — inutile
+// d'initialiser Three.js/WebGL (compilation de shaders, boucle de rendu) pour
+// un canvas jamais affiché. Sur desktop/tablette, on attend un instant d'idle
+// du thread principal (après le rendu du LCP : titre/photo) avant de monter
+// le canvas, pour ne plus entrer en concurrence avec le contenu critique.
+// On réagit aussi si le viewport franchit le seuil desktop (resize, rotation).
+function useDeferredCanvasMount(timeoutMs = 1200) {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const hasIdleCallback = typeof window.requestIdleCallback === "function";
+    let handle: number | undefined;
+
+    const schedule = () => {
+      handle = hasIdleCallback
+        ? window.requestIdleCallback(() => setReady(true), { timeout: timeoutMs })
+        : window.setTimeout(() => setReady(true), timeoutMs);
+    };
+    const cancel = () => {
+      if (handle === undefined) return;
+      if (hasIdleCallback) {
+        window.cancelIdleCallback(handle);
+      } else {
+        window.clearTimeout(handle);
+      }
+    };
+
+    const mql = window.matchMedia("(min-width: 640px)");
+    if (mql.matches) schedule();
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      if (e.matches && handle === undefined) schedule();
+    };
+    mql.addEventListener("change", handleChange);
+
+    return () => {
+      cancel();
+      mql.removeEventListener("change", handleChange);
+    };
+  }, [timeoutMs]);
+
+  return ready;
+}
+
 function LoopingTypewriter({ titles }: { titles: string[] }) {
   const [idx, setIdx]       = useState(0);
   const [count, setCount]   = useState(0);
@@ -94,6 +138,7 @@ function LoopingTypewriter({ titles }: { titles: string[] }) {
 export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
   const containerRef = useRef<HTMLElement>(null);
   const { t, tx, locale } = useI18n();
+  const canvasReady = useDeferredCanvasMount();
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
@@ -109,11 +154,13 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
       id="accueil"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* 3D Background - Hidden on mobile for performance */}
+      {/* 3D Background - Hidden on mobile for performance, montage différé desktop/tablette */}
       <div className="hidden sm:block">
-        <Suspense fallback={null}>
-          <FloatingShapes />
-        </Suspense>
+        {canvasReady && (
+          <Suspense fallback={null}>
+            <FloatingShapes />
+          </Suspense>
+        )}
       </div>
 
       {/* Overlays */}

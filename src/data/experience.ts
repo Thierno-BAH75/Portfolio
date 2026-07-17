@@ -380,6 +380,7 @@ export const navItems: NavItem[] = [
   { label: { fr: "À propos", en: "About" }, href: "/#about" },
   { label: { fr: "Parcours", en: "Background" }, href: "/#experience" },
   { label: { fr: "Projets", en: "Projects" }, href: "/projects" },
+  { label: { fr: "Outils", en: "Tools" }, href: "/outils" },
   { label: { fr: "Certifications", en: "Certifications" }, href: "/certifications" },
   { label: { fr: "Veille", en: "Tech Watch" }, href: "/veille" },
   { label: { fr: "Contact", en: "Contact" }, href: "/#contact" },

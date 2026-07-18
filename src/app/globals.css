@@ -232,8 +232,10 @@ body {
 
 /* ========================================
    CURSEUR PERSONNALISÉ
-   Actif uniquement : pointeur fin + motion non réduit.
-   Sur tactile / reduced-motion : curseur natif normal.
+   Petit point d'accompagnement, EN PLUS du curseur natif (qui reste
+   toujours visible — pas de cursor: none ici). Actif uniquement :
+   pointeur fin + motion non réduit. Sur tactile / reduced-motion : le
+   composant reste monté mais invisible.
    ======================================== */
 
 .custom-cursor {
@@ -243,18 +245,6 @@ body {
 @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .custom-cursor {
     display: contents;
-  }
-
-  /* Scopé à body:has(.custom-cursor) — CustomCursor n'est monté que sur les
-     routes publiques (public-chrome.tsx), jamais sous /admin/*. Sans ce
-     :has(), la règle s'appliquait à tout le document quel que soit le
-     media query, masquant le curseur natif sur /admin/* sans qu'aucun
-     remplacement stylisé n'existe pour le remplacer. */
-  body:has(.custom-cursor),
-  body:has(.custom-cursor) *,
-  body:has(.custom-cursor) *::before,
-  body:has(.custom-cursor) *::after {
-    cursor: none !important;
   }
 }
 

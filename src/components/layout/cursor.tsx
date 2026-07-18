@@ -6,22 +6,24 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 const CLICKABLE_SELECTOR =
   'a, button, [role="button"], input, textarea, .cursor-pointer';
 
-// Point qui suit la souris + anneau retardé (spring) qui grossit sur les
-// éléments cliquables. Position et scale passent uniquement par des motion
-// values → aucun re-render React par mousemove. L'activation (pointeur fin,
-// motion non réduit) et le masquage du curseur natif sont gérés en CSS
-// (globals.css, classe .custom-cursor) : sur tactile ou reduced-motion le
-// composant reste monté mais invisible et le curseur natif est conservé.
+// Petite boule pleine qui suit la souris avec un léger retard (spring),
+// EN PLUS du curseur natif (qui reste visible — on ne le masque plus).
+// Position et scale passent uniquement par des motion values → aucun
+// re-render React par mousemove. L'activation (pointeur fin, motion non
+// réduit) est gérée en CSS (globals.css, classe .custom-cursor) : sur
+// tactile ou reduced-motion le composant reste monté mais invisible.
+// Blanc + mix-blend-difference plutôt qu'une couleur d'accent fixe : reste
+// lisible quel que soit le fond (glows violet/cyan, thème clair/sombre)
+// sans jamais se fondre dedans.
 export function CustomCursor() {
   const x = useMotionValue(-100);
   const y = useMotionValue(-100);
 
-  // L'anneau traîne derrière le point
-  const ringX = useSpring(x, { stiffness: 250, damping: 25 });
-  const ringY = useSpring(y, { stiffness: 250, damping: 25 });
+  const dotX = useSpring(x, { stiffness: 250, damping: 25 });
+  const dotY = useSpring(y, { stiffness: 250, damping: 25 });
 
   const targetScale = useMotionValue(1);
-  const ringScale = useSpring(targetScale, { stiffness: 300, damping: 22 });
+  const dotScale = useSpring(targetScale, { stiffness: 300, damping: 22 });
 
   useEffect(() => {
     const move = (e: MouseEvent) => {
@@ -30,7 +32,7 @@ export function CustomCursor() {
     };
     const over = (e: MouseEvent) => {
       const target = e.target instanceof Element ? e.target : null;
-      targetScale.set(target?.closest(CLICKABLE_SELECTOR) ? 2.5 : 1);
+      targetScale.set(target?.closest(CLICKABLE_SELECTOR) ? 1.5 : 1);
     };
     const leave = () => {
       x.set(-100);
@@ -50,15 +52,9 @@ export function CustomCursor() {
 
   return (
     <div className="custom-cursor" aria-hidden="true">
-      {/* Point central — suit la souris sans délai */}
       <motion.div
         className="fixed top-0 left-0 z-[9999] w-2 h-2 -ml-1 -mt-1 rounded-full bg-white pointer-events-none mix-blend-difference"
-        style={{ x, y }}
-      />
-      {/* Anneau — léger retard, scale 2.5 sur les cliquables */}
-      <motion.div
-        className="fixed top-0 left-0 z-[9999] w-10 h-10 -ml-5 -mt-5 rounded-full border-2 border-white pointer-events-none mix-blend-difference"
-        style={{ x: ringX, y: ringY, scale: ringScale }}
+        style={{ x: dotX, y: dotY, scale: dotScale }}
       />
     </div>
   );

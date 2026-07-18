@@ -311,7 +311,11 @@ export function Experience({
 
   return (
     <section className="relative overflow-hidden py-20 lg:py-32" id="experience">
-      <SectionBackground glowPosition="bottom-left" variant="violet" />
+      {/* Ancré en haut : crée une transition chromatique avec Compétences
+          juste au-dessus, comme entre les autres sections du site (le glow
+          d'une section est toujours ce qui marque visuellement sa frontière
+          supérieure — bottom-left laissait cette jonction plate). */}
+      <SectionBackground glowPosition="top-right" variant="violet" />
 
       {/* Rail de lignes verticales régulières : signature de fond propre à
           Parcours, en plus du glow partagé ci-dessus. Purement décoratif. */}

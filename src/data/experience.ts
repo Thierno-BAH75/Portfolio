@@ -407,4 +407,6 @@ export const personalInfo = {
     fr: "Disponible en alternance · Master IRS",
     en: "Available for work-study · IRS Master's",
   },
+  accentColor1: "#8b5cf6",
+  accentColor2: "#22d3ee",
 };

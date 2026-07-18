@@ -13,6 +13,7 @@ import type {
   Localized,
 } from "@/types";
 import type { PersonalInfo } from "./data";
+import { DEFAULT_ACCENT_COLOR_1, DEFAULT_ACCENT_COLOR_2 } from "./data";
 
 export type AdminProject = Project & {
   status: "draft" | "published";
@@ -238,6 +239,24 @@ export async function getPersonalInfoAdmin(): Promise<AdminPersonalInfo | null> 
     github: socialLinks.find((s) => s.icon === "github")?.url,
     linkedin: socialLinks.find((s) => s.icon === "linkedin")?.url,
     cvUrl: (data.cv_url as string) ?? undefined,
+    accentColor1: (data.accent_color_1 as string) ?? DEFAULT_ACCENT_COLOR_1,
+    accentColor2: (data.accent_color_2 as string) ?? DEFAULT_ACCENT_COLOR_2,
+  };
+}
+
+export type ChatbotTone = "warm" | "direct" | "detailed";
+
+export interface AdminChatbotSettings {
+  tone: ChatbotTone;
+  extraInstructions: string;
+}
+
+export async function getChatbotSettingsAdmin(): Promise<AdminChatbotSettings> {
+  const { data, error } = await supabase.from("chatbot_settings").select("*").eq("id", 1).maybeSingle();
+  if (error) throw new Error(`getChatbotSettingsAdmin: ${error.message}`);
+  return {
+    tone: (data?.tone as ChatbotTone) ?? "warm",
+    extraInstructions: (data?.extra_instructions as string) ?? "",
   };
 }
 

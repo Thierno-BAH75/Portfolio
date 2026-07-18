@@ -48,6 +48,8 @@ export async function updatePersonalInfo(values: PersonalInfoFormValues): Promis
           available: parsed.data.available,
           availability_message: parsed.data.seeking,
           social_links: socialLinks,
+          accent_color_1: parsed.data.accentColor1,
+          accent_color_2: parsed.data.accentColor2,
           updated_at: new Date().toISOString(),
         },
         { onConflict: "id" }

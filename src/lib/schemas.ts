@@ -151,6 +151,10 @@ export const certificationSchema = z.object({
 export type CertificationFormValues = z.infer<typeof certificationSchema>;
 
 // ── Infos perso ──────────────────────────────────────────────────────
+const hexColor = z
+  .string()
+  .regex(/^#[0-9a-fA-F]{6}$/, "Couleur hex invalide (ex. #8b5cf6)");
+
 export const personalInfoSchema = z.object({
   name: z.string().min(1, "Le nom est requis"),
   title: localizedString,
@@ -162,9 +166,26 @@ export const personalInfoSchema = z.object({
   seeking: localizedString,
   github: z.string().optional(),
   linkedin: z.string().optional(),
+  accentColor1: hexColor,
+  accentColor2: hexColor,
 });
 
 export type PersonalInfoFormValues = z.infer<typeof personalInfoSchema>;
+
+// ── Chatbot : ton + instructions supplémentaires ────────────────────
+// "extraInstructions" est ajouté au system prompt mais ne peut jamais
+// désactiver les règles de sécurité codées en dur dans chat-context.ts
+// (anti hors-sujet, anti-injection, defensive-only, anti-invention) — cette
+// limite n'est pas un contrôle applicatif ici, elle est structurelle : ce
+// texte est injecté APRÈS ces règles dans le prompt, jamais à leur place.
+export const chatbotTones = ["warm", "direct", "detailed"] as const;
+
+export const chatbotSettingsSchema = z.object({
+  tone: z.enum(chatbotTones),
+  extraInstructions: z.string().max(2000, "2000 caractères maximum").optional(),
+});
+
+export type ChatbotSettingsFormValues = z.infer<typeof chatbotSettingsSchema>;
 
 // ── Veille ───────────────────────────────────────────────────────────
 // z.string().url() accepte des schémas dangereux (javascript:, file:) et des

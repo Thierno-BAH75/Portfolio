@@ -21,6 +21,14 @@
   --border: #e4e4e7;
   --ring: #2563eb;
 
+  /* Couleurs d'accent de marque (violet → cyan) — identiques en light/dark,
+     éditables depuis /admin/settings (personal_info.accent_color_1/2).
+     Valeurs par défaut = mêmes teintes que les classes Tailwind violet-500/
+     cyan-400 encore codées en dur ailleurs dans le site (non converties
+     dans cette session, cf. commentaire dans globals.css plus bas). */
+  --accent-color-1: #8b5cf6;
+  --accent-color-2: #22d3ee;
+
   /* Spacing */
   --radius: 0.75rem;
 
@@ -61,6 +69,8 @@
   --color-secondary-foreground: var(--secondary-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-accent-1: var(--accent-color-1);
+  --color-accent-2: var(--accent-color-2);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-card: var(--card);
@@ -136,9 +146,24 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Primary Text (anciennement Gradient Text) */
+/* Texte en dégradé (couleurs d'accent éditables — voir --accent-color-1/2
+   ci-dessus). Repli sur --foreground si un navigateur ne supporte pas
+   background-clip: text (le texte reste lisible, juste sans le dégradé). */
 .gradient-text {
-  color: hsl(var(--primary));
+  color: var(--foreground);
+  background: linear-gradient(90deg, var(--accent-color-1), var(--accent-color-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@supports not (background-clip: text) {
+  .gradient-text {
+    -webkit-background-clip: initial;
+    background-clip: initial;
+    -webkit-text-fill-color: initial;
+    color: var(--accent-color-1);
+  }
 }
 
 /* Grain Texture Overlay */

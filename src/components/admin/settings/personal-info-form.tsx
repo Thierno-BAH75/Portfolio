@@ -34,6 +34,8 @@ export function PersonalInfoForm({
   });
 
   const available = watch("available");
+  const accentColor1 = watch("accentColor1");
+  const accentColor2 = watch("accentColor2");
 
   const onSubmit = (values: PersonalInfoFormValues) => {
     startTransition(async () => {
@@ -128,6 +130,76 @@ export function PersonalInfoForm({
         <div className="grid sm:grid-cols-2 gap-4">
           <Input placeholder="Message FR (ex. Disponible en alternance)" {...register("seeking.fr")} />
           <Input placeholder="Message EN" {...register("seeking.en")} />
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <div>
+          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+            Thème
+          </h2>
+          <p className="text-xs text-muted-foreground mt-1">
+            Les 2 couleurs d&apos;accent utilisées pour le logo et les titres en dégradé du site.
+            D&apos;autres éléments (boutons, badges, bordures…) restent pour l&apos;instant fixés en
+            violet/cyan — voir la note de faisabilité transmise séparément.
+          </p>
+        </div>
+        <div className="grid sm:grid-cols-2 gap-4">
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-muted-foreground">Couleur d&apos;accent 1</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="color"
+                value={accentColor1}
+                onChange={(e) => setValue("accentColor1", e.target.value)}
+                className="h-11 w-14 shrink-0 rounded-lg border border-border bg-transparent cursor-pointer"
+                aria-label="Couleur d'accent 1"
+              />
+              <Input {...register("accentColor1")} className="flex-1" />
+            </div>
+            {errors.accentColor1 && <p className="text-xs text-red-400">{errors.accentColor1.message}</p>}
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-muted-foreground">Couleur d&apos;accent 2</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="color"
+                value={accentColor2}
+                onChange={(e) => setValue("accentColor2", e.target.value)}
+                className="h-11 w-14 shrink-0 rounded-lg border border-border bg-transparent cursor-pointer"
+                aria-label="Couleur d'accent 2"
+              />
+              <Input {...register("accentColor2")} className="flex-1" />
+            </div>
+            {errors.accentColor2 && <p className="text-xs text-red-400">{errors.accentColor2.message}</p>}
+          </div>
+        </div>
+
+        {/* Aperçu live — recalculé à chaque frappe/changement de couleur,
+            avant tout enregistrement (mêmes valeurs que .gradient-text). */}
+        <div className="rounded-xl border border-border bg-card p-5 space-y-3">
+          <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+            Aperçu en direct
+          </p>
+          <p
+            className="text-2xl font-bold"
+            style={{
+              backgroundImage: `linear-gradient(90deg, ${accentColor1}, ${accentColor2})`,
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              color: "transparent",
+            }}
+          >
+            Thierno BAH
+          </p>
+          <button
+            type="button"
+            tabIndex={-1}
+            className="px-4 py-2 rounded-lg text-white text-sm font-medium"
+            style={{ background: `linear-gradient(90deg, ${accentColor1}, ${accentColor2})` }}
+          >
+            Exemple de bouton
+          </button>
         </div>
       </section>
 

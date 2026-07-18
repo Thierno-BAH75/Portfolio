@@ -108,7 +108,16 @@ export default async function RootLayout({
   const [personalInfo, socialLinks] = await Promise.all([getPersonalInfo(), getSocialLinks()]);
 
   return (
-    <html lang="fr" suppressHydrationWarning>
+    <html
+      lang="fr"
+      suppressHydrationWarning
+      style={
+        {
+          "--accent-color-1": personalInfo.accentColor1,
+          "--accent-color-2": personalInfo.accentColor2,
+        } as React.CSSProperties
+      }
+    >
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}
       >

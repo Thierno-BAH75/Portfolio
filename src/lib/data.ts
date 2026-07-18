@@ -119,7 +119,15 @@ export interface PersonalInfo {
   available: boolean;
   seeking: Localized;
   cvUrl?: string;
+  accentColor1: string;
+  accentColor2: string;
 }
+
+// Repli si Supabase est injoignable ou si la colonne n'a pas encore de
+// valeur — mêmes teintes violet/cyan que la palette codée en dur du reste
+// du site (voir globals.css : --color-accent-1/--color-accent-2).
+export const DEFAULT_ACCENT_COLOR_1 = "#8b5cf6";
+export const DEFAULT_ACCENT_COLOR_2 = "#22d3ee";
 
 function rowToPersonalInfo(row: Record<string, unknown>): PersonalInfo {
   return {
@@ -132,6 +140,8 @@ function rowToPersonalInfo(row: Record<string, unknown>): PersonalInfo {
     available: row.available as boolean,
     seeking: row.availability_message as Localized,
     cvUrl: (row.cv_url as string) ?? undefined,
+    accentColor1: (row.accent_color_1 as string) ?? DEFAULT_ACCENT_COLOR_1,
+    accentColor2: (row.accent_color_2 as string) ?? DEFAULT_ACCENT_COLOR_2,
   };
 }
 
@@ -281,6 +291,29 @@ export async function getPersonalInfo(): Promise<PersonalInfo> {
 export async function getSocialLinks(): Promise<SocialLink[]> {
   return (await fetchPersonalInfo()).socialLinks;
 }
+
+// ── Réglages chatbot (ton + instructions supplémentaires) ──────────────
+// Lu uniquement côté serveur par src/lib/chat-context.ts. Le champ
+// "extraInstructions" est du texte libre saisi en admin : chat-context.ts
+// l'injecte APRÈS ses règles de sécurité codées en dur (jamais à leur
+// place), donc il ne peut structurellement pas les désactiver.
+export interface ChatbotSettings {
+  tone: "warm" | "direct" | "detailed";
+  extraInstructions: string;
+}
+
+export const getChatbotSettings = unstable_cache(
+  async (): Promise<ChatbotSettings> => {
+    const { data, error } = await supabase.from("chatbot_settings").select("*").eq("id", 1).maybeSingle();
+    if (error) console.warn("[data] getChatbotSettings: repli par défaut —", error.message);
+    return {
+      tone: (data?.tone as ChatbotSettings["tone"]) ?? "warm",
+      extraInstructions: (data?.extra_instructions as string) ?? "",
+    };
+  },
+  ["chatbot-settings"],
+  { revalidate: REVALIDATE_SECONDS, tags: ["chatbot-settings"] }
+);
 
 // ── Veille : sources RSS + articles épinglés ──────────────────────────
 

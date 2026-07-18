@@ -14,6 +14,7 @@ import {
   Mail,
   Rss,
   MessageSquare,
+  Bot,
   ShieldCheck,
   Menu,
   X,
@@ -31,6 +32,7 @@ const NAV_ITEMS = [
   { href: "/admin/messages", label: "Messages", icon: Mail },
   { href: "/admin/veille", label: "Veille", icon: Rss },
   { href: "/admin/chat-logs", label: "Chat IA", icon: MessageSquare },
+  { href: "/admin/chatbot", label: "Chatbot", icon: Bot },
   { href: "/admin/security", label: "Sécurité", icon: ShieldCheck },
   { href: "/admin/settings", label: "Infos perso", icon: UserCog },
 ];

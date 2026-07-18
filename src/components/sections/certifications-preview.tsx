@@ -19,7 +19,12 @@ export function CertificationsPreview({
 
   return (
     <section className="relative overflow-hidden py-16 sm:py-20 lg:py-32" id="certifications">
-      <SectionBackground glowPosition="bottom-right" variant="cyan" />
+      {/* Ancré en haut : marque la frontière avec Parcours juste au-dessus
+          (dont le propre glow, top-right, s'éteint avant sa propre fin —
+          même logique que le fix Compétences/Parcours). La frontière avec
+          Projets juste en dessous reste assurée par le bg-muted/30 propre
+          à Projets, indépendant de ce glow. */}
+      <SectionBackground glowPosition="top-right" variant="cyan" />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header — même pattern que Skills/Contact/Parcours */}
         <motion.div

@@ -275,7 +275,6 @@ export function Experience({
   education: Education[];
   experiences: ExperienceType[];
 }) {
-  const fade = useFadeProps();
   const reduce = useReducedMotion();
   const { t } = useI18n();
   const [showAllExperiences, setShowAllExperiences] = useState(false);
@@ -287,16 +286,21 @@ export function Experience({
     <section className="relative overflow-hidden py-20 lg:py-32" id="experience">
       <SectionBackground glowPosition="bottom-left" variant="violet" />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <motion.div className="text-center max-w-2xl mx-auto mb-16" {...fade()}>
-          <Badge variant="outline" className="mb-4">
-            {t.experience.badge}
-          </Badge>
+        {/* Header — même pattern que Skills/Certifications/Contact */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12 lg:mb-16"
+        >
+          <p className="text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground mb-4">
+            {t.experience.eyebrow}
+          </p>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
             {t.experience.titleStart}{" "}
             <span className="gradient-text">{t.experience.titleGradient}</span>
           </h2>
-          <p className="text-muted-foreground mt-4">{t.experience.subtitle}</p>
+          <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">{t.experience.subtitle}</p>
         </motion.div>
 
         {/* Double timeline */}

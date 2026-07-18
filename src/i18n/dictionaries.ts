@@ -167,7 +167,7 @@ const fr = {
     },
   },
   experience: {
-    badge: "Formation & Expérience",
+    eyebrow: "Formation & Expérience",
     titleStart: "Mon",
     titleGradient: "parcours",
     subtitle:
@@ -1177,7 +1177,7 @@ const en: DeepDict<typeof fr> = {
     },
   },
   experience: {
-    badge: "Education & Experience",
+    eyebrow: "Education & Experience",
     titleStart: "My",
     titleGradient: "background",
     subtitle:

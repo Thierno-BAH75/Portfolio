@@ -8,6 +8,15 @@ import type { Locale } from "@/types";
 
 const fr = {
   langSwitch: "Changer de langue",
+  // Titres d'onglet par route — le serveur rend toujours les <title> FR ;
+  // LanguageSync (i18n/index.tsx) les remplace côté client quand EN est actif.
+  meta: {
+    home: "Thierno BAH | Ingénieur Sécurité Réseau & Système",
+    projects: "Projets | Thierno BAH",
+    certifications: "Certifications | Thierno BAH",
+    outils: "Outils cybersécurité | Thierno BAH",
+    veille: "Veille techno | Thierno BAH",
+  },
   header: {
     availableShort: "Disponible",
     availableFull: "Disponible · Alternance",
@@ -1018,6 +1027,13 @@ export type Dictionary = typeof fr;
 
 const en: DeepDict<typeof fr> = {
   langSwitch: "Switch language",
+  meta: {
+    home: "Thierno BAH | Network & Systems Security Engineer",
+    projects: "Projects | Thierno BAH",
+    certifications: "Certifications | Thierno BAH",
+    outils: "Cybersecurity tools | Thierno BAH",
+    veille: "Tech watch | Thierno BAH",
+  },
   header: {
     availableShort: "Available",
     availableFull: "Available · Work-study",

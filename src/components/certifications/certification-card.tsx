@@ -18,10 +18,12 @@ function setSpotlight(e: MouseEvent<HTMLDivElement>) {
   e.currentTarget.style.setProperty("--spot-y", `${e.clientY - rect.top}px`);
 }
 
-// Carte au style établi du site : bordure fine → anneau dégradé violet→cyan
-// au survol, léger lift + spotlight qui suit la souris (même pattern que
-// ContactCard / les cartes Skills). En mode compact (aperçu home) : juste
-// icône + nom + émetteur, pas de dates.
+// Carte au style établi du site (anneau au survol, léger lift, spotlight —
+// même pattern que ContactCard / les cartes Skills) mais palette propre à
+// cette section, cyan-dominant plutôt que le dégradé violet→cyan habituel :
+// fond bleu nuit fixe (indépendant du thème du site, cf. la référence
+// inspectée), bordure cyan fine, icône violet clair en contraste volontaire.
+// En mode compact (aperçu home) : juste icône + nom + émetteur, pas de dates.
 export function CertificationCard({
   cert,
   index,
@@ -52,25 +54,25 @@ export function CertificationCard({
           "transition-shadow duration-300 hover:shadow-[0_8px_30px_rgba(139,92,246,0.15),0_0_18px_rgba(34,211,238,0.08)]"
       )}
     >
-      {/* Bordure fine de base */}
+      {/* Bordure fine cyan de base */}
       <div
         aria-hidden="true"
         className={cn(
-          "absolute inset-0 rounded-2xl border border-border/60 transition-all duration-300",
-          reduce ? "group-hover:border-violet-500/40" : "group-hover:opacity-0"
+          "absolute inset-0 rounded-2xl border border-cyan-400/30 transition-all duration-300",
+          reduce ? "group-hover:border-cyan-400/60" : "group-hover:opacity-0"
         )}
       />
-      {/* Bordure dégradée violet→cyan au hover */}
+      {/* Anneau cyan plein au hover */}
       {!reduce && (
         <div
           aria-hidden="true"
-          className="absolute inset-0 rounded-2xl bg-gradient-to-br from-violet-500/60 to-cyan-400/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          className="absolute inset-0 rounded-2xl bg-cyan-400/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
         />
       )}
 
       <div
         className={cn(
-          "relative h-full rounded-[calc(1rem-1px)] bg-card flex flex-col gap-3 overflow-hidden",
+          "relative h-full rounded-[calc(1rem-1px)] bg-[#0f1729] flex flex-col gap-3 overflow-hidden",
           compact ? "p-4" : "p-5"
         )}
       >
@@ -86,25 +88,34 @@ export function CertificationCard({
           />
         )}
 
+        {/* Badge année — fond cyan plein, texte sombre. Uniquement en mode
+            complet : en aperçu compact les titres longs passent sur
+            plusieurs lignes et chevaucheraient le badge. */}
+        {!compact && (
+          <span className="absolute top-3 right-3 text-[11px] font-bold px-2 py-0.5 rounded-full bg-cyan-400 text-slate-900">
+            {cert.date.slice(0, 4)}
+          </span>
+        )}
+
         <div className="relative flex items-center gap-3">
-          <span className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-violet-500/20 to-cyan-500/20 border border-violet-500/30 text-violet-400 shrink-0">
+          <span className="flex items-center justify-center w-10 h-10 rounded-full bg-violet-500/15 border border-violet-500/30 text-violet-300 shrink-0">
             <ResolvedIcon name={cert.icon} size={18} />
           </span>
-          <div className="min-w-0">
+          <div className={cn("min-w-0", !compact && "pr-8")}>
             <h3
               className={cn(
-                "font-semibold leading-snug",
+                "font-semibold leading-snug text-white",
                 compact ? "text-sm" : "text-base"
               )}
             >
               {tx(cert.name)}
             </h3>
-            <p className="text-xs text-muted-foreground truncate">{cert.issuer}</p>
+            <p className="text-xs text-slate-400 truncate">{cert.issuer}</p>
           </div>
         </div>
 
         {!compact && (
-          <div className="relative flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground pt-3 border-t border-border/60">
+          <div className="relative flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-400 pt-3 border-t border-white/10">
             <span>
               {t.certifications.obtainedOn} {formatDate(cert.date, locale)}
             </span>
@@ -117,13 +128,13 @@ export function CertificationCard({
         )}
 
         {!compact && cert.pdfUrl && (
-          <div className="relative flex items-center gap-4 pt-1">
+          <div className="relative flex items-center gap-3 pt-1">
             <button
               type="button"
               onClick={() => setViewerOpen(true)}
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-cyan-400 text-slate-900 hover:bg-cyan-300 transition-colors"
             >
-              <FileText size={14} />
+              <FileText size={13} />
               {t.certifications.viewCertificate}
             </button>
             <a
@@ -131,7 +142,7 @@ export function CertificationCard({
               target="_blank"
               rel="noopener noreferrer"
               aria-label={t.certifications.viewer.openInNewTab}
-              className="inline-flex items-center justify-center w-7 h-7 rounded-md border border-border/60 text-muted-foreground hover:text-cyan-400 hover:border-cyan-400/50 transition-colors shrink-0"
+              className="inline-flex items-center justify-center w-7 h-7 rounded-md border border-white/15 text-slate-400 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors shrink-0"
             >
               <ExternalLink size={13} />
             </a>

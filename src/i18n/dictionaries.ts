@@ -213,6 +213,12 @@ const fr = {
     expiresOn: "Expire",
     viewAll: "Voir toutes mes certifications",
     viewCertificate: "Voir certification",
+    viewer: {
+      close: "Fermer",
+      openInNewTab: "Ouvrir le document",
+      previewUnavailable:
+        "Aperçu non disponible pour ce document — ouvrez-le dans un nouvel onglet.",
+    },
   },
   contact: {
     eyebrow: "Contact",
@@ -1230,6 +1236,11 @@ const en: DeepDict<typeof fr> = {
     expiresOn: "Expires",
     viewAll: "View all my certifications",
     viewCertificate: "View certificate",
+    viewer: {
+      close: "Close",
+      openInNewTab: "Open document",
+      previewUnavailable: "Preview unavailable for this document — open it in a new tab.",
+    },
   },
   contact: {
     eyebrow: "Contact",

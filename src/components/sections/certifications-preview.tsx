@@ -60,10 +60,13 @@ export function CertificationsPreview({
         >
           <Link
             href="/certifications"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-violet-500/40 bg-violet-500/5 text-sm font-medium transition-all hover:border-transparent hover:bg-gradient-to-r hover:from-violet-600 hover:to-cyan-500 hover:text-white hover:shadow-[0_0_20px_rgba(139,92,246,0.35)]"
+            className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-violet-500/40 bg-violet-500/5 text-sm font-medium transition-all hover:border-transparent hover:bg-gradient-to-r hover:from-violet-600 hover:to-cyan-500 hover:text-white hover:shadow-[0_0_20px_rgba(139,92,246,0.35)]"
           >
             {t.certifications.viewAll}
-            <ArrowRight size={16} />
+            <ArrowRight
+              size={16}
+              className="transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
+            />
           </Link>
         </motion.div>
       </div>

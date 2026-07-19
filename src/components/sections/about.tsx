@@ -85,7 +85,7 @@ export function About({
       <style>{`
         /* ── Fond cyber ─────────────────────────────────────── */
         .about-bg {
-          background-color: hsl(var(--background));
+          background-color: var(--background);
         }
         .about-grid {
           background-image:

@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* Sans ceci, le variant dark: de Tailwind v4 suit prefers-color-scheme
+   (média), pas la classe .dark posée par next-themes sur <html> — les
+   utilitaires dark: resteraient alors indifférents au bouton de thème du
+   site. Rare jusqu'ici (aucun dark: dans le code) mais requis dès qu'on
+   veut des nuances différentes en clair/sombre via l'utilitaire natif. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ========================================
    DESIGN TOKENS - Portfolio Thierno BAH
    ======================================== */

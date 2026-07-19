@@ -97,7 +97,7 @@ export function ProjectCard({ project, onOpen, animateLayout }: ProjectCardProps
 
           {/* Contenu */}
           <div className="flex flex-col flex-1 p-5 gap-3">
-            <Badge variant="outline" className="w-fit text-[10px] border-violet-500/30 bg-violet-500/10 text-violet-300 capitalize">
+            <Badge variant="outline" className="w-fit text-[10px] border-violet-500/30 bg-violet-500/10 text-violet-700 dark:text-violet-300 capitalize">
               {t.projects.categories[project.category]}
             </Badge>
 

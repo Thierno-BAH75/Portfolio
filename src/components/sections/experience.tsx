@@ -117,7 +117,7 @@ function EducationCard({ edu, index }: { edu: Education; index: number }) {
         {/* Grande date en filigrane : rythme visuel de la colonne, jamais au-dessus du texte réel */}
         <span
           aria-hidden="true"
-          className="pointer-events-none select-none absolute -right-1 -bottom-4 text-7xl sm:text-8xl font-black leading-none text-violet-500/5"
+          className="pointer-events-none select-none absolute -right-1 -bottom-4 text-7xl sm:text-8xl font-black leading-none parcours-date-violet"
         >
           {edu.endDate}
         </span>
@@ -193,7 +193,7 @@ function ExperienceCard({
         {/* Grande date en filigrane : rythme visuel de la colonne, jamais au-dessus du texte réel */}
         <span
           aria-hidden="true"
-          className="pointer-events-none select-none absolute -right-1 -bottom-4 text-7xl sm:text-8xl font-black leading-none text-cyan-500/5"
+          className="pointer-events-none select-none absolute -right-1 -bottom-4 text-7xl sm:text-8xl font-black leading-none parcours-date-cyan"
         >
           {startYear}
         </span>
@@ -321,10 +321,8 @@ export function Experience({
           Parcours, en plus du glow partagé ci-dessus. Purement décoratif. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 pointer-events-none"
+        className="parcours-rails absolute inset-0 -z-10 pointer-events-none"
         style={{
-          backgroundImage:
-            "repeating-linear-gradient(to right, rgba(139,92,246,0.06) 0px, rgba(139,92,246,0.06) 1px, transparent 1px, transparent 56px)",
           maskImage:
             "linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)",
           WebkitMaskImage:
@@ -338,14 +336,18 @@ export function Experience({
         aria-hidden="true"
         className="absolute inset-0 -z-10 flex items-center justify-center overflow-hidden pointer-events-none select-none"
       >
-        <span className="text-[22vw] sm:text-[15vw] lg:text-[11vw] font-black uppercase tracking-tighter leading-none bg-gradient-to-b from-violet-500 to-cyan-400 bg-clip-text text-transparent opacity-[0.06]">
+        <span className="parcours-watermark text-[22vw] sm:text-[15vw] lg:text-[11vw] font-black uppercase tracking-tighter leading-none bg-gradient-to-b from-violet-500 to-cyan-400 bg-clip-text text-transparent">
           {t.experience.titleGradient}
         </span>
       </div>
 
       {/* Pulsation de la ligne de timeline : pattern répété en CSS pur (voir
           TimelineShell), neutralisé automatiquement par la règle globale
-          prefers-reduced-motion de globals.css. */}
+          prefers-reduced-motion de globals.css. Les opacités des décors
+          ci-dessus (rails, filigrane, dates géantes) sont calibrées pour un
+          fond sombre : sur fond clair, la même valeur alpha se dilue vers
+          le blanc et devient quasi invisible (moins d'écart de luminance
+          exploitable) — d'où les variantes .light plus opaques/saturées. */}
       <style>{`
         @keyframes rail-glow {
           from { background-position-y: 0px; }
@@ -362,6 +364,33 @@ export function Experience({
           background-repeat: repeat-y;
           animation: rail-glow 2.6s linear infinite;
         }
+
+        .parcours-rails {
+          background-image: repeating-linear-gradient(
+            to right,
+            rgba(139,92,246,0.06) 0px,
+            rgba(139,92,246,0.06) 1px,
+            transparent 1px,
+            transparent 56px
+          );
+        }
+        .light .parcours-rails {
+          background-image: repeating-linear-gradient(
+            to right,
+            rgba(109,40,217,0.16) 0px,
+            rgba(109,40,217,0.16) 1px,
+            transparent 1px,
+            transparent 56px
+          );
+        }
+
+        .parcours-watermark { opacity: 0.06; }
+        .light .parcours-watermark { opacity: 0.1; }
+
+        .parcours-date-violet { color: rgba(139,92,246,0.05); }
+        .light .parcours-date-violet { color: rgba(109,40,217,0.12); }
+        .parcours-date-cyan { color: rgba(6,182,212,0.05); }
+        .light .parcours-date-cyan { color: rgba(8,145,178,0.12); }
       `}</style>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

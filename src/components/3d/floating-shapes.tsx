@@ -3,13 +3,22 @@
 import { useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, MeshDistortMaterial, Sphere, Torus, Box } from "@react-three/drei";
+import { useTheme } from "next-themes";
 import * as THREE from "three";
 
-function AnimatedSphere({ position, color, speed = 1, distort = 0.3 }: {
+// Les matériaux très métalliques/peu rugueux réfléchissent surtout
+// l'environnement Three.js (vide, donc noir) plutôt que leur propre
+// couleur — mélangé en alpha sur un fond sombre ça reste riche, mais sur
+// un fond clair la même transparence vire au gris délavé. En clair on
+// réduit le métal/la transparence et on pousse les lumières colorées pour
+// que le violet/cyan reste identifiable ; le rendu sombre (déjà validé)
+// n'est pas touché.
+function AnimatedSphere({ position, color, speed = 1, distort = 0.3, isLight }: {
   position: [number, number, number];
   color: string;
   speed?: number;
   distort?: number;
+  isLight: boolean;
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
 
@@ -28,17 +37,18 @@ function AnimatedSphere({ position, color, speed = 1, distort = 0.3 }: {
           attach="material"
           distort={distort}
           speed={2}
-          roughness={0.2}
-          metalness={0.8}
+          roughness={isLight ? 0.45 : 0.2}
+          metalness={isLight ? 0.25 : 0.8}
         />
       </Sphere>
     </Float>
   );
 }
 
-function AnimatedTorus({ position, color }: {
+function AnimatedTorus({ position, color, isLight }: {
   position: [number, number, number];
   color: string;
+  isLight: boolean;
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
 
@@ -54,19 +64,20 @@ function AnimatedTorus({ position, color }: {
       <Torus ref={meshRef} args={[1, 0.4, 32, 64]} position={position}>
         <meshStandardMaterial
           color={color}
-          roughness={0.3}
-          metalness={0.9}
+          roughness={isLight ? 0.55 : 0.3}
+          metalness={isLight ? 0.15 : 0.9}
           transparent
-          opacity={0.8}
+          opacity={isLight ? 0.95 : 0.8}
         />
       </Torus>
     </Float>
   );
 }
 
-function AnimatedBox({ position, color }: {
+function AnimatedBox({ position, color, isLight }: {
   position: [number, number, number];
   color: string;
+  isLight: boolean;
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
 
@@ -82,10 +93,10 @@ function AnimatedBox({ position, color }: {
       <Box ref={meshRef} args={[1.2, 1.2, 1.2]} position={position}>
         <meshStandardMaterial
           color={color}
-          roughness={0.4}
-          metalness={0.7}
+          roughness={isLight ? 0.55 : 0.4}
+          metalness={isLight ? 0.2 : 0.7}
           transparent
-          opacity={0.7}
+          opacity={isLight ? 0.9 : 0.7}
         />
       </Box>
     </Float>
@@ -129,20 +140,35 @@ function Particles({ count = 100 }) {
   );
 }
 
-function Scene() {
+// Teintes plus saturées/foncées pour le clair : les hex "400" d'origine
+// sont des pastels pensés pour ressortir sur noir ; sur blanc ils se
+// diluent bien plus vite (moins d'écart de luminance à exploiter), donc
+// on descend d'un ou deux crans sur l'échelle Tailwind pour compenser.
+const SHAPE_COLORS_LIGHT: Record<string, string> = {
+  "#818cf8": "#4338ca", // indigo-400 → indigo-700
+  "#a78bfa": "#6d28d9", // violet-400 → violet-700
+  "#22d3ee": "#0891b2", // cyan-400 → cyan-600
+  "#f472b6": "#be185d", // pink-400 → pink-700
+};
+
+function Scene({ isLight }: { isLight: boolean }) {
+  const c = (darkColor: string) => (isLight ? SHAPE_COLORS_LIGHT[darkColor] : darkColor);
+
   return (
     <>
-      {/* Lights */}
-      <ambientLight intensity={0.5} />
+      {/* Lights — moins de lumière ambiante (uniforme, désature tout) et
+          des points colorés plus forts en clair, pour que le violet/cyan
+          domine la teinte des formes au lieu de se diluer vers le gris. */}
+      <ambientLight intensity={isLight ? 0.3 : 0.5} />
       <directionalLight position={[10, 10, 5]} intensity={1} />
-      <pointLight position={[-10, -10, -5]} intensity={0.5} color="#818cf8" />
-      <pointLight position={[10, -10, 5]} intensity={0.5} color="#22d3ee" />
+      <pointLight position={[-10, -10, -5]} intensity={isLight ? 1.1 : 0.5} color="#818cf8" />
+      <pointLight position={[10, -10, 5]} intensity={isLight ? 1.1 : 0.5} color="#22d3ee" />
 
       {/* Shapes */}
-      <AnimatedSphere position={[-3, 1, -2]} color="#818cf8" distort={0.4} />
-      <AnimatedSphere position={[3, -1, -3]} color="#a78bfa" speed={0.8} distort={0.3} />
-      <AnimatedTorus position={[0, 2, -4]} color="#22d3ee" />
-      <AnimatedBox position={[4, 0, -2]} color="#f472b6" />
+      <AnimatedSphere position={[-3, 1, -2]} color={c("#818cf8")} distort={0.4} isLight={isLight} />
+      <AnimatedSphere position={[3, -1, -3]} color={c("#a78bfa")} speed={0.8} distort={0.3} isLight={isLight} />
+      <AnimatedTorus position={[0, 2, -4]} color={c("#22d3ee")} isLight={isLight} />
+      <AnimatedBox position={[4, 0, -2]} color={c("#f472b6")} isLight={isLight} />
 
       {/* Particles */}
       <Particles count={200} />
@@ -171,6 +197,8 @@ function useFrameloopOnVisibility(): "always" | "never" {
 
 export function FloatingShapes() {
   const frameloop = useFrameloopOnVisibility();
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === "light";
 
   return (
     <div className="absolute inset-0 -z-10">
@@ -180,7 +208,7 @@ export function FloatingShapes() {
         gl={{ antialias: true, alpha: true }}
         frameloop={frameloop}
       >
-        <Scene />
+        <Scene isLight={isLight} />
       </Canvas>
     </div>
   );

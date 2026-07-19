@@ -57,8 +57,8 @@ export function Preloader({ name }: { name: string }) {
             {/* Animated logo/name */}
             <motion.div
               className="relative mb-8"
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ scale: 0.5 }}
+              animate={{ scale: 1 }}
               transition={{ duration: 0.5 }}
             >
               {/* Rotating ring */}
@@ -78,9 +78,15 @@ export function Preloader({ name }: { name: string }) {
                 {name.split("").map((char, index) => (
                   <motion.span
                     key={index}
-                    className="inline-block"
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    className="inline-block text-foreground"
+                    // Pas de fondu d'opacité : chaque lettre glisse déjà à
+                    // pleine couleur. Un fondu depuis opacity:0 traverse un
+                    // état transitoire à faible opacité qui, combiné à du
+                    // texte sombre sur fond clair (mode clair), rend le nom
+                    // illisible pendant ~0.5s — bien plus perceptible qu'en
+                    // sombre (texte clair sur fond sombre) à opacité égale.
+                    initial={{ y: 50 }}
+                    animate={{ y: 0 }}
                     transition={{
                       duration: 0.5,
                       delay: index * 0.05,

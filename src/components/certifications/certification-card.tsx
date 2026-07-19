@@ -127,25 +127,44 @@ export function CertificationCard({
           </div>
         )}
 
-        {!compact && cert.pdfUrl && (
+        {!compact && (cert.pdfUrl || cert.verificationUrl) && (
           <div className="relative flex items-center gap-3 pt-1">
-            <button
-              type="button"
-              onClick={() => setViewerOpen(true)}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-cyan-400 text-slate-900 hover:bg-cyan-300 transition-colors"
-            >
-              <FileText size={13} />
-              {t.certifications.viewCertificate}
-            </button>
-            <a
-              href={cert.pdfUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={t.certifications.viewer.openInNewTab}
-              className="inline-flex items-center justify-center w-7 h-7 rounded-md border border-white/15 text-slate-400 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors shrink-0"
-            >
-              <ExternalLink size={13} />
-            </a>
+            {cert.pdfUrl && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => setViewerOpen(true)}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-cyan-400 text-slate-900 hover:bg-cyan-300 transition-colors"
+                >
+                  <FileText size={13} />
+                  {t.certifications.viewCertificate}
+                </button>
+                <a
+                  href={cert.pdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={t.certifications.viewer.openInNewTab}
+                  className="inline-flex items-center justify-center w-7 h-7 rounded-md border border-white/15 text-slate-400 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors shrink-0"
+                >
+                  <ExternalLink size={13} />
+                </a>
+              </>
+            )}
+            {/* Page de vérification officielle (Credly, vérificateur Cisco…) —
+                distincte du justificatif : bouton discret, n'apparaît que si
+                renseigné, ne concurrence pas le bouton principal. */}
+            {cert.verificationUrl && (
+              <a
+                href={cert.verificationUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={t.certifications.verifyOnline}
+                title={t.certifications.verifyOnline}
+                className="inline-flex items-center justify-center w-7 h-7 rounded-md border border-white/15 text-slate-400 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors shrink-0"
+              >
+                <ExternalLink size={13} />
+              </a>
+            )}
           </div>
         )}
       </div>

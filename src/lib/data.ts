@@ -93,6 +93,7 @@ function rowToCertification(row: Record<string, unknown>): Certification {
     expiry: (row.expiry as string) ?? undefined,
     icon: row.icon as string,
     pdfUrl: (row.pdf_url as string) ?? undefined,
+    verificationUrl: (row.verification_url as string) ?? undefined,
   };
 }
 

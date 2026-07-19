@@ -13,6 +13,7 @@ function toRow(values: CertificationFormValues) {
     expiry: values.expiry || null,
     icon: values.icon,
     pdf_url: values.pdfUrl || null,
+    verification_url: values.verificationUrl || null,
     display_order: values.displayOrder,
   };
 }

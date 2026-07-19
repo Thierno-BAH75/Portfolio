@@ -112,6 +112,9 @@ export interface Certification {
   expiry?: string;
   icon: string;
   pdfUrl?: string;
+  // Page de vérification officielle (Credly, vérificateur Cisco…) —
+  // distincte de pdfUrl (justificatif uploadé, ouvert dans la modale).
+  verificationUrl?: string;
 }
 
 export interface SocialLink {

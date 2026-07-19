@@ -213,6 +213,7 @@ const fr = {
     expiresOn: "Expire",
     viewAll: "Voir toutes mes certifications",
     viewCertificate: "Voir certification",
+    verifyOnline: "Vérifier en ligne",
     viewer: {
       close: "Fermer",
       openInNewTab: "Ouvrir le document",
@@ -1236,6 +1237,7 @@ const en: DeepDict<typeof fr> = {
     expiresOn: "Expires",
     viewAll: "View all my certifications",
     viewCertificate: "View certificate",
+    verifyOnline: "Verify online",
     viewer: {
       close: "Close",
       openInNewTab: "Open document",

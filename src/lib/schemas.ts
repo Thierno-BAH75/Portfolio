@@ -145,6 +145,7 @@ export const certificationSchema = z.object({
   expiry: z.string().optional(),
   icon: z.string().min(1),
   pdfUrl: z.string().optional(),
+  verificationUrl: z.string().optional(),
   displayOrder: z.number().int().min(0),
 });
 

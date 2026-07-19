@@ -17,6 +17,7 @@ const EMPTY_VALUES: CertificationFormValues = {
   expiry: "",
   icon: "shield",
   pdfUrl: "",
+  verificationUrl: "",
   displayOrder: 0,
 };
 
@@ -110,6 +111,16 @@ export function CertificationForm({ mode, certificationId, initial }: Certificat
         <div className="space-y-1.5">
           <label className="text-xs font-medium text-muted-foreground">Lien du PDF / justificatif (optionnel)</label>
           <Input placeholder="https://..." {...register("pdfUrl")} />
+        </div>
+        <div className="space-y-1.5">
+          <label className="text-xs font-medium text-muted-foreground">
+            Lien de vérification externe (optionnel)
+          </label>
+          <Input placeholder="https://www.credly.com/badges/..." {...register("verificationUrl")} />
+          <p className="text-xs text-muted-foreground">
+            Page de vérification officielle (Credly, vérificateur Cisco…) — distincte du justificatif
+            ci-dessus. Affiche un petit bouton lien externe sur la carte publique.
+          </p>
         </div>
       </section>
 

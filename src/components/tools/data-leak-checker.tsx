@@ -91,7 +91,7 @@ export function DataLeakChecker() {
             </p>
           ) : (
             <>
-              <p className="flex items-center gap-2 text-sm text-amber-300">
+              <p className="flex items-center gap-2 text-sm text-amber-700 dark:text-amber-300">
                 <AlertCircle size={15} className="shrink-0" />
                 {t.tools.dataLeak.found.replace("{count}", String(result.breaches.length))}
               </p>

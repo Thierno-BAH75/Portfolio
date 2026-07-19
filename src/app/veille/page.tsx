@@ -65,26 +65,26 @@ const SOURCE_VALUES = [
 ];
 
 const TAG_COLORS: Record<string, string> = {
-  RCE:        "bg-red-500/20 text-red-300 border-red-500/40",
-  Ransomware: "bg-orange-500/20 text-orange-300 border-orange-500/40",
-  Phishing:   "bg-yellow-500/20 text-yellow-300 border-yellow-500/40",
-  Malware:    "bg-pink-500/20 text-pink-300 border-pink-500/40",
-  Patch:      "bg-green-500/20 text-green-300 border-green-500/40",
-  CVE:        "bg-violet-500/20 text-violet-300 border-violet-500/40",
-  "0-Day":    "bg-red-700/25 text-red-200 border-red-600/50",
-  Fuite:      "bg-amber-500/20 text-amber-300 border-amber-500/40",
-  DDoS:       "bg-blue-500/20 text-blue-300 border-blue-500/40",
-  Cloud:      "bg-sky-500/20 text-sky-300 border-sky-500/40",
-  Linux:      "bg-emerald-500/20 text-emerald-300 border-emerald-500/40",
-  Réseau:     "bg-teal-500/20 text-teal-300 border-teal-500/30",
-  Actualité:  "bg-cyan-500/15 text-cyan-300 border-cyan-500/30",
+  RCE:        "bg-red-500/20 text-red-700 dark:text-red-300 border-red-500/40",
+  Ransomware: "bg-orange-500/20 text-orange-700 dark:text-orange-300 border-orange-500/40",
+  Phishing:   "bg-yellow-500/20 text-yellow-700 dark:text-yellow-300 border-yellow-500/40",
+  Malware:    "bg-pink-500/20 text-pink-700 dark:text-pink-300 border-pink-500/40",
+  Patch:      "bg-green-500/20 text-green-700 dark:text-green-300 border-green-500/40",
+  CVE:        "bg-violet-500/20 text-violet-700 dark:text-violet-300 border-violet-500/40",
+  "0-Day":    "bg-red-700/25 text-red-800 dark:text-red-200 border-red-600/50",
+  Fuite:      "bg-amber-500/20 text-amber-700 dark:text-amber-300 border-amber-500/40",
+  DDoS:       "bg-blue-500/20 text-blue-700 dark:text-blue-300 border-blue-500/40",
+  Cloud:      "bg-sky-500/20 text-sky-700 dark:text-sky-300 border-sky-500/40",
+  Linux:      "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border-emerald-500/40",
+  Réseau:     "bg-teal-500/20 text-teal-700 dark:text-teal-300 border-teal-500/30",
+  Actualité:  "bg-cyan-500/15 text-cyan-700 dark:text-cyan-300 border-cyan-500/30",
 };
 
 const DOMAIN_COLORS: Record<string, string> = {
-  "Cybersécurité":          "bg-violet-500/20 text-violet-300 border-violet-500/40",
-  "Réseaux & Infrastructure": "bg-cyan-500/20 text-cyan-300 border-cyan-500/40",
-  "Cloud & DevSecOps":      "bg-sky-500/20 text-sky-300 border-sky-500/40",
-  "Système & Linux":        "bg-emerald-500/20 text-emerald-300 border-emerald-500/40",
+  "Cybersécurité":          "bg-violet-500/20 text-violet-700 dark:text-violet-300 border-violet-500/40",
+  "Réseaux & Infrastructure": "bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 border-cyan-500/40",
+  "Cloud & DevSecOps":      "bg-sky-500/20 text-sky-700 dark:text-sky-300 border-sky-500/40",
+  "Système & Linux":        "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border-emerald-500/40",
 };
 
 /* ─────────────────────────────────────────────────────────────────
@@ -539,7 +539,7 @@ export default function VeillePage() {
             </div>
 
             {/* Article counter */}
-            <div className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-violet-600/20 to-cyan-500/20 border border-violet-500/30 text-xs font-semibold text-violet-300">
+            <div className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-violet-600/20 to-cyan-500/20 border border-violet-500/30 text-xs font-semibold text-violet-700 dark:text-violet-300">
               <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
               {loading ? "…" : filtered.length}{" "}
               {filtered.length !== 1 ? t.veille.articles : t.veille.article}
@@ -555,7 +555,7 @@ export default function VeillePage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.25 }}
-              className="flex items-center gap-3 px-4 py-3 mb-5 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-300 text-sm"
+              className="flex items-center gap-3 px-4 py-3 mb-5 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-700 dark:text-cyan-300 text-sm"
             >
               <Bell size={15} className="shrink-0 animate-pulse" />
               <span className="font-semibold">
@@ -576,7 +576,7 @@ export default function VeillePage() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex items-center gap-3 p-4 mb-6 rounded-xl border border-orange-500/30 bg-orange-500/10 text-orange-300 text-sm"
+            className="flex items-center gap-3 p-4 mb-6 rounded-xl border border-orange-500/30 bg-orange-500/10 text-orange-700 dark:text-orange-300 text-sm"
           >
             <AlertTriangle size={16} className="shrink-0" />
             {t.veille.error}

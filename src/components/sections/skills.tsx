@@ -87,7 +87,7 @@ function SkillChip({
     <motion.span
       variants={reduceMotion ? undefined : chipVariants}
       className={cn(
-        "rounded-lg border border-border/60 bg-transparent px-3 py-1 text-sm text-muted-foreground hover:border-cyan-400/50 hover:text-cyan-300 transition-colors",
+        "rounded-lg border border-border/60 bg-transparent px-3 py-1 text-sm text-muted-foreground hover:border-cyan-400/50 hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors",
         hasBadges && "flex flex-col items-start gap-1 py-1.5"
       )}
     >

@@ -142,7 +142,7 @@ function SkillRow({
           className={cn(
             "flex-shrink-0 p-2 transition-colors",
             expanded || hasProof || isLearning
-              ? "text-cyan-400 hover:text-cyan-300"
+              ? "text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300"
               : "text-muted-foreground hover:text-foreground"
           )}
         >

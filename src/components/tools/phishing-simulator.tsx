@@ -65,7 +65,7 @@ export function PhishingSimulator() {
       </div>
 
       <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3.5">
-        <p className="flex items-center gap-1.5 text-xs font-semibold text-amber-300 mb-2">
+        <p className="flex items-center gap-1.5 text-xs font-semibold text-amber-700 dark:text-amber-300 mb-2">
           <AlertTriangle size={13} />
           {t.tools.phishing.redFlagsLabel}
         </p>

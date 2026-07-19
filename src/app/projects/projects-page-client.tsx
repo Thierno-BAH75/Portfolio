@@ -58,7 +58,7 @@ function CascadeFilter({
         onMouseEnter={() => { clearClose(); setOpen(true); }}
         className={`inline-flex items-center gap-2 pl-3.5 pr-3 py-2 rounded-lg border text-sm transition-all min-w-[190px] justify-between ${
           value
-            ? "border-violet-500/60 bg-violet-500/10 text-violet-300"
+            ? "border-violet-500/60 bg-violet-500/10 text-violet-700 dark:text-violet-300"
             : "border-border/50 bg-card text-foreground hover:border-border/80"
         }`}
       >
@@ -96,7 +96,7 @@ function CascadeFilter({
                 <button
                   className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm transition-colors ${
                     hoveredGroup === group.labelKey
-                      ? "bg-violet-500/15 text-violet-300"
+                      ? "bg-violet-500/15 text-violet-700 dark:text-violet-300"
                       : "text-foreground hover:bg-muted/50"
                   }`}
                 >
@@ -124,7 +124,7 @@ function CascadeFilter({
                           className={`w-full text-left px-3.5 py-2.5 text-sm transition-colors ${
                             value === tech
                               ? "bg-violet-600 text-white font-medium"
-                              : "text-foreground hover:bg-cyan-500/10 hover:text-cyan-300"
+                              : "text-foreground hover:bg-cyan-500/10 hover:text-cyan-700 dark:hover:text-cyan-300"
                           }`}
                         >
                           {tech}
@@ -339,7 +339,7 @@ export function ProjectsPageClient({ projects }: { projects: Project[] }) {
 
         {/* Compteur avec badge */}
         <div className="flex items-center justify-center gap-2 mb-8">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-violet-600/20 to-cyan-500/20 border border-violet-500/30 text-violet-300">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-violet-600/20 to-cyan-500/20 border border-violet-500/30 text-violet-700 dark:text-violet-300">
             <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-violet-500 to-cyan-400" />
             {filtered.length}{" "}
             {filtered.length !== 1 ? t.projects.page.foundPlural : t.projects.page.found}

@@ -164,7 +164,7 @@ export function SecurityHeadersAnalyzer() {
               setInput(ownHost);
               runCheck(ownHost);
             }}
-            className="text-cyan-300 hover:text-cyan-200 underline"
+            className="text-cyan-700 hover:text-cyan-600 dark:text-cyan-300 dark:hover:text-cyan-200 underline"
           >
             {t.tools.common.analyzeMine.replace("{domain}", ownHost)}
           </button>

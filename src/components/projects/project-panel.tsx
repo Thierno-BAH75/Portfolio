@@ -101,7 +101,7 @@ export function ProjectPanel({ project, onClose }: ProjectPanelProps) {
               type="button"
               onClick={onClose}
               aria-label={t.projects.panel.close}
-              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-background/70 backdrop-blur border border-border/60 text-foreground hover:border-cyan-400/50 hover:text-cyan-300 transition-colors"
+              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-background/70 backdrop-blur border border-border/60 text-foreground hover:border-cyan-400/50 hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors"
             >
               <X size={18} />
             </button>
@@ -117,7 +117,7 @@ export function ProjectPanel({ project, onClose }: ProjectPanelProps) {
               <div className="flex flex-wrap items-center gap-3">
                 <Badge
                   variant="outline"
-                  className="text-[10px] border-violet-500/30 bg-violet-500/10 text-violet-300 capitalize"
+                  className="text-[10px] border-violet-500/30 bg-violet-500/10 text-violet-700 dark:text-violet-300 capitalize"
                 >
                   {t.projects.categories[project.category]}
                 </Badge>

@@ -79,14 +79,6 @@ function TimelineShell({ children }: { children: React.ReactNode }) {
         viewport={{ once: true }}
         transition={{ duration: 1.2, ease: "easeOut" }}
       />
-      {/* Pulsation lumineuse en boucle sur la ligne : pattern répété + décalage
-          de background-position (pas de dépendance à la hauteur réelle de la
-          colonne). Purement CSS, donc déjà neutralisée par la règle globale
-          prefers-reduced-motion (globals.css) sans logique supplémentaire. */}
-      <div
-        aria-hidden="true"
-        className="rail-pulse absolute left-[5px] top-1 bottom-1 w-[2px] rounded-full overflow-hidden"
-      />
       <div className="space-y-8">{children}</div>
     </div>
   );
@@ -113,57 +105,48 @@ function EducationCard({ edu, index }: { edu: Education; index: number }) {
   return (
     <motion.div className="relative" {...fade(index * 0.1)}>
       <TimelineDot />
-      <div className="relative overflow-hidden bg-card border border-border rounded-xl p-5 hover:border-violet-500/50 transition-colors">
-        {/* Grande date en filigrane : rythme visuel de la colonne, jamais au-dessus du texte réel */}
-        <span
-          aria-hidden="true"
-          className="pointer-events-none select-none absolute -right-1 -bottom-4 text-7xl sm:text-8xl font-black leading-none parcours-date-violet"
-        >
-          {edu.endDate}
-        </span>
-        <div className="relative z-10">
-          <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-            <span className="flex flex-wrap items-center gap-2">
-              <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                <Calendar size={14} />
-                {edu.startDate} – {edu.endDate}
-              </span>
-              {/* Niveau de diplôme : mention discrète à côté de la période */}
-              {edu.level && (
-                <span className="text-[11px] font-medium px-2 py-0.5 rounded-full border border-border/70 bg-muted/40 text-muted-foreground">
-                  {tx(edu.level)}
-                </span>
-              )}
+      <div className="bg-card border border-border rounded-xl p-5 hover:border-violet-500/50 transition-colors">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+          <span className="flex flex-wrap items-center gap-2">
+            <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
+              <Calendar size={14} />
+              {edu.startDate} – {edu.endDate}
             </span>
-            {edu.status && (
-              <span
-                className={cn(
-                  "text-[11px] font-medium px-2 py-0.5 rounded-full border",
-                  STATUS_CLASSES[edu.status]
-                )}
-              >
-                {t.experience.status[edu.status]}
+            {/* Niveau de diplôme : mention discrète à côté de la période */}
+            {edu.level && (
+              <span className="text-[11px] font-medium px-2 py-0.5 rounded-full border border-border/70 bg-muted/40 text-muted-foreground">
+                {tx(edu.level)}
               </span>
             )}
-          </div>
-          <h4 className="text-lg font-semibold leading-snug">{tx(edu.degree)}</h4>
-          <p className="text-violet-400 font-medium text-sm mt-1">{edu.school}</p>
-          {edu.location && (
-            <p className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
-              <MapPin size={13} />
-              {edu.location}
-            </p>
-          )}
-          {edu.note && (
-            <p className="flex items-center gap-1.5 text-xs font-semibold text-amber-400 mt-2">
-              <Sparkles size={13} className="shrink-0" />
-              {tx(edu.note)}
-            </p>
-          )}
-          {edu.description && (
-            <p className="text-sm text-muted-foreground mt-3">{tx(edu.description)}</p>
+          </span>
+          {edu.status && (
+            <span
+              className={cn(
+                "text-[11px] font-medium px-2 py-0.5 rounded-full border",
+                STATUS_CLASSES[edu.status]
+              )}
+            >
+              {t.experience.status[edu.status]}
+            </span>
           )}
         </div>
+        <h4 className="text-lg font-semibold leading-snug">{tx(edu.degree)}</h4>
+        <p className="text-violet-400 font-medium text-sm mt-1">{edu.school}</p>
+        {edu.location && (
+          <p className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
+            <MapPin size={13} />
+            {edu.location}
+          </p>
+        )}
+        {edu.note && (
+          <p className="flex items-center gap-1.5 text-xs font-semibold text-amber-400 mt-2">
+            <Sparkles size={13} className="shrink-0" />
+            {tx(edu.note)}
+          </p>
+        )}
+        {edu.description && (
+          <p className="text-sm text-muted-foreground mt-3">{tx(edu.description)}</p>
+        )}
       </div>
     </motion.div>
   );
@@ -184,111 +167,101 @@ function ExperienceCard({
   const achievements = tx(exp.achievements);
   const visible = achievements.slice(0, VISIBLE_ACHIEVEMENTS);
   const hidden = achievements.slice(VISIBLE_ACHIEVEMENTS);
-  const startYear = exp.startDate.slice(0, 4);
 
   return (
     <motion.div className="relative" {...fade(index * 0.1)}>
       <TimelineDot />
-      <div className="relative overflow-hidden bg-card border border-border rounded-xl p-5 hover:border-cyan-500/50 transition-colors">
-        {/* Grande date en filigrane : rythme visuel de la colonne, jamais au-dessus du texte réel */}
-        <span
-          aria-hidden="true"
-          className="pointer-events-none select-none absolute -right-1 -bottom-4 text-7xl sm:text-8xl font-black leading-none parcours-date-cyan"
-        >
-          {startYear}
-        </span>
-        <div className="relative z-10">
-          <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-            <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
-              <Calendar size={14} />
-              {formatDate(exp.startDate, locale)} –{" "}
-              {exp.current ? t.experience.present : formatDate(exp.endDate!, locale)}
-            </span>
-            <span className="flex items-center gap-2">
-              {exp.current && (
-                <Badge variant="default" className="text-xs">
-                  {t.experience.current}
-                </Badge>
-              )}
-              <Badge variant="ghost" className="text-xs">
-                {t.experience.types[exp.type]}
+      <div className="bg-card border border-border rounded-xl p-5 hover:border-cyan-500/50 transition-colors">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+          <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
+            <Calendar size={14} />
+            {formatDate(exp.startDate, locale)} –{" "}
+            {exp.current ? t.experience.present : formatDate(exp.endDate!, locale)}
+          </span>
+          <span className="flex items-center gap-2">
+            {exp.current && (
+              <Badge variant="default" className="text-xs">
+                {t.experience.current}
               </Badge>
+            )}
+            <Badge variant="ghost" className="text-xs">
+              {t.experience.types[exp.type]}
+            </Badge>
+          </span>
+        </div>
+        <h4 className="text-lg font-semibold leading-snug">{tx(exp.title)}</h4>
+        <p className="text-cyan-400 font-medium text-sm mt-1">{exp.company}</p>
+        <p className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
+          <MapPin size={13} />
+          {exp.location}
+        </p>
+
+        {/* Points clés : 2 visibles, le reste derrière « Voir plus » */}
+        <ul className="mt-3 space-y-1.5 text-sm">
+          {visible.map((achievement) => (
+            <li key={achievement} className="flex items-start gap-2 text-muted-foreground">
+              <span className="text-cyan-400 mt-0.5">•</span>
+              <span>{achievement}</span>
+            </li>
+          ))}
+        </ul>
+        {hidden.length > 0 && (
+          <>
+            <AnimatePresence initial={false}>
+              {expanded && (
+                <motion.div
+                  className="overflow-hidden"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: reduce ? 0 : 0.3 }}
+                >
+                  <ul className="mt-1.5 space-y-1.5 text-sm">
+                    {hidden.map((achievement) => (
+                      <li
+                        key={achievement}
+                        className="flex items-start gap-2 text-muted-foreground"
+                      >
+                        <span className="text-cyan-400 mt-0.5">•</span>
+                        <span>{achievement}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  {/* Ligne de résultat, mise à part des puces par un filet fin */}
+                  {exp.impact && (
+                    <p className="mt-3 pt-3 border-t border-border/60 flex items-start gap-2 text-sm font-medium">
+                      <span className="text-violet-400 mt-0.5" aria-hidden="true">
+                        →
+                      </span>
+                      <span className="bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
+                        {tx(exp.impact)}
+                      </span>
+                    </p>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+            <button
+              type="button"
+              onClick={() => setExpanded((v) => !v)}
+              aria-expanded={expanded}
+              className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors"
+            >
+              {expanded ? t.experience.seeLess : `${t.experience.seeMore} (${hidden.length})`}
+              <ChevronDown
+                size={14}
+                className={cn("transition-transform", expanded && "rotate-180")}
+              />
+            </button>
+          </>
+        )}
+
+        <div className="flex flex-wrap gap-2 mt-4">
+          {exp.technologies.map((tech) => (
+            <span key={tech} className="text-xs px-2 py-1 bg-muted rounded-md">
+              {tech}
             </span>
-          </div>
-          <h4 className="text-lg font-semibold leading-snug">{tx(exp.title)}</h4>
-          <p className="text-cyan-400 font-medium text-sm mt-1">{exp.company}</p>
-          <p className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
-            <MapPin size={13} />
-            {exp.location}
-          </p>
-
-          {/* Points clés : 2 visibles, le reste derrière « Voir plus » */}
-          <ul className="mt-3 space-y-1.5 text-sm">
-            {visible.map((achievement) => (
-              <li key={achievement} className="flex items-start gap-2 text-muted-foreground">
-                <span className="text-cyan-400 mt-0.5">•</span>
-                <span>{achievement}</span>
-              </li>
-            ))}
-          </ul>
-          {hidden.length > 0 && (
-            <>
-              <AnimatePresence initial={false}>
-                {expanded && (
-                  <motion.div
-                    className="overflow-hidden"
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: reduce ? 0 : 0.3 }}
-                  >
-                    <ul className="mt-1.5 space-y-1.5 text-sm">
-                      {hidden.map((achievement) => (
-                        <li
-                          key={achievement}
-                          className="flex items-start gap-2 text-muted-foreground"
-                        >
-                          <span className="text-cyan-400 mt-0.5">•</span>
-                          <span>{achievement}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    {/* Ligne de résultat, mise à part des puces par un filet fin */}
-                    {exp.impact && (
-                      <p className="mt-3 pt-3 border-t border-border/60 flex items-start gap-2 text-sm font-medium">
-                        <span className="text-violet-400 mt-0.5" aria-hidden="true">
-                          →
-                        </span>
-                        <span className="bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
-                          {tx(exp.impact)}
-                        </span>
-                      </p>
-                    )}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-              <button
-                type="button"
-                onClick={() => setExpanded((v) => !v)}
-                aria-expanded={expanded}
-                className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-cyan-400 hover:text-cyan-300 transition-colors"
-              >
-                {expanded ? t.experience.seeLess : `${t.experience.seeMore} (${hidden.length})`}
-                <ChevronDown
-                  size={14}
-                  className={cn("transition-transform", expanded && "rotate-180")}
-                />
-              </button>
-            </>
-          )}
-
-          <div className="flex flex-wrap gap-2 mt-4">
-            {exp.technologies.map((tech) => (
-              <span key={tech} className="text-xs px-2 py-1 bg-muted rounded-md">
-                {tech}
-              </span>
-            ))}
-          </div>
+          ))}
         </div>
       </div>
     </motion.div>
@@ -316,82 +289,6 @@ export function Experience({
           d'une section est toujours ce qui marque visuellement sa frontière
           supérieure — bottom-left laissait cette jonction plate). */}
       <SectionBackground glowPosition="top-right" variant="violet" />
-
-      {/* Rail de lignes verticales régulières : signature de fond propre à
-          Parcours, en plus du glow partagé ci-dessus. Purement décoratif. */}
-      <div
-        aria-hidden="true"
-        className="parcours-rails absolute inset-0 -z-10 pointer-events-none"
-        style={{
-          maskImage:
-            "linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)",
-          WebkitMaskImage:
-            "linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)",
-        }}
-      />
-
-      {/* Filigrane géant très discret : le mot-titre de la section en fond,
-          jamais assez opaque pour gêner la lecture du contenu par-dessus. */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 -z-10 flex items-center justify-center overflow-hidden pointer-events-none select-none"
-      >
-        <span className="parcours-watermark text-[22vw] sm:text-[15vw] lg:text-[11vw] font-black uppercase tracking-tighter leading-none bg-gradient-to-b from-violet-500 to-cyan-400 bg-clip-text text-transparent">
-          {t.experience.titleGradient}
-        </span>
-      </div>
-
-      {/* Pulsation de la ligne de timeline : pattern répété en CSS pur (voir
-          TimelineShell), neutralisé automatiquement par la règle globale
-          prefers-reduced-motion de globals.css. Les opacités des décors
-          ci-dessus (rails, filigrane, dates géantes) sont calibrées pour un
-          fond sombre : sur fond clair, la même valeur alpha se dilue vers
-          le blanc et devient quasi invisible (moins d'écart de luminance
-          exploitable) — d'où les variantes .light plus opaques/saturées. */}
-      <style>{`
-        @keyframes rail-glow {
-          from { background-position-y: 0px; }
-          to   { background-position-y: -48px; }
-        }
-        .rail-pulse {
-          background-image: linear-gradient(
-            to bottom,
-            transparent 0%,
-            rgba(255,255,255,0.85) 12%,
-            transparent 26%
-          );
-          background-size: 100% 48px;
-          background-repeat: repeat-y;
-          animation: rail-glow 2.6s linear infinite;
-        }
-
-        .parcours-rails {
-          background-image: repeating-linear-gradient(
-            to right,
-            rgba(139,92,246,0.06) 0px,
-            rgba(139,92,246,0.06) 1px,
-            transparent 1px,
-            transparent 56px
-          );
-        }
-        .light .parcours-rails {
-          background-image: repeating-linear-gradient(
-            to right,
-            rgba(109,40,217,0.16) 0px,
-            rgba(109,40,217,0.16) 1px,
-            transparent 1px,
-            transparent 56px
-          );
-        }
-
-        .parcours-watermark { opacity: 0.06; }
-        .light .parcours-watermark { opacity: 0.1; }
-
-        .parcours-date-violet { color: rgba(139,92,246,0.05); }
-        .light .parcours-date-violet { color: rgba(109,40,217,0.12); }
-        .parcours-date-cyan { color: rgba(6,182,212,0.05); }
-        .light .parcours-date-cyan { color: rgba(8,145,178,0.12); }
-      `}</style>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header — même pattern que Skills/Certifications/Contact */}
@@ -458,7 +355,7 @@ export function Experience({
                 type="button"
                 onClick={() => setShowAllExperiences((v) => !v)}
                 aria-expanded={showAllExperiences}
-                className="mt-6 pl-8 flex items-center gap-1.5 text-sm font-medium text-cyan-400 hover:text-cyan-300 transition-colors"
+                className="mt-6 pl-8 flex items-center gap-1.5 text-sm font-medium text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors"
               >
                 {showAllExperiences
                   ? t.experience.seeLess

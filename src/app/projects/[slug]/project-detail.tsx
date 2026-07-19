@@ -101,7 +101,7 @@ export function ProjectDetail({
             </p>
 
             <div className="flex flex-wrap items-center gap-3">
-              <Badge variant="outline" className="capitalize border-violet-500/30 bg-violet-500/10 text-violet-300">
+              <Badge variant="outline" className="capitalize border-violet-500/30 bg-violet-500/10 text-violet-700 dark:text-violet-300">
                 {t.projects.categories[project.category]}
               </Badge>
               <span className="text-sm text-muted-foreground flex items-center">
@@ -227,7 +227,7 @@ export function ProjectDetail({
                   <ArrowLeft size={13} />
                   {t.projects.detail.previous}
                 </span>
-                <span className="font-medium text-sm text-foreground group-hover:text-violet-300 transition-colors line-clamp-1">
+                <span className="font-medium text-sm text-foreground group-hover:text-violet-700 dark:group-hover:text-violet-300 transition-colors line-clamp-1">
                   {tx(prevProject.title)}
                 </span>
               </Link>
@@ -247,7 +247,7 @@ export function ProjectDetail({
                   {t.projects.detail.next}
                   <ArrowRight size={13} />
                 </span>
-                <span className="font-medium text-sm text-foreground group-hover:text-cyan-300 transition-colors line-clamp-1">
+                <span className="font-medium text-sm text-foreground group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors line-clamp-1">
                   {tx(nextProject.title)}
                 </span>
               </Link>

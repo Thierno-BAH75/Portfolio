@@ -86,7 +86,7 @@ export function BandwidthCalculator() {
 
       {stats.length > 0 && (
         <div className="space-y-2">
-          <p className="flex items-center gap-1.5 text-xs text-cyan-300">
+          <p className="flex items-center gap-1.5 text-xs text-cyan-700 dark:text-cyan-300">
             <Zap size={13} />
             {t.tools.bandwidthCalculator.resultLabel}
           </p>

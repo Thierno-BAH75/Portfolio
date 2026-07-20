@@ -8,6 +8,9 @@ import type { Locale } from "@/types";
 
 const fr = {
   langSwitch: "Changer de langue",
+  // Bouton de retour partagé par les pages standalone (Certifications,
+  // Veille, Outils, Projets) — même pattern que projects.detail.back.
+  backToHome: "Retour à l'accueil",
   // Titres d'onglet par route — le serveur rend toujours les <title> FR ;
   // LanguageSync (i18n/index.tsx) les remplace côté client quand EN est actif.
   meta: {
@@ -1034,6 +1037,7 @@ export type Dictionary = typeof fr;
 
 const en: DeepDict<typeof fr> = {
   langSwitch: "Switch language",
+  backToHome: "Back to home",
   meta: {
     home: "Thierno BAH | Network & Systems Security Engineer",
     projects: "Projects | Thierno BAH",

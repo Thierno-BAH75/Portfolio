@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Award } from "lucide-react";
 import { SectionBackground } from "@/components/ui/section-background";
+import { BackToHomeLink } from "@/components/ui/back-to-home-link";
 import { CertificationCard } from "@/components/certifications/certification-card";
 import { useI18n } from "@/i18n";
 import { sortCertificationsByDate } from "@/lib/utils";
@@ -21,6 +22,8 @@ export function CertificationsPageClient({
       <SectionBackground glowPosition="top-right" variant="violet" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+        <BackToHomeLink />
+
         {/* Header — même pattern que Skills/Contact/Parcours */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

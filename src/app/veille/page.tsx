@@ -17,6 +17,7 @@ import {
 import type { RSSArticle } from "@/app/api/rss/route";
 import type { PinnedArticle } from "@/lib/data";
 import { SectionBackground } from "@/components/ui/section-background";
+import { BackToHomeLink } from "@/components/ui/back-to-home-link";
 import { useI18n } from "@/i18n";
 import type { Dictionary } from "@/i18n/dictionaries";
 
@@ -419,6 +420,7 @@ export default function VeillePage() {
       <SectionBackground glowPosition="top-right" variant="violet" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <BackToHomeLink />
 
         {/* ── Header ── */}
         <motion.div

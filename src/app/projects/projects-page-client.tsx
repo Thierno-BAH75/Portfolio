@@ -4,6 +4,7 @@ import { useState, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, SlidersHorizontal, ChevronDown, ChevronRight, X, Terminal } from "lucide-react";
 import { FadeIn } from "@/components/animations";
+import { BackToHomeLink } from "@/components/ui/back-to-home-link";
 import { ProjectCard } from "@/components/projects/project-card";
 import { ProjectPanel } from "@/components/projects/project-panel";
 import { useProjectPanel } from "@/components/projects/use-project-panel";
@@ -223,6 +224,7 @@ export function ProjectsPageClient({ projects }: { projects: Project[] }) {
       <div className="projects-blob-center absolute inset-0 -z-10" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <BackToHomeLink />
 
         {/* Header */}
         <FadeIn>

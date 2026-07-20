@@ -22,7 +22,7 @@ export function CertificationsPageClient({
       <SectionBackground glowPosition="top-right" variant="violet" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-        <BackToHomeLink />
+        <BackToHomeLink href="/#certifications" />
 
         {/* Header — même pattern que Skills/Contact/Parcours */}
         <motion.div

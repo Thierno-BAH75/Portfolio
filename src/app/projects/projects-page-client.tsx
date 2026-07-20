@@ -224,7 +224,7 @@ export function ProjectsPageClient({ projects }: { projects: Project[] }) {
       <div className="projects-blob-center absolute inset-0 -z-10" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-        <BackToHomeLink />
+        <BackToHomeLink href="/#projects" />
 
         {/* Header */}
         <FadeIn>

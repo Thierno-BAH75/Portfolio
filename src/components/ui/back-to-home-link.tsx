@@ -7,12 +7,15 @@ import { useI18n } from "@/i18n";
 // Bouton de retour partagé par les pages standalone (Certifications, Veille,
 // Outils, Projets) — mêmes classes que le lien "Retour aux projets" des
 // fiches projet (project-detail.tsx), pour une cohérence visuelle stricte.
-export function BackToHomeLink() {
+// `href` par défaut sur "/" ; Certifications et Projets le pointent vers
+// leur aperçu respectif sur la home ("#certifications" / "#projects") —
+// Veille et Outils n'ont pas d'aperçu composé sur la home, ils restent sur "/".
+export function BackToHomeLink({ href = "/" }: { href?: string }) {
   const { t } = useI18n();
 
   return (
     <Link
-      href="/"
+      href={href}
       className="mb-8 inline-flex items-center gap-2 px-3.5 py-2 rounded-lg border border-border/60 text-sm text-muted-foreground hover:text-foreground hover:border-violet-500/50 transition-all"
     >
       <ArrowLeft size={16} />

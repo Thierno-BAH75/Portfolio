@@ -197,7 +197,7 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
                 désactivé sous prefers-reduced-motion. Distinct du fade+slide
                 d'entrée porté par le motion.div parent (variants). */}
             <motion.div
-              animate={reduceMotion ? undefined : { y: [-8, 8, -8] }}
+              animate={reduceMotion ? undefined : { y: [-14, 14, -14] }}
               transition={
                 reduceMotion
                   ? undefined
@@ -207,10 +207,10 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
               <Image
                 src="/hero-avatar.png"
                 alt="Thierno BAH"
-                width={130}
-                height={130}
+                width={240}
+                height={240}
                 priority
-                className="w-[130px] h-[130px] object-contain"
+                className="w-[160px] h-[160px] sm:w-[200px] sm:h-[200px] lg:w-[240px] lg:h-[240px] object-contain"
               />
             </motion.div>
           </motion.div>

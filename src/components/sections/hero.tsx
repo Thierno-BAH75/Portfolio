@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, Suspense, useState, useEffect } from "react";
-import { motion, useScroll, useTransform, Variants } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion, Variants } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
@@ -139,6 +139,7 @@ function LoopingTypewriter({ titles }: { titles: string[] }) {
 export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
   const containerRef = useRef<HTMLElement>(null);
   const { t, tx, locale } = useI18n();
+  const reduceMotion = useReducedMotion();
   const canvasReady = useDeferredCanvasMount();
   const handleHashClick = useHashLinkClick();
   const { scrollYProgress } = useScroll({
@@ -192,7 +193,18 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
         >
           {/* Avatar */}
           <motion.div variants={itemVariants} className="mb-8 flex justify-center">
-            <div className="rounded-full p-[3px] bg-gradient-to-r from-violet-500 to-cyan-400 shadow-[0_0_35px_rgba(139,92,246,0.35)]">
+            {/* Flottement doux en boucle — translateY uniquement (GPU-friendly),
+                désactivé sous prefers-reduced-motion. Distinct du fade+slide
+                d'entrée porté par le motion.div parent (variants). */}
+            <motion.div
+              animate={reduceMotion ? undefined : { y: [-8, 8, -8] }}
+              transition={
+                reduceMotion
+                  ? undefined
+                  : { duration: 3.5, repeat: Infinity, ease: "easeInOut" }
+              }
+              className="rounded-full p-[3px] bg-gradient-to-r from-violet-500 to-cyan-400 shadow-[0_0_35px_rgba(139,92,246,0.35)]"
+            >
               <Image
                 src="/thierno-bah.jpeg"
                 alt="Thierno BAH"
@@ -201,7 +213,7 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
                 priority
                 className="w-[130px] h-[130px] rounded-full object-cover"
               />
-            </div>
+            </motion.div>
           </motion.div>
 
           {/* Title — looping typewriter */}

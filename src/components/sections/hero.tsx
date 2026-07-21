@@ -140,6 +140,12 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
   const containerRef = useRef<HTMLElement>(null);
   const { t, tx, locale } = useI18n();
   const reduceMotion = useReducedMotion();
+  // TEMP DEBUG — useReducedMotion() vaut `null` côté serveur (pas de
+  // matchMedia en SSR) puis se résout côté client : afficher sa valeur brute
+  // sans ce garde-fou casse l'hydratation (le HTML serveur ne correspond plus
+  // au premier rendu client). À retirer avec le <p> de debug plus bas.
+  const [debugMounted, setDebugMounted] = useState(false);
+  useEffect(() => setDebugMounted(true), []);
   const canvasReady = useDeferredCanvasMount();
   const handleHashClick = useHashLinkClick();
   const { scrollYProgress } = useScroll({
@@ -214,6 +220,13 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
               />
             </motion.div>
           </motion.div>
+
+          {/* TEMP DEBUG — à retirer une fois le diagnostic terminé */}
+          {debugMounted && (
+            <p style={{ color: "red", fontSize: 20 }}>
+              reduceMotion: {String(reduceMotion)}
+            </p>
+          )}
 
           {/* Title — looping typewriter */}
           <motion.h1

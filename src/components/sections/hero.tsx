@@ -203,7 +203,6 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
                   ? undefined
                   : { duration: 3.5, repeat: Infinity, ease: "easeInOut" }
               }
-              className="rounded-full p-[3px] bg-gradient-to-r from-violet-500 to-cyan-400 shadow-[0_0_35px_rgba(139,92,246,0.35)]"
             >
               <Image
                 src="/hero-avatar.png"
@@ -211,7 +210,7 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
                 width={130}
                 height={130}
                 priority
-                className="w-[130px] h-[130px] rounded-full object-contain bg-background"
+                className="w-[130px] h-[130px] object-contain"
               />
             </motion.div>
           </motion.div>

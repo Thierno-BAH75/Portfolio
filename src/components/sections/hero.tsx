@@ -206,12 +206,12 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
               className="rounded-full p-[3px] bg-gradient-to-r from-violet-500 to-cyan-400 shadow-[0_0_35px_rgba(139,92,246,0.35)]"
             >
               <Image
-                src="/thierno-bah.jpeg"
+                src="/hero-avatar.png"
                 alt="Thierno BAH"
                 width={130}
                 height={130}
                 priority
-                className="w-[130px] h-[130px] rounded-full object-cover"
+                className="w-[130px] h-[130px] rounded-full object-contain bg-background"
               />
             </motion.div>
           </motion.div>

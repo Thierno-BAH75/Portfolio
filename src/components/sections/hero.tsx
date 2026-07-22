@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, Suspense, useState, useEffect } from "react";
-import { motion, useScroll, useTransform, useReducedMotion, Variants } from "framer-motion";
+import { motion, useScroll, useTransform, Variants } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
@@ -127,11 +127,7 @@ function LoopingTypewriter({ titles }: { titles: string[] }) {
   return (
     <span className="bg-gradient-to-r from-violet-500 to-cyan-400 bg-clip-text text-transparent">
       {text.slice(0, count)}
-      <motion.span
-        animate={{ opacity: [1, 0] }}
-        transition={{ duration: 0.55, repeat: Infinity, repeatType: "reverse" }}
-        className="inline-block w-[3px] h-[0.8em] bg-cyan-400 ml-1 align-middle rounded-sm"
-      />
+      <span className="animate-blink inline-block w-[3px] h-[0.8em] bg-cyan-400 ml-1 align-middle rounded-sm" />
     </span>
   );
 }
@@ -139,13 +135,6 @@ function LoopingTypewriter({ titles }: { titles: string[] }) {
 export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
   const containerRef = useRef<HTMLElement>(null);
   const { t, tx, locale } = useI18n();
-  const reduceMotion = useReducedMotion();
-  // TEMP DEBUG — useReducedMotion() vaut `null` côté serveur (pas de
-  // matchMedia en SSR) puis se résout côté client : afficher sa valeur brute
-  // sans ce garde-fou casse l'hydratation (le HTML serveur ne correspond plus
-  // au premier rendu client). À retirer avec le <p> de debug plus bas.
-  const [debugMounted, setDebugMounted] = useState(false);
-  useEffect(() => setDebugMounted(true), []);
   const canvasReady = useDeferredCanvasMount();
   const handleHashClick = useHashLinkClick();
   const { scrollYProgress } = useScroll({
@@ -161,7 +150,7 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
     <section
       ref={containerRef}
       id="accueil"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pb-24"
     >
       {/* 3D Background - Hidden on mobile for performance, montage différé desktop/tablette */}
       <div className="hidden sm:block">
@@ -199,34 +188,19 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
         >
           {/* Avatar */}
           <motion.div variants={itemVariants} className="mb-8 flex justify-center">
-            {/* Flottement doux en boucle — translateY uniquement (GPU-friendly),
-                désactivé sous prefers-reduced-motion. Distinct du fade+slide
-                d'entrée porté par le motion.div parent (variants). */}
-            <motion.div
-              animate={reduceMotion ? undefined : { y: [-14, 14, -14] }}
-              transition={
-                reduceMotion
-                  ? undefined
-                  : { duration: 3.5, repeat: Infinity, ease: "easeInOut" }
-              }
-            >
-              <Image
-                src="/hero-avatar.png"
-                alt="Thierno BAH"
-                width={240}
-                height={240}
-                priority
-                className="w-[160px] h-[160px] sm:w-[200px] sm:h-[200px] lg:w-[240px] lg:h-[240px] object-contain"
-              />
-            </motion.div>
+            <div className="animate-float">
+              <div className="animate-glow">
+                <Image
+                  src="/hero-avatar.png"
+                  alt="Thierno BAH"
+                  width={240}
+                  height={240}
+                  priority
+                  className="w-[160px] h-[160px] sm:w-[200px] sm:h-[200px] lg:w-[240px] lg:h-[240px] object-contain"
+                />
+              </div>
+            </div>
           </motion.div>
-
-          {/* TEMP DEBUG — à retirer une fois le diagnostic terminé */}
-          {debugMounted && (
-            <p style={{ color: "red", fontSize: 20 }}>
-              reduceMotion: {String(reduceMotion)}
-            </p>
-          )}
 
           {/* Title — looping typewriter */}
           <motion.h1
@@ -238,7 +212,7 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
 
           {/* Availability Badge */}
           {personalInfo.available && (
-            <motion.div variants={itemVariants} className="mb-10 sm:mb-12">
+            <motion.div variants={itemVariants} className="mb-6 sm:mb-8">
               <Badge
                 variant="outline"
                 className="px-4 py-2 text-sm border-green-500/30 bg-green-500/10 text-green-500 hover:bg-green-500/20"
@@ -285,27 +259,27 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
             </motion.div>
           </motion.div>
 
-        </motion.div>
-      </motion.div>
-
-      {/* Scroll indicator — remonté au-dessus du bandeau technos */}
-      <motion.div
-        className="absolute bottom-24 left-1/2 -translate-x-1/2 hidden sm:block"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.5, duration: 0.5 }}
-      >
-        <Floating duration={2} distance={8}>
-          <motion.button
-            onClick={() => window.scrollTo({ top: window.innerHeight, behavior: "smooth" })}
-            className="flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+          {/* Scroll indicator — en flux sous les CTA, ne peut jamais les chevaucher */}
+          <motion.div
+            className="mt-10 sm:mt-12 hidden sm:flex justify-center"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.5, duration: 0.5 }}
           >
-            <span className="text-xs">{t.hero.scroll}</span>
-            <ChevronDown className="w-5 h-5" />
-          </motion.button>
-        </Floating>
+            <Floating duration={2} distance={8}>
+              <motion.button
+                onClick={() => window.scrollTo({ top: window.innerHeight, behavior: "smooth" })}
+                className="flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <span className="text-xs">{t.hero.scroll}</span>
+                <ChevronDown className="w-5 h-5" />
+              </motion.button>
+            </Floating>
+          </motion.div>
+
+        </motion.div>
       </motion.div>
 
       {/* Bandeau technologies */}

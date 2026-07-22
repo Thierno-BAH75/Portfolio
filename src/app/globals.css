@@ -329,3 +329,51 @@ section[id] {
     scroll-behavior: auto;
   }
 }
+
+/* ========================================
+   ANIMATIONS HERO — CSS pur
+   Framer Motion a un bug non résolu avec repeat: Infinity sur ce projet
+   (animations en boucle qui ne démarrent jamais, confirmé en dev et en
+   prod, indépendant des dépendances) — remplacées par du CSS natif ici.
+   ======================================== */
+
+@keyframes float {
+  0%, 100% { transform: translateY(-10px); }
+  50% { transform: translateY(10px); }
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px 5px rgba(139, 92, 246, 0.25), 0 0 40px 10px rgba(34, 211, 238, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 30px 8px rgba(139, 92, 246, 0.4), 0 0 55px 15px rgba(34, 211, 238, 0.25);
+  }
+}
+.animate-glow {
+  border-radius: 50%;
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-blink,
+  .animate-glow {
+    animation: none;
+  }
+
+  .animate-glow {
+    box-shadow: 0 0 20px 5px rgba(139, 92, 246, 0.25), 0 0 40px 10px rgba(34, 211, 238, 0.15);
+  }
+}

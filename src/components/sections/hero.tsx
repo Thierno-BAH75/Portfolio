@@ -202,10 +202,12 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
             </div>
           </motion.div>
 
-          {/* Title — looping typewriter */}
+          {/* Title — looping typewriter. Toujours 1 seule ligne (whitespace-nowrap) :
+              min-h réserve la hauteur d'une ligne pour éviter tout CLS pendant
+              la frappe/rotation des titres. */}
           <motion.h1
             variants={itemVariants}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 min-h-[2.6em]"
+            className="text-sm sm:text-lg md:text-2xl lg:text-3xl font-bold mb-6 min-h-[1.3em] whitespace-nowrap"
           >
             <LoopingTypewriter key={locale} titles={t.hero.titles} />
           </motion.h1>

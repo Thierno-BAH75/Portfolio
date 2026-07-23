@@ -29,8 +29,8 @@ const fr = {
   hero: {
     titles: [
       "Ingénieur Sécurité Réseau & Système",
-      "Administrateur Infrastructure",
-      "Spécialiste Supervision & Automatisation",
+      "Administrateur Systèmes & Réseaux",
+      "Passionné DevOps & Infrastructure",
     ],
     viewProjects: "Voir mes projets",
     contact: "Me contacter",
@@ -1054,8 +1054,8 @@ const en: DeepDict<typeof fr> = {
   hero: {
     titles: [
       "Network & Systems Security Engineer",
-      "Infrastructure Administrator",
-      "Monitoring & Automation Specialist",
+      "Systems & Network Administrator",
+      "DevOps & Infrastructure Enthusiast",
     ],
     viewProjects: "View my projects",
     contact: "Get in touch",

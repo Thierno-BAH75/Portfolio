@@ -10,9 +10,9 @@ import { useEffect, useState } from "react";
 //
 // Deux variantes :
 // - "icon" (logo-icon*.png) : bouclier seul, utilisé par le footer.
-// - "full" (logo-full*.png) : bouclier + tagline "Ingénierie Systèmes &
-//   Réseaux" composités dans une seule image (texte figé en français, pas
-//   de traduction EN), utilisé par le header.
+// - "full" (logo-full*.png) : bouclier + nom "Thierno BAH" composités dans
+//   une seule image (texte figé, pas de traduction — nom propre), utilisé
+//   par le header.
 //
 // `mounted` évite un hydration mismatch : resolvedTheme n'est fiable qu'après
 // le premier rendu client — tant qu'on n'est pas monté, on garde le fichier

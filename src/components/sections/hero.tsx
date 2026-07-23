@@ -234,14 +234,19 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
             {personalInfo.name}
           </motion.h1>
 
-          {/* Availability Badge */}
+          {/* Availability Badge — padding/texte resserrés (px-4 py-2 text-sm
+              → px-3 py-1 text-xs) pour occuper moins de largeur, cohérent
+              avec le resserrement déjà fait ailleurs (nav, cluster header).
+              Texte lui-même laissé intact : personalInfo.seeking vient de
+              l'admin (Supabase, cf. src/lib/data.ts), pas un libellé statique
+              qu'on peut raccourcir sans y toucher depuis l'admin. */}
           {personalInfo.available && (
             <motion.div variants={itemVariants} className="mb-6 sm:mb-8">
               <Badge
                 variant="outline"
-                className="px-4 py-2 text-sm border-green-500/30 bg-green-500/10 text-green-500 hover:bg-green-500/20"
+                className="px-3 py-1 text-xs border-green-500/30 bg-green-500/10 text-green-500 hover:bg-green-500/20"
               >
-                <span className="relative flex h-2 w-2 mr-2">
+                <span className="relative flex h-2 w-2 mr-1.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                 </span>
@@ -250,7 +255,11 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
             </motion.div>
           )}
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons — size="default" (h-11 px-6 text-sm) au lieu de "lg"
+              (h-12 px-8 text-base) : rendu plus compact/aéré, cohérent avec
+              le resserrement déjà fait ailleurs (nav, cluster header). Restent
+              largement cliquables (44px de haut, bien au-dessus des cibles
+              tactiles recommandées). */}
           <motion.div
             variants={itemVariants}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
@@ -258,8 +267,8 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
             {/* Dégradé violet→cyan — Voir mes projets */}
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
-                size="lg"
-                className="w-full sm:w-auto min-w-[180px] bg-gradient-to-r from-violet-600 to-cyan-500 hover:from-violet-500 hover:to-cyan-400 text-white shadow-lg hover:shadow-[0_0_20px_rgba(139,92,246,0.45)]"
+                size="default"
+                className="w-full sm:w-auto min-w-[160px] bg-gradient-to-r from-violet-600 to-cyan-500 hover:from-violet-500 hover:to-cyan-400 text-white shadow-lg hover:shadow-[0_0_20px_rgba(139,92,246,0.45)]"
                 asChild
               >
                 <Link href="/projects">
@@ -272,8 +281,8 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
             {/* Violet — Me contacter */}
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
-                size="lg"
-                className="w-full sm:w-auto min-w-[180px] bg-violet-600 hover:bg-violet-500 text-white shadow-lg hover:shadow-[0_0_20px_rgba(139,92,246,0.4)]"
+                size="default"
+                className="w-full sm:w-auto min-w-[160px] bg-violet-600 hover:bg-violet-500 text-white shadow-lg hover:shadow-[0_0_20px_rgba(139,92,246,0.4)]"
                 asChild
               >
                 <Link href="/#contact" onClick={(e) => handleHashClick(e, "/#contact")}>

@@ -246,28 +246,29 @@ export function Header({
             naturellement un peu à gauche du centre exact — effet voulu (cf.
             xl:min-w sur le logo, qui borne cet écart sans le supprimer). */}
         <div className="grid grid-cols-[1fr_auto_1fr] items-center h-16 lg:h-20">
-          {/* Logo — colonne gauche. Icône + tagline "Ingénierie Systèmes &
-              Réseaux" désormais composités dans une seule image (logo-full*.png,
-              cf. useThemedLogoSrc) plutôt que icône + <span> séparés : texte
-              figé en français (pas de variante EN pour ce fichier). Hauteur
-              fixe + w-auto préserve le ratio du fichier source (542×236).
-              xl:min-w : le logo (plus étroit que l'ancien icône+texte HTML)
-              est nettement plus fin que le cluster d'actions à droite — dans
-              la grille [1fr_auto_1fr], une colonne gauche trop étroite pousse
-              la nav bien plus loin que "légèrement" à gauche du centre. Ce
-              plancher rapproche les deux colonnes latérales sans agrandir le
-              logo affiché (justify-self-start : l'espace en trop reste après
-              le logo, invisible). Scopé à xl: uniquement — en dessous de ce
-              seuil, la nav desktop est masquée et le cluster mobile/tablette
-              (repli à droite) a besoin de toute la place disponible ; un
-              plancher constant ici l'aurait fait déborder hors écran. */}
+          {/* Logo — colonne gauche. Icône + nom "Thierno BAH" composités dans
+              une seule image (logo-full*.png, cf. useThemedLogoSrc) plutôt
+              que icône + <span> séparés : texte figé (pas de traduction —
+              c'est un nom propre). Hauteur fixe + w-auto préserve le ratio
+              du fichier source (366×244).
+              xl:min-w : le logo (bien plus étroit que l'ancien icône+texte
+              HTML) est nettement plus fin que le cluster d'actions à droite —
+              dans la grille [1fr_auto_1fr], une colonne gauche trop étroite
+              pousse la nav bien plus loin que "légèrement" à gauche du
+              centre. Ce plancher rapproche les deux colonnes latérales sans
+              agrandir le logo affiché (justify-self-start : l'espace en trop
+              reste après le logo, invisible). Scopé à xl: uniquement — en
+              dessous de ce seuil, la nav desktop est masquée et le cluster
+              mobile/tablette (repli à droite) a besoin de toute la place
+              disponible ; un plancher constant ici l'aurait fait déborder
+              hors écran. */}
           <Link href="/" className="flex items-center pl-1 xl:min-w-[275px] justify-self-start">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Image
                 src={logoSrc}
-                alt="Thierno BAH — Ingénierie Systèmes & Réseaux"
-                width={542}
-                height={236}
+                alt="Thierno BAH"
+                width={366}
+                height={244}
                 priority
                 className="h-11 lg:h-14 w-auto object-contain"
               />

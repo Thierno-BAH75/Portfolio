@@ -5,21 +5,26 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-export function ThemeToggle() {
+// `compact` : variante resserrée pour le cluster d'actions desktop (header),
+// aligné sur le même esprit de compacité que la nav. Non utilisé côté
+// tablette/mobile, qui garde la taille par défaut.
+export function ThemeToggle({ compact = false }: { compact?: boolean }) {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
   const isDark = resolvedTheme === "dark";
+  const iconClass = compact ? "h-4 w-4" : "h-5 w-5";
 
   return (
     <Button
       variant="ghost"
       size="icon"
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="relative"
+      className={cn("relative", compact && "h-8 w-8")}
     >
       {mounted ? (
         <motion.div
@@ -29,13 +34,13 @@ export function ThemeToggle() {
           transition={{ duration: 0.2 }}
         >
           {isDark ? (
-            <Sun className="h-5 w-5" />
+            <Sun className={iconClass} />
           ) : (
-            <Moon className="h-5 w-5" />
+            <Moon className={iconClass} />
           )}
         </motion.div>
       ) : (
-        <span className="h-5 w-5" />
+        <span className={iconClass} />
       )}
       <span className="sr-only">Toggle theme</span>
     </Button>

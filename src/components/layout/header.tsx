@@ -22,7 +22,15 @@ function VSeparator() {
   return <span aria-hidden="true" className="h-5 w-px bg-border/40" />;
 }
 
-function SocialIcons({ socialLinks, size = 18 }: { socialLinks: SocialLink[]; size?: number }) {
+function SocialIcons({
+  socialLinks,
+  size = 18,
+  compact = false,
+}: {
+  socialLinks: SocialLink[];
+  size?: number;
+  compact?: boolean;
+}) {
   return (
     <>
       {socialLinks
@@ -35,7 +43,8 @@ function SocialIcons({ socialLinks, size = 18 }: { socialLinks: SocialLink[]; si
             rel="noopener noreferrer"
             aria-label={social.name}
             className={cn(
-              "p-2 text-muted-foreground transition-colors",
+              compact ? "p-1.5" : "p-2",
+              "text-muted-foreground transition-colors",
               social.icon === "github"
                 ? "hover:text-violet-400"
                 : "hover:text-cyan-400"
@@ -104,18 +113,24 @@ function AdminLoginButton({ compact = false }: { compact?: boolean }) {
       href="/admin/login"
       className={cn(
         "inline-flex items-center gap-1.5 rounded-full border border-violet-500/40 bg-violet-500/5 font-medium text-foreground/90 whitespace-nowrap transition-all hover:border-transparent hover:bg-gradient-to-r hover:from-violet-600 hover:to-cyan-500 hover:text-white hover:shadow-[0_0_14px_rgba(139,92,246,0.35)]",
-        compact ? "p-2" : "px-3 py-1.5 text-xs"
+        compact ? "p-2" : "px-2.5 py-1 text-xs"
       )}
       aria-label={t.header.login}
     >
-      <LogIn size={compact ? 16 : 14} />
+      <LogIn size={compact ? 16 : 13} />
       {!compact && t.header.login}
     </Link>
   );
 }
 
 // Bouton FR/EN — bascule instantanée, choix persisté en localStorage
-function LangToggle({ className }: { className?: string }) {
+function LangToggle({
+  className,
+  compact = false,
+}: {
+  className?: string;
+  compact?: boolean;
+}) {
   const { locale, t } = useI18n();
 
   return (
@@ -134,7 +149,8 @@ function LangToggle({ className }: { className?: string }) {
           onClick={() => setLocale(l)}
           aria-pressed={locale === l}
           className={cn(
-            "px-2 py-0.5 rounded-full uppercase transition-colors",
+            "rounded-full uppercase transition-colors",
+            compact ? "px-1.5 py-0.5" : "px-2 py-0.5",
             locale === l
               ? "bg-gradient-to-r from-violet-600 to-cyan-500 text-white"
               : "text-muted-foreground hover:text-foreground"
@@ -268,18 +284,20 @@ export function Header({
             })}
           </div>
 
-          {/* Actions — colonne droite : thème · langue | réseaux | badge dispo | connexion */}
-          <div className="hidden xl:flex items-center gap-3 pr-1 justify-self-end">
+          {/* Actions — colonne droite : thème · langue | réseaux | badge dispo | connexion.
+              Cluster resserré (mêmes esprit/valeurs que la nav) : gap-3→gap-2,
+              icônes et badge légèrement plus petits, paddings réduits. */}
+          <div className="hidden xl:flex items-center gap-2 pr-1 justify-self-end">
             {/* Séparateur de groupe nav ↔ actions — nettement plus visible que
                 les VSeparator internes (plus haut, plus opaque, marge dédiée
                 de chaque côté) pour bien lire la coupure entre les deux zones */}
             <span aria-hidden="true" className="h-6 w-px bg-border ml-4 mr-4" />
-            <ThemeToggle />
-            <LangToggle />
+            <ThemeToggle compact />
+            <LangToggle compact />
             <VSeparator />
-            <SocialIcons socialLinks={socialLinks} />
+            <SocialIcons socialLinks={socialLinks} size={16} compact />
             <VSeparator />
-            <AvailabilityBadge available={available} className="flex" short />
+            <AvailabilityBadge available={available} className="flex gap-1.5 px-2.5 py-1" short />
             <VSeparator />
             <AdminLoginButton />
           </div>

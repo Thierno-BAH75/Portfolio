@@ -186,8 +186,9 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
           animate="visible"
           className="max-w-4xl mx-auto text-center"
         >
-          {/* Avatar — mt-* : respire sous le header fixe (avant, trop collé). */}
-          <motion.div variants={itemVariants} className="mt-6 sm:mt-10 lg:mt-12 mb-8 flex justify-center">
+          {/* Avatar — mt-* : respire sous le header fixe (encore accru cette
+              passe, la précédente restait trop proche). */}
+          <motion.div variants={itemVariants} className="mt-10 sm:mt-14 lg:mt-16 mb-8 flex justify-center">
             <div className="animate-float">
               <div className="animate-glow">
                 <Image
@@ -202,26 +203,28 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
             </div>
           </motion.div>
 
-          {/* Nom — point d'ancrage visuel principal, h1 (le rôle animé juste en
-              dessous précise le poste mais n'est plus le titre de page). Chaîne
-              statique et courte : aucune réserve de hauteur nécessaire, pas de
-              risque de retour à la ligne (whitespace-nowrap en garde-fou). */}
-          <motion.h1
-            variants={itemVariants}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 sm:mb-3 whitespace-nowrap bg-gradient-to-r from-violet-500 to-cyan-400 bg-clip-text text-transparent"
-          >
-            {personalInfo.name}
-          </motion.h1>
-
-          {/* Rôle — looping typewriter. Toujours 1 seule ligne (whitespace-nowrap) :
-              min-h réserve la hauteur d'une ligne pour éviter tout CLS pendant
-              la frappe/rotation des titres. */}
+          {/* Rôle — bandeau "eyebrow" au-dessus du nom, looping typewriter.
+              Toujours 1 seule ligne (whitespace-nowrap) : min-h réserve la
+              hauteur d'une ligne pour éviter tout CLS pendant la frappe/
+              rotation des titres. */}
           <motion.p
             variants={itemVariants}
-            className="text-sm sm:text-lg md:text-2xl lg:text-3xl font-bold mb-6 min-h-[1.3em] whitespace-nowrap"
+            className="text-sm sm:text-lg md:text-2xl lg:text-3xl font-bold mb-2 sm:mb-3 min-h-[1.3em] whitespace-nowrap"
           >
             <LoopingTypewriter key={locale} titles={t.hero.titles} />
           </motion.p>
+
+          {/* Nom — point d'ancrage visuel principal, h1 (le rôle animé
+              au-dessus précise le poste mais n'est pas le titre sémantique
+              de la page). Chaîne statique et courte : aucune réserve de
+              hauteur nécessaire, pas de risque de retour à la ligne
+              (whitespace-nowrap en garde-fou). */}
+          <motion.h1
+            variants={itemVariants}
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 whitespace-nowrap bg-gradient-to-r from-violet-500 to-cyan-400 bg-clip-text text-transparent"
+          >
+            {personalInfo.name}
+          </motion.h1>
 
           {/* Availability Badge */}
           {personalInfo.available && (

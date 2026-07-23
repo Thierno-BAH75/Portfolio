@@ -150,7 +150,14 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
     <section
       ref={containerRef}
       id="accueil"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden pb-24"
+      // pt > pb (au lieu d'un pb seul) : le padding asymétrique décale le
+      // point de centrage de `items-center` vers le bas — un pb seul (sans
+      // pt) déplace au contraire ce point vers le HAUT (centrage calculé
+      // dans la boîte réduite par le padding, dont le bas est plus rogné
+      // que le haut). C'est ce qui donnait l'impression de contenu "collé"
+      // sous le header malgré les marges ajoutées sur l'avatar. pb reste
+      // suffisant pour ne pas chevaucher le bandeau technos en bas.
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 sm:pt-32 lg:pt-36 pb-16 sm:pb-20"
     >
       {/* 3D Background - Hidden on mobile for performance, montage différé desktop/tablette */}
       <div className="hidden sm:block">
@@ -186,9 +193,10 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
           animate="visible"
           className="max-w-4xl mx-auto text-center"
         >
-          {/* Avatar — mt-* : respire sous le header fixe (encore accru cette
-              passe, la précédente restait trop proche). */}
-          <motion.div variants={itemVariants} className="mt-10 sm:mt-14 lg:mt-16 mb-8 flex justify-center">
+          {/* Avatar — l'espace sous le header vient désormais du pt-* de la
+              section (positionnement global), plus fiable qu'un mt-* ad hoc
+              répété ici à chaque ajustement. */}
+          <motion.div variants={itemVariants} className="mb-8 flex justify-center">
             <div className="animate-float">
               <div className="animate-glow">
                 <Image

@@ -1,0 +1,50 @@
+<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="bg-nfc-light" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5f3ff"/>
+      <stop offset="100%" stop-color="#ecfeff"/>
+    </linearGradient>
+    <linearGradient id="stroke-nfc-light" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </linearGradient>
+    <radialGradient id="glowV-nfc-light" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowC-nfc-light" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0891b2" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#0891b2" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid-nfc-light" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="rgba(15,23,42,0.06)"/>
+    </pattern>
+  </defs>
+
+  <rect width="400" height="250" fill="url(#bg-nfc-light)"/>
+  <rect width="400" height="250" fill="url(#grid-nfc-light)"/>
+  <circle cx="130" cy="70" r="130" fill="url(#glowV-nfc-light)"/>
+  <circle cx="300" cy="190" r="130" fill="url(#glowC-nfc-light)"/>
+
+  <!-- badge NFC -->
+  <rect x="70" y="110" width="118" height="76" rx="10" stroke="url(#stroke-nfc-light)" stroke-width="2.5" fill="rgba(255,255,255,0.65)"/>
+  <circle cx="98" cy="138" r="10" fill="none" stroke="#0891b2" stroke-width="2"/>
+  <line x1="118" y1="128" x2="168" y2="128" stroke="rgba(15,23,42,0.32)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="118" y1="140" x2="160" y2="140" stroke="rgba(15,23,42,0.22)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="88" y1="164" x2="170" y2="164" stroke="rgba(15,23,42,0.16)" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- ondes sans-contact -->
+  <g stroke="#7c3aed" fill="none" stroke-linecap="round">
+    <path d="M206 90 a52 52 0 0 1 0 100" stroke-width="2.5" opacity="0.85"/>
+    <path d="M222 108 a30 30 0 0 1 0 64" stroke-width="2.5" opacity="0.7"/>
+    <path d="M238 126 a12 12 0 0 1 0 28" stroke-width="2.5" opacity="0.55"/>
+  </g>
+
+  <!-- cadenas de sécurité -->
+  <g transform="translate(266,86)">
+    <path d="M8 30 V20 a20 20 0 0 1 40 0 V30" fill="none" stroke="url(#stroke-nfc-light)" stroke-width="4" stroke-linecap="round"/>
+    <rect x="0" y="30" width="56" height="46" rx="8" fill="rgba(124,58,237,0.1)" stroke="url(#stroke-nfc-light)" stroke-width="3"/>
+    <circle cx="28" cy="50" r="5" fill="#0891b2"/>
+    <line x1="28" y1="55" x2="28" y2="64" stroke="#0891b2" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

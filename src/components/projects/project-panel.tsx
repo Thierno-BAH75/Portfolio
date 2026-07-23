@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
 import { useI18n } from "@/i18n";
 import { MarkdownContent, extractSummary } from "@/components/projects/markdown-content";
+import { useThemedCoverSrc } from "@/hooks/use-themed-cover-src";
 import type { Project } from "@/types";
 
 interface ProjectPanelProps {
@@ -23,6 +24,9 @@ export function ProjectPanel({ project, onClose }: ProjectPanelProps) {
   const { t, tx, locale } = useI18n();
   const panelRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  // Hook appelé inconditionnellement (règles des hooks) même si `project`
+  // est null quand le panneau est fermé — fallback "" alors ignoré.
+  const coverSrc = useThemedCoverSrc(project?.image ?? "");
 
   // Scroll bloqué, Échap pour fermer, focus trap basique dans le panneau,
   // focus initial sur le bouton de fermeture.
@@ -109,7 +113,7 @@ export function ProjectPanel({ project, onClose }: ProjectPanelProps) {
             {/* Cover */}
             <div className="relative aspect-[16/10] overflow-hidden">
               {/* eslint-disable-next-line @next/next/no-img-element -- SVG décoratif local */}
-              <img src={project.image} alt="" className="w-full h-full object-cover" />
+              <img src={coverSrc} alt="" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
             </div>
 

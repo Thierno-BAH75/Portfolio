@@ -17,6 +17,7 @@ import { useI18n } from "@/i18n";
 import { MarkdownContent } from "@/components/projects/markdown-content";
 import { ResultsGrid } from "@/components/projects/results-grid";
 import { ChallengesSection } from "@/components/projects/challenges-section";
+import { useThemedCoverSrc } from "@/hooks/use-themed-cover-src";
 import type { Project } from "@/types";
 
 function splitTitleForGradient(title: string) {
@@ -47,6 +48,7 @@ export function ProjectDetail({
 }) {
   const { t, tx, locale } = useI18n();
   const fade = useFadeProps();
+  const coverSrc = useThemedCoverSrc(project.image);
 
   // Best-effort, une fois par montage — l'anti-abus (cookie 24h/projet) est
   // géré côté serveur par la route elle-même.
@@ -116,7 +118,7 @@ export function ProjectDetail({
             <div className="relative aspect-[16/10] w-full mb-10 rounded-2xl border border-border/60 overflow-hidden shadow-[0_0_40px_rgba(139,92,246,0.12)]">
               {/* eslint-disable-next-line @next/next/no-img-element -- SVG décoratif local */}
               <img
-                src={project.image}
+                src={coverSrc}
                 alt=""
                 className="w-full h-full object-cover"
               />

@@ -1,0 +1,59 @@
+<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="bg-tok-light" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5f3ff"/>
+      <stop offset="100%" stop-color="#ecfeff"/>
+    </linearGradient>
+    <linearGradient id="stroke-tok-light" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </linearGradient>
+    <radialGradient id="glowV-tok-light" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowC-tok-light" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0891b2" stop-opacity="0.13"/>
+      <stop offset="100%" stop-color="#0891b2" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid-tok-light" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="rgba(15,23,42,0.06)"/>
+    </pattern>
+  </defs>
+
+  <rect width="400" height="250" fill="url(#bg-tok-light)"/>
+  <rect width="400" height="250" fill="url(#grid-tok-light)"/>
+  <circle cx="90" cy="60" r="130" fill="url(#glowV-tok-light)"/>
+  <circle cx="330" cy="200" r="130" fill="url(#glowC-tok-light)"/>
+
+  <!-- fenêtre terminal -->
+  <rect x="62" y="52" width="230" height="146" rx="10" stroke="url(#stroke-tok-light)" stroke-width="2.5" fill="rgba(255,255,255,0.65)"/>
+  <line x1="62" y1="78" x2="292" y2="78" stroke="rgba(15,23,42,0.16)" stroke-width="1.5"/>
+  <circle cx="78" cy="65" r="4" fill="#7c3aed"/>
+  <circle cx="92" cy="65" r="4" fill="#0891b2"/>
+  <circle cx="106" cy="65" r="4" fill="rgba(15,23,42,0.3)"/>
+
+  <!-- lignes de code -->
+  <g stroke="url(#stroke-tok-light)" stroke-width="3" stroke-linecap="round" opacity="0.9">
+    <line x1="80" y1="96" x2="150" y2="96"/>
+    <line x1="80" y1="112" x2="200" y2="112"/>
+    <line x1="80" y1="128" x2="120" y2="128"/>
+    <line x1="80" y1="144" x2="230" y2="144"/>
+    <line x1="80" y1="160" x2="170" y2="160"/>
+  </g>
+  <g stroke="rgba(15,23,42,0.3)" stroke-width="3" stroke-linecap="round">
+    <line x1="158" y1="96" x2="210" y2="96"/>
+    <line x1="128" y1="128" x2="205" y2="128"/>
+    <line x1="178" y1="160" x2="240" y2="160"/>
+  </g>
+  <rect x="80" y="172" width="10" height="14" fill="#0891b2"/>
+
+  <!-- téléphone bloqué (anti-spam) -->
+  <g transform="translate(312,88)">
+    <rect x="0" y="0" width="40" height="70" rx="9" fill="rgba(124,58,237,0.08)" stroke="url(#stroke-tok-light)" stroke-width="2.5"/>
+    <line x1="10" y1="12" x2="30" y2="12" stroke="rgba(15,23,42,0.3)" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="20" cy="58" r="3" fill="rgba(15,23,42,0.3)"/>
+    <circle cx="20" cy="34" r="20" fill="none" stroke="#0891b2" stroke-width="3"/>
+    <line x1="6" y1="20" x2="34" y2="48" stroke="#0891b2" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

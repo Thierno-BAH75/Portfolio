@@ -1,0 +1,78 @@
+<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="bg-std-light" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5f3ff"/>
+      <stop offset="100%" stop-color="#ecfeff"/>
+    </linearGradient>
+    <linearGradient id="stroke-std-light" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </linearGradient>
+    <radialGradient id="glowV-std-light" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowC-std-light" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0891b2" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#0891b2" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid-std-light" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="rgba(15,23,42,0.06)"/>
+    </pattern>
+  </defs>
+
+  <rect width="400" height="250" fill="url(#bg-std-light)"/>
+  <rect width="400" height="250" fill="url(#grid-std-light)"/>
+  <circle cx="90" cy="200" r="130" fill="url(#glowV-std-light)"/>
+  <circle cx="320" cy="50" r="140" fill="url(#glowC-std-light)"/>
+
+  <!-- 2 baies principales -->
+  <g stroke="url(#stroke-std-light)" stroke-width="2.5" fill="none">
+    <rect x="130" y="50" width="60" height="150" rx="7"/>
+    <rect x="210" y="50" width="60" height="150" rx="7"/>
+  </g>
+
+  <!-- unités serveur -->
+  <g stroke="rgba(15,23,42,0.35)" stroke-width="2" stroke-linecap="round">
+    <line x1="140" y1="66" x2="180" y2="66"/>
+    <line x1="140" y1="82" x2="180" y2="82"/>
+    <line x1="140" y1="98" x2="180" y2="98"/>
+    <line x1="140" y1="114" x2="180" y2="114"/>
+    <line x1="140" y1="130" x2="180" y2="130"/>
+    <line x1="140" y1="146" x2="180" y2="146"/>
+    <line x1="140" y1="162" x2="180" y2="162"/>
+    <line x1="140" y1="178" x2="180" y2="178"/>
+
+    <line x1="220" y1="66" x2="260" y2="66"/>
+    <line x1="220" y1="82" x2="260" y2="82"/>
+    <line x1="220" y1="98" x2="260" y2="98"/>
+    <line x1="220" y1="114" x2="260" y2="114"/>
+    <line x1="220" y1="130" x2="260" y2="130"/>
+    <line x1="220" y1="146" x2="260" y2="146"/>
+    <line x1="220" y1="162" x2="260" y2="162"/>
+    <line x1="220" y1="178" x2="260" y2="178"/>
+  </g>
+
+  <g fill="#0891b2">
+    <circle cx="183" cy="66" r="1.8"/>
+    <circle cx="183" cy="114" r="1.8"/>
+    <circle cx="183" cy="162" r="1.8"/>
+  </g>
+  <g fill="#7c3aed">
+    <circle cx="263" cy="82" r="1.8"/>
+    <circle cx="263" cy="130" r="1.8"/>
+    <circle cx="263" cy="178" r="1.8"/>
+  </g>
+
+  <!-- boucle de redondance (haute disponibilité) reliant les 2 baies -->
+  <path d="M190 40 C200 20 210 20 220 40" fill="none" stroke="url(#stroke-std-light)" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M190 210 C200 230 210 230 220 210" fill="none" stroke="url(#stroke-std-light)" stroke-width="2.5" stroke-linecap="round"/>
+  <polygon points="216,36 224,40 216,44" fill="#0891b2"/>
+  <polygon points="194,206 186,210 194,214" fill="#7c3aed"/>
+
+  <!-- petites tours satellites -->
+  <g stroke="url(#stroke-std-light)" stroke-width="2" fill="none" opacity="0.7">
+    <rect x="60" y="130" width="30" height="70" rx="5"/>
+    <rect x="310" y="110" width="30" height="90" rx="5"/>
+  </g>
+</svg>

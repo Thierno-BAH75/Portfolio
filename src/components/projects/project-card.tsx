@@ -6,6 +6,7 @@ import { Star, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { Project } from "@/types";
 import { useI18n } from "@/i18n";
+import { useThemedCoverSrc } from "@/hooks/use-themed-cover-src";
 
 interface ProjectCardProps {
   project: Project;
@@ -20,6 +21,7 @@ interface ProjectCardProps {
 export function ProjectCard({ project, onOpen, animateLayout }: ProjectCardProps) {
   const { t, tx } = useI18n();
   const cardRef = useRef<HTMLDivElement>(null);
+  const coverSrc = useThemedCoverSrc(project.image);
 
   const handleOpen = () => {
     if (cardRef.current) onOpen(project, cardRef.current);
@@ -68,7 +70,7 @@ export function ProjectCard({ project, onOpen, animateLayout }: ProjectCardProps
           <div className="relative aspect-[16/10] overflow-hidden bg-muted/30">
             {/* eslint-disable-next-line @next/next/no-img-element -- SVG décoratif local, remplacé plus tard par des captures */}
             <img
-              src={project.image}
+              src={coverSrc}
               alt=""
               loading="lazy"
               decoding="async"

@@ -1,0 +1,57 @@
+<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="bg-soc-light" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5f3ff"/>
+      <stop offset="100%" stop-color="#fdf4ff"/>
+    </linearGradient>
+    <linearGradient id="stroke-soc-light" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </linearGradient>
+    <radialGradient id="glowV-soc-light" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowC-soc-light" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0891b2" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#0891b2" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid-soc-light" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="rgba(15,23,42,0.06)"/>
+    </pattern>
+  </defs>
+
+  <rect width="400" height="250" fill="url(#bg-soc-light)"/>
+  <rect width="400" height="250" fill="url(#grid-soc-light)"/>
+  <circle cx="200" cy="60" r="140" fill="url(#glowV-soc-light)"/>
+  <circle cx="200" cy="220" r="120" fill="url(#glowC-soc-light)"/>
+
+  <!-- noeuds hexagonaux orbitant le bouclier -->
+  <g stroke="rgba(15,23,42,0.2)" stroke-width="1.5" fill="none">
+    <line x1="100" y1="70" x2="150" y2="95"/>
+    <line x1="300" y1="70" x2="250" y2="95"/>
+    <line x1="100" y1="190" x2="150" y2="165"/>
+    <line x1="300" y1="190" x2="250" y2="165"/>
+  </g>
+  <g stroke="url(#stroke-soc-light)" stroke-width="2" fill="rgba(124,58,237,0.08)">
+    <polygon points="100,58 112,65 112,79 100,86 88,79 88,65"/>
+    <polygon points="300,58 312,65 312,79 300,86 288,79 288,65"/>
+    <polygon points="100,178 112,185 112,199 100,206 88,199 88,185"/>
+    <polygon points="300,178 312,185 312,199 300,206 288,199 288,185"/>
+  </g>
+
+  <!-- bouclier central -->
+  <path d="M200 42 L252 62 V128 C252 168 228 192 200 206 C172 192 148 168 148 128 V62 Z"
+    fill="rgba(124,58,237,0.07)" stroke="url(#stroke-soc-light)" stroke-width="3"/>
+
+  <!-- ligne de scan horizontale -->
+  <line x1="150" y1="122" x2="250" y2="122" stroke="#0891b2" stroke-width="2" opacity="0.85"/>
+  <circle cx="250" cy="122" r="4" fill="#0891b2"/>
+
+  <!-- onde de surveillance interne au bouclier -->
+  <polyline points="162,150 178,150 186,132 198,168 208,140 218,150 236,150"
+    fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+
+  <!-- coche centrale -->
+  <path d="M184 92 L196 104 L218 80" fill="none" stroke="#1e1b4b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+</svg>

@@ -17,14 +17,14 @@ export function ThemeToggle({ compact = false }: { compact?: boolean }) {
   useEffect(() => setMounted(true), []);
 
   const isDark = resolvedTheme === "dark";
-  const iconClass = compact ? "h-4 w-4" : "h-5 w-5";
+  const iconClass = compact ? "h-3.5 w-3.5" : "h-5 w-5";
 
   return (
     <Button
       variant="ghost"
       size="icon"
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className={cn("relative", compact && "h-8 w-8")}
+      className={cn("relative", compact && "h-7 w-7")}
     >
       {mounted ? (
         <motion.div

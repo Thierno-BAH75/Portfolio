@@ -45,7 +45,7 @@ function SocialIcons({
             rel="noopener noreferrer"
             aria-label={social.name}
             className={cn(
-              compact ? "p-1.5" : "p-2",
+              compact ? "p-1" : "p-2",
               "text-muted-foreground transition-colors",
               social.icon === "github"
                 ? "hover:text-violet-400"
@@ -115,11 +115,11 @@ function AdminLoginButton({ compact = false }: { compact?: boolean }) {
       href="/admin/login"
       className={cn(
         "inline-flex items-center gap-1.5 rounded-full border border-violet-500/40 bg-violet-500/5 font-medium text-foreground/90 whitespace-nowrap transition-all hover:border-transparent hover:bg-gradient-to-r hover:from-violet-600 hover:to-cyan-500 hover:text-white hover:shadow-[0_0_14px_rgba(139,92,246,0.35)]",
-        compact ? "p-2" : "px-2.5 py-1 text-xs"
+        compact ? "p-2" : "px-2 py-0.5 text-xs"
       )}
       aria-label={t.header.login}
     >
-      <LogIn size={compact ? 16 : 13} />
+      <LogIn size={compact ? 16 : 12} />
       {!compact && t.header.login}
     </Link>
   );
@@ -152,7 +152,7 @@ function LangToggle({
           aria-pressed={locale === l}
           className={cn(
             "rounded-full uppercase transition-colors",
-            compact ? "px-1.5 py-0.5" : "px-2 py-0.5",
+            compact ? "px-1 py-0.5" : "px-2 py-0.5",
             locale === l
               ? "bg-gradient-to-r from-violet-600 to-cyan-500 text-white"
               : "text-muted-foreground hover:text-foreground"
@@ -177,10 +177,10 @@ export function Header({
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const visibleSections = useRef<Record<string, boolean>>({});
   const pathname = usePathname();
-  const { t, tx } = useI18n();
+  const { tx } = useI18n();
   const available = useRealtimeAvailability(personalInfo.available);
   const handleHashClick = useHashLinkClick();
-  const logoSrc = useThemedLogoSrc();
+  const logoSrc = useThemedLogoSrc("full");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -240,31 +240,45 @@ export function Header({
     >
       <nav className="w-full px-2 sm:px-4">
         {/* Logo à gauche / nav centrée / actions à droite.
-            [1fr_auto_1fr] : les colonnes latérales s'équilibrent,
-            la nav reste au centre exact du header. */}
+            [1fr_auto_1fr] : les colonnes latérales se partagent l'espace
+            restant une fois la nav et son propre contenu posés. Le logo étant
+            nettement plus étroit que le cluster d'actions, la nav penche
+            naturellement un peu à gauche du centre exact — effet voulu (cf.
+            xl:min-w sur le logo, qui borne cet écart sans le supprimer). */}
         <div className="grid grid-cols-[1fr_auto_1fr] items-center h-16 lg:h-20">
-          {/* Logo — colonne gauche. Icône seule (plus de nom à côté) + courte
-              tagline en dessous. whitespace-nowrap sur la tagline : la colonne
-              droite (plus large, cluster d'actions) force par le grid
-              [1fr_auto_1fr] cette colonne à rétrécir avant tout, ce qui la
-              casserait sur deux lignes sans ce garde-fou. */}
-          <Link href="/" className="flex flex-col items-start gap-0.5 pl-1 justify-self-start">
+          {/* Logo — colonne gauche. Icône + tagline "Ingénierie Systèmes &
+              Réseaux" désormais composités dans une seule image (logo-full*.png,
+              cf. useThemedLogoSrc) plutôt que icône + <span> séparés : texte
+              figé en français (pas de variante EN pour ce fichier). Hauteur
+              fixe + w-auto préserve le ratio du fichier source (542×236).
+              xl:min-w : le logo (plus étroit que l'ancien icône+texte HTML)
+              est nettement plus fin que le cluster d'actions à droite — dans
+              la grille [1fr_auto_1fr], une colonne gauche trop étroite pousse
+              la nav bien plus loin que "légèrement" à gauche du centre. Ce
+              plancher rapproche les deux colonnes latérales sans agrandir le
+              logo affiché (justify-self-start : l'espace en trop reste après
+              le logo, invisible). Scopé à xl: uniquement — en dessous de ce
+              seuil, la nav desktop est masquée et le cluster mobile/tablette
+              (repli à droite) a besoin de toute la place disponible ; un
+              plancher constant ici l'aurait fait déborder hors écran. */}
+          <Link href="/" className="flex items-center pl-1 xl:min-w-[275px] justify-self-start">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Image
                 src={logoSrc}
-                alt="Thierno BAH"
-                width={48}
-                height={48}
-                className="w-10 h-10 lg:w-12 lg:h-12 object-contain"
+                alt="Thierno BAH — Ingénierie Systèmes & Réseaux"
+                width={542}
+                height={236}
+                priority
+                className="h-11 lg:h-14 w-auto object-contain"
               />
             </motion.div>
-            <span className="text-[10px] lg:text-xs text-muted-foreground whitespace-nowrap leading-none">
-              {t.header.tagline}
-            </span>
           </Link>
 
-          {/* Nav — colonne centrale */}
-          <div className="hidden xl:flex items-center gap-3 justify-center">
+          {/* Nav — colonne centrale. gap-3.5 (vs gap-3 avant) : espacement plus
+              confortable entre les liens (plus aéré que le resserrement du
+              cluster d'actions à droite — les deux zones ont des besoins différents,
+              la nav se lit en continu, les actions sont des icônes isolées). */}
+          <div className="hidden xl:flex items-center gap-3.5 justify-center">
             {navItems.map((item) => {
               const active = isItemActive(item.href);
               return (
@@ -294,19 +308,21 @@ export function Header({
           </div>
 
           {/* Actions — colonne droite : thème · langue | réseaux | badge dispo | connexion.
-              Cluster resserré (mêmes esprit/valeurs que la nav) : gap-3→gap-2,
-              icônes et badge légèrement plus petits, paddings réduits. */}
-          <div className="hidden xl:flex items-center gap-2 pr-1 justify-self-end">
+              Encore resserré cette passe (au-delà du gap-3→gap-2 précédent) :
+              gap-2→gap-1.5, pr-1→pr-0.5, séparateur nav↔actions ml/mr-4→ml/mr-3,
+              icônes/badge/connexion légèrement réduits (cf. ThemeToggle,
+              SocialIcons, AdminLoginButton, badge ci-dessous). */}
+          <div className="hidden xl:flex items-center gap-1.5 pr-0.5 justify-self-end">
             {/* Séparateur de groupe nav ↔ actions — nettement plus visible que
                 les VSeparator internes (plus haut, plus opaque, marge dédiée
                 de chaque côté) pour bien lire la coupure entre les deux zones */}
-            <span aria-hidden="true" className="h-6 w-px bg-border ml-4 mr-4" />
+            <span aria-hidden="true" className="h-6 w-px bg-border ml-2 mr-2" />
             <ThemeToggle compact />
             <LangToggle compact />
             <VSeparator />
-            <SocialIcons socialLinks={socialLinks} size={16} compact />
+            <SocialIcons socialLinks={socialLinks} size={15} compact />
             <VSeparator />
-            <AvailabilityBadge available={available} className="flex gap-1.5 px-2.5 py-1" short />
+            <AvailabilityBadge available={available} className="flex gap-1 px-2 py-0.5" short />
             <VSeparator />
             <AdminLoginButton />
           </div>

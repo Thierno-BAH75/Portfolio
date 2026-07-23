@@ -381,7 +381,14 @@ export const navItems: NavItem[] = [
   { label: { fr: "Parcours", en: "Background" }, href: "/#experience" },
   { label: { fr: "Projets", en: "Projects" }, href: "/projects" },
   { label: { fr: "Outils", en: "Tools" }, href: "/outils" },
-  { label: { fr: "Certifications", en: "Certifications" }, href: "/certifications" },
+  {
+    label: { fr: "Certifications", en: "Certifications" },
+    // "Certifications" est de loin le libellé le plus long (94px à 12px) —
+    // seul responsable du débordement du header à 1280px une fois la nav
+    // resserrée. Raccourci uniquement dans la nav desktop (cf. NavItem.shortLabel).
+    shortLabel: { fr: "Certifs", en: "Certs" },
+    href: "/certifications",
+  },
   { label: { fr: "Veille", en: "Tech Watch" }, href: "/veille" },
   { label: { fr: "Contact", en: "Contact" }, href: "/#contact" },
 ];

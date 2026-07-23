@@ -239,7 +239,7 @@ export function Header({
           </Link>
 
           {/* Nav — colonne centrale */}
-          <div className="hidden xl:flex items-center gap-1 justify-center">
+          <div className="hidden xl:flex items-center gap-3 justify-center">
             {navItems.map((item) => {
               const active = isItemActive(item.href);
               return (
@@ -248,13 +248,13 @@ export function Header({
                   href={item.href}
                   onClick={(e) => handleHashClick(e, item.href)}
                   className={cn(
-                    "relative px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors group",
+                    "relative px-2 py-2 text-xs font-medium whitespace-nowrap transition-colors group",
                     active
                       ? "text-foreground"
                       : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  {tx(item.label)}
+                  {tx(item.shortLabel ?? item.label)}
                   <span
                     className={cn(
                       "absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-violet-500 to-cyan-400 transition-transform origin-left",

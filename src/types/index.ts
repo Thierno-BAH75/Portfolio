@@ -125,6 +125,11 @@ export interface SocialLink {
 
 export interface NavItem {
   label: Localized;
+  // Libellé compact utilisé dans la nav desktop (colonne centrale, contrainte
+  // en largeur) quand le libellé complet ferait déborder le header à 1280px.
+  // Le menu mobile continue d'afficher `label` en entier (pas de contrainte
+  // de largeur là-bas).
+  shortLabel?: Localized;
   href: string;
 }
 

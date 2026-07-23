@@ -247,7 +247,11 @@ export function About({
             <motion.div {...fade(0.33)} className="flex flex-wrap gap-3 pt-2">
               <Button
                 size="lg"
-                className="bg-foreground text-background hover:bg-foreground/85 shadow-lg"
+                // Fond clair (bg-muted + bordure) en light — le bg-foreground plein
+                // (quasi-noir en light, cf. tokens globals.css) restait figé sombre
+                // même hors thème sombre. En dark, rendu identique à l'existant
+                // (bg-foreground clair / texte foncé) via le variant dark:.
+                className="bg-muted text-foreground border border-border hover:bg-border shadow-lg dark:bg-foreground dark:text-background dark:border-transparent dark:hover:bg-foreground/85"
                 asChild
               >
                 <a href={cvHref} target="_blank" rel="noopener noreferrer">

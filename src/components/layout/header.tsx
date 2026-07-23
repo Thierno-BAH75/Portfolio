@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Github, Linkedin, LogIn } from "lucide-react";
@@ -13,6 +14,7 @@ import { useI18n, setLocale } from "@/i18n";
 import type { Locale, SocialLink } from "@/types";
 import { useRealtimeAvailability } from "@/hooks/use-realtime-availability";
 import { useHashLinkClick } from "@/hooks/use-hash-link-click";
+import { useThemedLogoSrc } from "@/hooks/use-themed-logo-src";
 
 // Sections de la home suivies par le scroll-spy (ordre du DOM)
 const SPY_SECTION_IDS = ["accueil", "about", "experience", "contact"];
@@ -175,9 +177,10 @@ export function Header({
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const visibleSections = useRef<Record<string, boolean>>({});
   const pathname = usePathname();
-  const { tx } = useI18n();
+  const { t, tx } = useI18n();
   const available = useRealtimeAvailability(personalInfo.available);
   const handleHashClick = useHashLinkClick();
+  const logoSrc = useThemedLogoSrc();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -240,18 +243,24 @@ export function Header({
             [1fr_auto_1fr] : les colonnes latérales s'équilibrent,
             la nav reste au centre exact du header. */}
         <div className="grid grid-cols-[1fr_auto_1fr] items-center h-16 lg:h-20">
-          {/* Logo — colonne gauche. whitespace-nowrap : la colonne droite (plus
-              large, avec le cluster d'actions) force par le grid [1fr_auto_1fr]
-              cette colonne à rétrécir avant tout, ce qui casserait le nom sur
-              deux lignes sans ce garde-fou. */}
-          <Link href="/" className="flex items-center pl-1 justify-self-start">
-            <motion.span
-              className="text-xl lg:text-2xl font-bold gradient-text whitespace-nowrap"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Thierno BAH
-            </motion.span>
+          {/* Logo — colonne gauche. Icône seule (plus de nom à côté) + courte
+              tagline en dessous. whitespace-nowrap sur la tagline : la colonne
+              droite (plus large, cluster d'actions) force par le grid
+              [1fr_auto_1fr] cette colonne à rétrécir avant tout, ce qui la
+              casserait sur deux lignes sans ce garde-fou. */}
+          <Link href="/" className="flex flex-col items-start gap-0.5 pl-1 justify-self-start">
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Image
+                src={logoSrc}
+                alt="Thierno BAH"
+                width={48}
+                height={48}
+                className="w-10 h-10 lg:w-12 lg:h-12 object-contain"
+              />
+            </motion.div>
+            <span className="text-[10px] lg:text-xs text-muted-foreground whitespace-nowrap leading-none">
+              {t.header.tagline}
+            </span>
           </Link>
 
           {/* Nav — colonne centrale */}

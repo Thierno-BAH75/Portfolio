@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Github, Linkedin } from "lucide-react";
 import { navItems } from "@/data/experience";
 import type { PersonalInfo } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/i18n";
+import { useThemedLogoSrc } from "@/hooks/use-themed-logo-src";
 import type { SocialLink } from "@/types";
 
 // 3 premiers liens d'ancre → colonne "Navigation", 3 derniers → colonne "Explorer"
@@ -37,6 +39,7 @@ export function Footer({
 }) {
   const currentYear = new Date().getFullYear();
   const { t, tx } = useI18n();
+  const logoSrc = useThemedLogoSrc();
 
   return (
     <footer className="border-t border-border/60 bg-muted/20">
@@ -45,7 +48,8 @@ export function Footer({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 text-center sm:text-left">
           {/* Identité */}
           <div className="flex flex-col items-center sm:items-start gap-3 sm:col-span-2 lg:col-span-1">
-            <Link href="/" className="font-bold text-lg gradient-text">
+            <Link href="/" className="flex items-center gap-2 font-bold text-lg gradient-text">
+              <Image src={logoSrc} alt="" width={32} height={32} className="w-7 h-7 object-contain" />
               {personalInfo.name}
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs">

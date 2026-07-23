@@ -21,6 +21,7 @@ const fr = {
     veille: "Veille techno | Thierno BAH",
   },
   header: {
+    tagline: "Ingénierie Systèmes & Réseaux",
     availableShort: "Disponible",
     availableFull: "Disponible · Alternance",
     contact: "Me contacter",
@@ -1046,6 +1047,7 @@ const en: DeepDict<typeof fr> = {
     veille: "Tech watch | Thierno BAH",
   },
   header: {
+    tagline: "Systems & Network Engineering",
     availableShort: "Available",
     availableFull: "Available · Work-study",
     contact: "Get in touch",

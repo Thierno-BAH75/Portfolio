@@ -157,7 +157,10 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
       // que le haut). C'est ce qui donnait l'impression de contenu "collé"
       // sous le header malgré les marges ajoutées sur l'avatar. pb reste
       // suffisant pour ne pas chevaucher le bandeau technos en bas.
-      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 sm:pt-32 lg:pt-36 pb-16 sm:pb-20"
+      // pt réduit d'un cran (24/32/36 → 20/28/32) : ajustement fin pour
+      // remonter légèrement l'avatar, sans revenir aux valeurs bien plus
+      // petites d'avant ces sessions de repositionnement.
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 sm:pt-28 lg:pt-32 pb-16 sm:pb-20"
     >
       {/* 3D Background - Hidden on mobile for performance, montage différé desktop/tablette */}
       <div className="hidden sm:block">
@@ -239,9 +242,11 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
               avec le resserrement déjà fait ailleurs (nav, cluster header).
               Texte lui-même laissé intact : personalInfo.seeking vient de
               l'admin (Supabase, cf. src/lib/data.ts), pas un libellé statique
-              qu'on peut raccourcir sans y toucher depuis l'admin. */}
+              qu'on peut raccourcir sans y toucher depuis l'admin.
+              mb-8/10 (au lieu de 6/8) : un peu plus d'air avant les CTA,
+              qui descendent légèrement en conséquence. */}
           {personalInfo.available && (
-            <motion.div variants={itemVariants} className="mb-6 sm:mb-8">
+            <motion.div variants={itemVariants} className="mb-8 sm:mb-10">
               <Badge
                 variant="outline"
                 className="px-3 py-1 text-xs border-green-500/30 bg-green-500/10 text-green-500 hover:bg-green-500/20"
@@ -292,9 +297,12 @@ export function Hero({ personalInfo }: { personalInfo: PersonalInfo }) {
             </motion.div>
           </motion.div>
 
-          {/* Scroll indicator — en flux sous les CTA, ne peut jamais les chevaucher */}
+          {/* Scroll indicator — en flux sous les CTA, ne peut jamais les chevaucher.
+              mt-6/7 (au lieu de 10/12) : reprend l'espace donné au badge
+              ci-dessus, pour tenir sans clipper sur les hauteurs courtes
+              (720px) une fois les CTA descendus. */}
           <motion.div
-            className="mt-10 sm:mt-12 hidden sm:flex justify-center"
+            className="mt-6 sm:mt-7 hidden sm:flex justify-center"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.5, duration: 0.5 }}

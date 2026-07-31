@@ -231,12 +231,19 @@ const fr = {
     titleGradient: "ensemble",
     subtitle:
       "Vous avez un projet en tête ? N'hésitez pas à me contacter. Je serai ravi de discuter de vos idées.",
-    // CTA du teaser home (src/components/sections/contact.tsx) vers /contact —
-    // même libellé que header.contact/hero.contact/about.contact (convention
-    // du dictionnaire : dupliquer la chaîne par section plutôt que de
-    // référencer une autre clé).
-    cta: "Me contacter",
     emailLabel: "Email",
+    // phoneLabel/locationLabel : bulles d'info du teaser home (Email/
+    // Téléphone/Localisation) — location vient de personalInfo.location
+    // (Localized, cf. tx()), à ne pas confondre avec about.locationLabel/
+    // Value qui sont des chaînes statiques distinctes.
+    phoneLabel: "Téléphone",
+    locationLabel: "Localisation",
+    // Bloc CTA "Prêt à..." du teaser home — remplace l'ancien bouton nu +
+    // légende responseTime (qui reste utilisée telle quelle sur /contact).
+    ctaTitle: "Prêt à sécuriser votre infrastructure ?",
+    ctaSubtitle:
+      "Toujours en veille, disponible dès septembre 2026 pour rejoindre votre équipe.",
+    sendMessage: "Envoyer un message",
     quickTitle: "Contact rapide",
     quickAvailability: "Disponible dès septembre 2026",
     responseTime: "Prêt à en discuter dès maintenant",
@@ -1261,8 +1268,13 @@ const en: DeepDict<typeof fr> = {
     titleGradient: "together",
     subtitle:
       "Have a project in mind? Feel free to reach out — I'd be happy to discuss your ideas.",
-    cta: "Get in touch",
     emailLabel: "Email",
+    phoneLabel: "Phone",
+    locationLabel: "Location",
+    ctaTitle: "Ready to secure your infrastructure?",
+    ctaSubtitle:
+      "Always staying curious, available from September 2026 to join your team.",
+    sendMessage: "Send a message",
     quickTitle: "Quick contact",
     quickAvailability: "Available from September 2026",
     responseTime: "Ready to talk right now",

@@ -176,9 +176,14 @@ export function ChatWidget() {
               layout: { duration: 0.3, ease: [0.22, 1, 0.36, 1] },
             }}
             className={cn(
-              "fixed z-[92] flex flex-col overflow-hidden bg-card border border-border/60 shadow-2xl",
+              // Fond semi-transparent + flou (verre dépoli) plutôt qu'un
+              // bg-card plein, bordure fine teintée violet (au lieu du gris
+              // neutre border-border) et ombre douce cohérente avec le
+              // signature glow déjà utilisé sur les cartes du site (cf.
+              // ContactCard) — remplace le shadow-2xl trop appuyé d'origine.
+              "fixed z-[92] flex flex-col overflow-hidden bg-card/95 backdrop-blur-xl border border-violet-500/30 shadow-[0_8px_30px_rgba(139,92,246,0.12),0_0_20px_rgba(34,211,238,0.06)]",
               // Mobile : plein écran dans les deux cas
-              "inset-0 sm:rounded-2xl",
+              "inset-0 sm:rounded-xl",
               expanded
                 ? // Desktop agrandi : grande fenêtre centrée (inset-0 + m-auto)
                   "sm:inset-0 sm:m-auto sm:w-[min(900px,90vw)] sm:h-[min(700px,80vh)]"
@@ -187,7 +192,7 @@ export function ChatWidget() {
             )}
           >
             {/* En-tête */}
-            <div className="flex items-center gap-3 px-4 py-3 border-b border-border/60 bg-gradient-to-r from-violet-600/15 to-cyan-500/15">
+            <div className="flex items-center gap-3 px-4 py-3 border-b border-violet-500/20 bg-gradient-to-r from-violet-600/15 to-cyan-500/15">
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-cyan-500 text-white shrink-0">
                 <MessageCircle size={17} />
               </span>
@@ -239,14 +244,19 @@ export function ChatWidget() {
                 >
                   <div
                     className={cn(
-                      "max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed",
+                      // Fond translucide + flou (même langage que le
+                      // conteneur, en un peu plus transparent) plutôt qu'un
+                      // fond plein ; bordure fine teintée + ombre légère.
+                      // Différenciation utilisateur/assistant : alignement
+                      // (déjà en place) + accent violet vs cyan.
+                      "max-w-[85%] rounded-xl px-4 py-3 text-sm leading-relaxed shadow-sm backdrop-blur-md",
                       // En agrandi : bulles plus larges en absolu (~630px) et padding plus confortable
-                      expanded && "sm:max-w-[70%] sm:px-4 sm:py-3",
+                      expanded && "sm:max-w-[70%] sm:px-5 sm:py-3.5",
                       m.role === "user"
-                        ? "bg-gradient-to-br from-violet-600 to-cyan-600 text-white rounded-br-md whitespace-pre-wrap"
+                        ? "bg-gradient-to-br from-violet-600/80 to-cyan-600/80 border border-white/15 text-white rounded-br-md whitespace-pre-wrap"
                         : m.isError
                           ? "bg-red-500/10 border border-red-500/30 text-red-400 rounded-bl-md whitespace-pre-wrap"
-                          : "bg-muted/70 text-foreground rounded-bl-md"
+                          : "bg-muted/80 border border-cyan-400/20 text-foreground rounded-bl-md"
                     )}
                   >
                     {/* Réponses de l'assistant : rendu Markdown léger (gras,
@@ -264,7 +274,7 @@ export function ChatWidget() {
               {/* Indicateur « écrit... » */}
               {loading && (
                 <div className="flex justify-start">
-                  <div className="flex items-center gap-2 rounded-2xl rounded-bl-md bg-muted/70 px-3.5 py-2.5 text-sm text-muted-foreground">
+                  <div className="flex items-center gap-2 rounded-xl rounded-bl-md bg-muted/80 backdrop-blur-md border border-cyan-400/20 px-4 py-3 text-sm text-muted-foreground shadow-sm">
                     <span className="flex gap-1" aria-hidden="true">
                       {[0, 1, 2].map((d) => (
                         <motion.span
@@ -301,7 +311,7 @@ export function ChatWidget() {
             <form
               onSubmit={onSubmit}
               className={cn(
-                "flex items-center gap-2 border-t border-border/60 px-3 py-3",
+                "flex items-center gap-2 border-t border-violet-500/20 px-3 py-3",
                 expanded && "sm:px-6 sm:py-4"
               )}
             >
@@ -313,13 +323,13 @@ export function ChatWidget() {
                 placeholder={t.chat.placeholder}
                 maxLength={500}
                 aria-label={t.chat.placeholder}
-                className="flex-1 rounded-lg border border-border/60 bg-background/70 px-3.5 py-2.5 text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:border-violet-500/60 focus:ring-1 focus:ring-violet-500/30 transition-all"
+                className="flex-1 rounded-md border border-border/60 bg-background/60 backdrop-blur-sm px-3.5 py-2.5 text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:border-violet-500/60 focus:ring-1 focus:ring-violet-500/30 transition-all"
               />
               <button
                 type="submit"
                 disabled={loading || !input.trim()}
                 aria-label={t.chat.send}
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-violet-600 to-cyan-500 text-white disabled:opacity-50 hover:shadow-[0_0_16px_rgba(139,92,246,0.4)] transition-all"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-gradient-to-br from-violet-600 to-cyan-500 text-white disabled:opacity-50 hover:shadow-[0_0_16px_rgba(139,92,246,0.4)] transition-all"
               >
                 <Send size={16} />
               </button>

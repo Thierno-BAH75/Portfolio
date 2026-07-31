@@ -8,6 +8,7 @@ import {
   Send,
   Mail,
   Phone,
+  Check,
   CheckCircle,
   AlertCircle,
   Github,
@@ -337,78 +338,135 @@ export function ContactPageClient({
             )}
           </ContactCard>
 
-          {/* Contact rapide */}
-          <ContactCard reduceMotion={reduceMotion} delay={0.1} className="lg:col-span-2">
-            <div className="flex flex-col gap-6 h-full">
-              <h3 className="font-semibold text-lg">{t.contact.quickTitle}</h3>
+          {/* Colonne droite : contact rapide + disponibilité + services,
+              empilées dans un seul item de grille (lg:col-span-2) — plutôt
+              que 3 ContactCard directement enfants de la grille, ce qui les
+              ferait repartir de la colonne 1 sur leurs lignes suivantes. */}
+          <div className="lg:col-span-2 flex flex-col gap-6 lg:gap-8">
+            {/* Contact rapide */}
+            <ContactCard reduceMotion={reduceMotion} delay={0.1}>
+              <div className="flex flex-col gap-6 h-full">
+                <h3 className="font-semibold text-lg">{t.contact.quickTitle}</h3>
 
-              {personalInfo.available && (
-                <div className="space-y-2">
-                  <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-green-500/30 bg-green-500/10 text-xs font-medium text-green-500 w-fit">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+                {personalInfo.available && (
+                  <div className="space-y-2">
+                    <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-green-500/30 bg-green-500/10 text-xs font-medium text-green-500 w-fit">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+                      </span>
+                      {t.header.availableFull}
                     </span>
-                    {t.header.availableFull}
-                  </span>
-                  <p className="text-xs text-muted-foreground">
-                    {t.contact.quickAvailability}
-                  </p>
+                    <p className="text-xs text-muted-foreground">
+                      {t.contact.quickAvailability}
+                    </p>
+                  </div>
+                )}
+
+                <div className="flex flex-col gap-3 text-sm">
+                  <a
+                    href={`mailto:${personalInfo.email}`}
+                    className="flex items-center gap-2.5 text-muted-foreground hover:text-cyan-400 transition-colors"
+                  >
+                    <Mail size={16} className="text-cyan-400 shrink-0" />
+                    <span className="font-medium text-foreground break-all">
+                      {personalInfo.email}
+                    </span>
+                  </a>
+                  <a
+                    href={PHONE_HREF}
+                    className="flex items-center gap-2.5 text-muted-foreground hover:text-violet-400 transition-colors"
+                  >
+                    <Phone size={16} className="text-violet-400 shrink-0" />
+                    <span className="font-medium text-foreground">
+                      {personalInfo.phone}
+                    </span>
+                  </a>
                 </div>
-              )}
 
-              <div className="flex flex-col gap-3 text-sm">
-                <a
-                  href={`mailto:${personalInfo.email}`}
-                  className="flex items-center gap-2.5 text-muted-foreground hover:text-cyan-400 transition-colors"
-                >
-                  <Mail size={16} className="text-cyan-400 shrink-0" />
-                  <span className="font-medium text-foreground break-all">
-                    {personalInfo.email}
-                  </span>
-                </a>
-                <a
-                  href={PHONE_HREF}
-                  className="flex items-center gap-2.5 text-muted-foreground hover:text-violet-400 transition-colors"
-                >
-                  <Phone size={16} className="text-violet-400 shrink-0" />
-                  <span className="font-medium text-foreground">
-                    {personalInfo.phone}
-                  </span>
-                </a>
+                <div className="flex items-center gap-3">
+                  {socialLinks
+                    .filter((social) => social.icon === "github" || social.icon === "linkedin")
+                    .map((social) => (
+                      <a
+                        key={social.name}
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={social.name}
+                        className={cn(
+                          "p-2.5 rounded-lg border border-border/60 text-muted-foreground transition-colors",
+                          social.icon === "github"
+                            ? "hover:text-violet-400 hover:border-violet-500/50"
+                            : "hover:text-cyan-400 hover:border-cyan-400/50"
+                        )}
+                      >
+                        {social.icon === "github" ? (
+                          <Github size={18} />
+                        ) : (
+                          <Linkedin size={18} />
+                        )}
+                      </a>
+                    ))}
+                </div>
+
+                <p className="text-sm text-muted-foreground mt-auto pt-2 border-t border-border/60">
+                  {t.contact.responseTime}
+                </p>
               </div>
+            </ContactCard>
 
-              <div className="flex items-center gap-3">
-                {socialLinks
-                  .filter((social) => social.icon === "github" || social.icon === "linkedin")
-                  .map((social) => (
-                    <a
-                      key={social.name}
-                      href={social.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={social.name}
-                      className={cn(
-                        "p-2.5 rounded-lg border border-border/60 text-muted-foreground transition-colors",
-                        social.icon === "github"
-                          ? "hover:text-violet-400 hover:border-violet-500/50"
-                          : "hover:text-cyan-400 hover:border-cyan-400/50"
-                      )}
-                    >
-                      {social.icon === "github" ? (
-                        <Github size={18} />
-                      ) : (
-                        <Linkedin size={18} />
-                      )}
-                    </a>
+            {/* Disponibilité */}
+            <ContactCard reduceMotion={reduceMotion} delay={0.15}>
+              <div className="flex flex-col gap-4">
+                <h3 className="font-semibold text-lg">{t.contact.availability.title}</h3>
+                <div className="flex flex-col gap-2.5 text-sm">
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="text-muted-foreground">
+                      {t.contact.availability.weekdays}
+                    </span>
+                    <span className="font-medium text-foreground">
+                      {t.contact.availability.weekdaysHours}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="text-muted-foreground">
+                      {t.contact.availability.saturday}
+                    </span>
+                    <span className="font-medium text-foreground">
+                      {t.contact.availability.saturdayHours}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="text-muted-foreground">
+                      {t.contact.availability.sunday}
+                    </span>
+                    <span className="font-medium text-foreground">
+                      {t.contact.availability.sundayHours}
+                    </span>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground pt-3 border-t border-border/60">
+                  {t.contact.availability.guarantee}
+                </p>
+              </div>
+            </ContactCard>
+
+            {/* Services disponibles */}
+            <ContactCard reduceMotion={reduceMotion} delay={0.2}>
+              <div className="flex flex-col gap-4">
+                <h3 className="font-semibold text-lg">{t.contact.services.title}</h3>
+                <ul className="flex flex-col gap-2.5 text-sm">
+                  {t.contact.services.items.map((item) => (
+                    <li key={item} className="flex items-center gap-2.5 text-foreground">
+                      <Check size={16} className="text-cyan-400 shrink-0" />
+                      {item}
+                    </li>
                   ))}
+                </ul>
               </div>
-
-              <p className="text-sm text-muted-foreground mt-auto pt-2 border-t border-border/60">
-                {t.contact.responseTime}
-              </p>
-            </div>
-          </ContactCard>
+            </ContactCard>
+          </div>
         </div>
       </div>
     </div>

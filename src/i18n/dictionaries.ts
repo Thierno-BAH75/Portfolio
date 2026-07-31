@@ -248,6 +248,29 @@ const fr = {
     quickTitle: "Contact rapide",
     quickAvailability: "Disponible dès septembre 2026",
     responseTime: "Prêt à en discuter dès maintenant",
+    // Cartes "Disponibilité" et "Services disponibles" — page /contact,
+    // colonne droite, sous la carte "Contact rapide". Contenu statique
+    // (horaires/services), pas de source Supabase.
+    availability: {
+      title: "Disponibilité",
+      weekdays: "Lundi - Vendredi",
+      weekdaysHours: "9h00 - 18h00",
+      saturday: "Samedi",
+      saturdayHours: "10h00 - 16h00",
+      sunday: "Dimanche",
+      sundayHours: "Fermé",
+      guarantee: "Réponse sous 24h garantie",
+    },
+    services: {
+      title: "Services disponibles",
+      items: [
+        "Audit de sécurité",
+        "Tests d'intrusion",
+        "Formation cybersécurité",
+        "Consultation stratégique",
+        "Réponse aux incidents",
+      ],
+    },
     form: {
       firstName: "Prénom",
       firstNamePlaceholder: "Votre prénom",
@@ -1279,6 +1302,26 @@ const en: DeepDict<typeof fr> = {
     quickTitle: "Quick contact",
     quickAvailability: "Available from September 2026",
     responseTime: "Ready to talk right now",
+    availability: {
+      title: "Availability",
+      weekdays: "Monday - Friday",
+      weekdaysHours: "9:00 AM - 6:00 PM",
+      saturday: "Saturday",
+      saturdayHours: "10:00 AM - 4:00 PM",
+      sunday: "Sunday",
+      sundayHours: "Closed",
+      guarantee: "24h response guaranteed",
+    },
+    services: {
+      title: "Available services",
+      items: [
+        "Security audit",
+        "Penetration testing",
+        "Cybersecurity training",
+        "Strategic consulting",
+        "Incident response",
+      ],
+    },
     form: {
       firstName: "First name",
       firstNamePlaceholder: "Your first name",

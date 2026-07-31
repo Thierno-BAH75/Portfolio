@@ -206,6 +206,11 @@ const fr = {
       contract: "CDD",
     },
     seekingPlaceholder: "Recherche d'alternance en cours",
+    // Note de chevauchement affichée uniquement sur la carte Hôpital
+    // Franco-Britannique (colonne Professionnel) — cf. ExperienceCard dans
+    // experience.tsx, match sur exp.company. Statique : pas de champ dédié
+    // en base pour ce cas ponctuel.
+    overlapNote: "En alternance pendant le BTS SIO puis la Licence Pro MRIT",
   },
   certifications: {
     eyebrow: "Certifications",
@@ -1274,6 +1279,7 @@ const en: DeepDict<typeof fr> = {
       contract: "Fixed-term",
     },
     seekingPlaceholder: "Currently seeking a work-study role",
+    overlapNote: "Completed as a work-study track alongside the BTS SIO, then the MRIT Bachelor's",
   },
   certifications: {
     eyebrow: "Certifications",

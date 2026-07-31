@@ -9,6 +9,7 @@ import {
   MapPin,
   ChevronDown,
   Sparkles,
+  Link2,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { SectionBackground } from "@/components/ui/section-background";
@@ -16,7 +17,6 @@ import { formatDate, cn } from "@/lib/utils";
 import type { Education, Experience as ExperienceType } from "@/types";
 import { useI18n } from "@/i18n";
 
-const VISIBLE_ACHIEVEMENTS = 2;
 // Colonne professionnelle tronquée par défaut : les postes les plus récents
 // suffisent à donner le ton, le reste est derrière « Voir plus ».
 const VISIBLE_EXPERIENCES = 3;
@@ -101,6 +101,7 @@ function TimelineDot() {
 function EducationCard({ edu, index }: { edu: Education; index: number }) {
   const fade = useFadeProps();
   const { t, tx } = useI18n();
+  const [expanded, setExpanded] = useState(false);
 
   return (
     <motion.div className="relative" {...fade(index * 0.1)}>
@@ -144,8 +145,32 @@ function EducationCard({ edu, index }: { edu: Education; index: number }) {
             {tx(edu.note)}
           </p>
         )}
+        {/* Résumé court par défaut (line-clamp-2) — hauteur de base cohérente
+            avec ExperienceCard, peu importe la longueur réelle de la
+            description derrière. */}
         {edu.description && (
-          <p className="text-sm text-muted-foreground mt-3">{tx(edu.description)}</p>
+          <>
+            <p
+              className={cn(
+                "text-sm text-muted-foreground mt-3",
+                !expanded && "line-clamp-2"
+              )}
+            >
+              {tx(edu.description)}
+            </p>
+            <button
+              type="button"
+              onClick={() => setExpanded((v) => !v)}
+              aria-expanded={expanded}
+              className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors"
+            >
+              {expanded ? t.experience.seeLess : t.experience.seeMore}
+              <ChevronDown
+                size={14}
+                className={cn("transition-transform", expanded && "rotate-180")}
+              />
+            </button>
+          </>
         )}
       </div>
     </motion.div>
@@ -165,8 +190,9 @@ function ExperienceCard({
   const [expanded, setExpanded] = useState(false);
 
   const achievements = tx(exp.achievements);
-  const visible = achievements.slice(0, VISIBLE_ACHIEVEMENTS);
-  const hidden = achievements.slice(VISIBLE_ACHIEVEMENTS);
+  // Chevauchement d'alternance ponctuel (BTS SIO puis Licence Pro MRIT) —
+  // propre à cette expérience précise, pas un champ générique en base.
+  const isOverlapping = exp.company === "Hôpital Franco-Britannique";
 
   return (
     <motion.div className="relative" {...fade(index * 0.1)}>
@@ -195,66 +221,67 @@ function ExperienceCard({
           <MapPin size={13} />
           {exp.location}
         </p>
-
-        {/* Points clés : 2 visibles, le reste derrière « Voir plus » */}
-        <ul className="mt-3 space-y-1.5 text-sm">
-          {visible.map((achievement) => (
-            <li key={achievement} className="flex items-start gap-2 text-muted-foreground">
-              <span className="text-cyan-400 mt-0.5">•</span>
-              <span>{achievement}</span>
-            </li>
-          ))}
-        </ul>
-        {hidden.length > 0 && (
-          <>
-            <AnimatePresence initial={false}>
-              {expanded && (
-                <motion.div
-                  className="overflow-hidden"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: reduce ? 0 : 0.3 }}
-                >
-                  <ul className="mt-1.5 space-y-1.5 text-sm">
-                    {hidden.map((achievement) => (
-                      <li
-                        key={achievement}
-                        className="flex items-start gap-2 text-muted-foreground"
-                      >
-                        <span className="text-cyan-400 mt-0.5">•</span>
-                        <span>{achievement}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  {/* Ligne de résultat, mise à part des puces par un filet fin */}
-                  {exp.impact && (
-                    <p className="mt-3 pt-3 border-t border-border/60 flex items-start gap-2 text-sm font-medium">
-                      <span className="text-violet-400 mt-0.5" aria-hidden="true">
-                        →
-                      </span>
-                      <span className="bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
-                        {tx(exp.impact)}
-                      </span>
-                    </p>
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
-            <button
-              type="button"
-              onClick={() => setExpanded((v) => !v)}
-              aria-expanded={expanded}
-              className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors"
-            >
-              {expanded ? t.experience.seeLess : `${t.experience.seeMore} (${hidden.length})`}
-              <ChevronDown
-                size={14}
-                className={cn("transition-transform", expanded && "rotate-180")}
-              />
-            </button>
-          </>
+        {isOverlapping && (
+          <p className="flex items-center gap-1.5 text-xs text-muted-foreground/80 mt-1.5">
+            <Link2 size={12} className="shrink-0" />
+            {t.experience.overlapNote}
+          </p>
         )}
+
+        {/* Résumé court par défaut (line-clamp-2) — hauteur de base cohérente
+            avec EducationCard ; achievements + impact derrière « Voir plus ». */}
+        <p
+          className={cn(
+            "text-sm text-muted-foreground mt-3",
+            !expanded && "line-clamp-2"
+          )}
+        >
+          {tx(exp.description)}
+        </p>
+
+        <AnimatePresence initial={false}>
+          {expanded && (
+            <motion.div
+              className="overflow-hidden"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: reduce ? 0 : 0.3 }}
+            >
+              <ul className="mt-3 space-y-1.5 text-sm">
+                {achievements.map((achievement) => (
+                  <li key={achievement} className="flex items-start gap-2 text-muted-foreground">
+                    <span className="text-cyan-400 mt-0.5">•</span>
+                    <span>{achievement}</span>
+                  </li>
+                ))}
+              </ul>
+              {/* Ligne de résultat, mise à part des puces par un filet fin */}
+              {exp.impact && (
+                <p className="mt-3 pt-3 border-t border-border/60 flex items-start gap-2 text-sm font-medium">
+                  <span className="text-violet-400 mt-0.5" aria-hidden="true">
+                    →
+                  </span>
+                  <span className="bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
+                    {tx(exp.impact)}
+                  </span>
+                </p>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <button
+          type="button"
+          onClick={() => setExpanded((v) => !v)}
+          aria-expanded={expanded}
+          className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors"
+        >
+          {expanded ? t.experience.seeLess : t.experience.seeMore}
+          <ChevronDown
+            size={14}
+            className={cn("transition-transform", expanded && "rotate-180")}
+          />
+        </button>
 
         <div className="flex flex-wrap gap-2 mt-4">
           {exp.technologies.map((tech) => (

@@ -16,7 +16,7 @@ import {
   getChatbotSettings,
   type ChatbotSettings,
 } from "./data";
-import type { Locale } from "@/types";
+import type { Locale, Skill, Experience, Certification } from "@/types";
 
 // Ton demandé depuis l'admin — ajuste l'énergie/concision des réponses,
 // n'affecte jamais les règles de sécurité codées en dur ci-dessous (elles
@@ -34,9 +34,51 @@ const TONE_LINES: Record<Locale, Record<ChatbotSettings["tone"], string>> = {
   },
 };
 
-function skillNames(list: { name: string | Record<Locale, string> }[], locale: Locale): string {
+// Nom d'affichage d'une compétence + ses preuves éventuelles (choisies en
+// admin, jamais déduites) : expérience qui l'atteste et/ou certification qui
+// la valide — mêmes données que les badges affichés sur la grille Compétences
+// publique (cf. src/components/sections/skills.tsx), pour que le bot puisse
+// répondre « c'est prouvé chez X » / « certifié par Y » plutôt que d'ignorer
+// ce lien.
+function skillLabel(
+  skill: Skill,
+  locale: Locale,
+  experienceById: Map<string, Experience>,
+  certificationById: Map<string, Certification>
+): string {
+  const name = typeof skill.name === "string" ? skill.name : skill.name[locale];
+  const badges: string[] = [];
+  if (skill.proofExperienceId) {
+    const exp = experienceById.get(skill.proofExperienceId);
+    if (exp) badges.push(`${locale === "fr" ? "utilisé chez" : "used at"} ${exp.company}`);
+  }
+  if (skill.isCertified) {
+    const cert = skill.relatedCertificationId
+      ? certificationById.get(skill.relatedCertificationId)
+      : undefined;
+    badges.push(
+      cert
+        ? `${locale === "fr" ? "certifié" : "certified"} — ${cert.name[locale]}`
+        : locale === "fr"
+          ? "certifié"
+          : "certified"
+    );
+  }
+  return badges.length ? `${name} (${badges.join(", ")})` : name;
+}
+
+// Une ligne "stack" ne montre que les compétences maîtrisées (isLearning
+// exclu — cf. bloc dédié plus bas dans buildPortfolioContext, même
+// distinction que la grille publique).
+function skillsLine(
+  list: Skill[],
+  locale: Locale,
+  experienceById: Map<string, Experience>,
+  certificationById: Map<string, Certification>
+): string {
   return list
-    .map((s) => (typeof s.name === "string" ? s.name : s.name[locale]))
+    .filter((s) => !s.isLearning)
+    .map((s) => skillLabel(s, locale, experienceById, certificationById))
     .join(", ");
 }
 
@@ -54,6 +96,11 @@ export async function buildPortfolioContext(locale: Locale): Promise<string> {
       getPersonalInfo(),
       getSocialLinks(),
     ]);
+
+  // Index par id — sert à résoudre les preuves de compétences
+  // (proofExperienceId/relatedCertificationId) vers un nom lisible.
+  const experienceById = new Map(experiences.map((e) => [e.id, e]));
+  const certificationById = new Map(certifications.map((c) => [c.id ?? "", c]));
 
   // ── Contact ──────────────────────────────────────────────────────
   const linkedin = socialLinks.find((s) => s.icon === "linkedin")?.url;
@@ -81,7 +128,7 @@ export async function buildPortfolioContext(locale: Locale): Promise<string> {
       const points = e.achievements[L].slice(0, 4).map((a) => `  - ${a}`).join("\n");
       const impact = e.impact ? `\n  ${isFr ? "Impact" : "Impact"}: ${e.impact[L]}` : "";
       const techs = e.technologies.length ? `\n  ${isFr ? "Technos" : "Technologies"}: ${e.technologies.join(", ")}` : "";
-      return `• ${e.title[L]} — ${e.company} (${e.location}) · ${period}\n${points}${impact}${techs}`;
+      return `• ${e.title[L]} — ${e.company} (${e.location}) · ${period}\n  ${e.description[L]}\n${points}${impact}${techs}`;
     })
     .join("\n\n");
 
@@ -118,11 +165,17 @@ export async function buildPortfolioContext(locale: Locale): Promise<string> {
       const status = ed.status ? ` (${statusLabel[ed.status]?.[L] ?? ed.status})` : "";
       const note = ed.note ? ` — ${ed.note[L]}` : "";
       const loc = ed.location ? `, ${ed.location}` : "";
-      return `• ${ed.degree[L]}${level}${status} — ${ed.school}${loc} (${ed.startDate}-${ed.endDate})${note}`;
+      const desc = ed.description ? `\n  ${ed.description[L]}` : "";
+      return `• ${ed.degree[L]}${level}${status} — ${ed.school}${loc} (${ed.startDate}-${ed.endDate})${note}${desc}`;
     })
     .join("\n");
 
   // ── Certifications ───────────────────────────────────────────────
+  // Nom, émetteur, date, expiration — jamais pdfUrl/verificationUrl : ces
+  // champs existent sur Certification (justificatif PDF, page de
+  // vérification officielle) mais ne sont volontairement jamais lus ici,
+  // pour qu'aucune URL ne puisse fuiter dans une réponse du chat (cf.
+  // règle dédiée dans personaFor ci-dessous).
   const certBlock = certifications
     .map((c) => {
       const expiry = c.expiry ? ` (${isFr ? "expire" : "expires"} ${c.expiry})` : "";
@@ -131,14 +184,26 @@ export async function buildPortfolioContext(locale: Locale): Promise<string> {
     .join("\n");
 
   // ── Stack technique ──────────────────────────────────────────────
+  // Chaque compétence maîtrisée peut porter une preuve (expérience et/ou
+  // certification) choisie en admin — cf. skillLabel ci-dessus.
   const stackBlock = [
-    `${isFr ? "Sécurité" : "Security"}: ${skillNames(skillsByCategory.security, L)}`,
-    `${isFr ? "Réseaux" : "Networking"}: ${skillNames(skillsByCategory.network, L)}`,
-    `${isFr ? "Systèmes" : "Systems"}: ${skillNames(skillsByCategory.systems, L)}`,
-    `Cloud & DevSecOps: ${skillNames(skillsByCategory.cloud, L)}`,
-    `${isFr ? "Supervision" : "Monitoring"}: ${skillNames(skillsByCategory.tools, L)}`,
-    `Scripting: ${skillNames(skillsByCategory.scripting, L)}`,
+    `${isFr ? "Sécurité" : "Security"}: ${skillsLine(skillsByCategory.security, L, experienceById, certificationById)}`,
+    `${isFr ? "Réseaux" : "Networking"}: ${skillsLine(skillsByCategory.network, L, experienceById, certificationById)}`,
+    `${isFr ? "Systèmes" : "Systems"}: ${skillsLine(skillsByCategory.systems, L, experienceById, certificationById)}`,
+    `Cloud & DevSecOps: ${skillsLine(skillsByCategory.cloud, L, experienceById, certificationById)}`,
+    `${isFr ? "Supervision" : "Monitoring"}: ${skillsLine(skillsByCategory.tools, L, experienceById, certificationById)}`,
+    `Scripting: ${skillsLine(skillsByCategory.scripting, L, experienceById, certificationById)}`,
   ].join("\n");
+
+  // ── Compétences en cours d'apprentissage ─────────────────────────
+  // Séparées de la stack maîtrisée ci-dessus (même distinction que la
+  // grille Compétences publique) : le bot ne doit jamais les présenter
+  // comme acquises si on lui demande ce qu'il maîtrise déjà.
+  const learningBlock = Object.values(skillsByCategory)
+    .flat()
+    .filter((s) => s.isLearning)
+    .map((s) => (typeof s.name === "string" ? s.name : s.name[L]))
+    .join(", ");
 
   // ── Projets ──────────────────────────────────────────────────────
   const projBlock = projects
@@ -147,7 +212,19 @@ export async function buildPortfolioContext(locale: Locale): Promise<string> {
       const metrics = p.metrics?.length
         ? `\n  ${isFr ? "Résultats clés" : "Key results"}: ${p.metrics.map((m) => `${m.value} ${m.label[L]}`).join(", ")}`
         : "";
-      return `• ${p.title[L]} (${p.date})${featured} — ${p.description[L]}\n  ${isFr ? "Technologies" : "Technologies"}: ${p.technologies.join(", ")}${metrics}`;
+      const details = p.longDescription
+        ? `\n  ${isFr ? "Détails" : "Details"}: ${p.longDescription[L]}`
+        : "";
+      const challenges = p.challenges?.length
+        ? `\n  ${isFr ? "Défis rencontrés" : "Challenges faced"}:\n` +
+          p.challenges
+            .map(
+              (c) =>
+                `    - ${c.title[L]} — ${isFr ? "Problème" : "Problem"}: ${c.problem[L]} ${isFr ? "Solution" : "Solution"}: ${c.solution[L]}`
+            )
+            .join("\n")
+        : "";
+      return `• ${p.title[L]} (${p.date})${featured} — ${p.description[L]}\n  ${isFr ? "Technologies" : "Technologies"}: ${p.technologies.join(", ")}${metrics}${details}${challenges}`;
     })
     .join("\n\n");
 
@@ -172,6 +249,9 @@ export async function buildPortfolioContext(locale: Locale): Promise<string> {
     "",
     `## ${isFr ? "Stack technique" : "Technical stack"}`,
     stackBlock,
+    "",
+    `## ${isFr ? "Compétences en cours d'apprentissage (ne jamais présenter comme déjà acquises)" : "Skills currently being learned (never present these as already mastered)"}`,
+    learningBlock || (isFr ? "Aucune actuellement." : "None currently."),
     "",
     `## ${isFr ? "Projets" : "Projects"}`,
     projBlock,
@@ -204,6 +284,7 @@ RÈGLES :
 - Pour tout sujet réellement hors périmètre — sans lien avec la tech, la cybersécurité, le réseau, les systèmes ou le profil de Thierno (par exemple une recette de cuisine, l'actualité générale, un conseil de santé ou financier) — décline poliment en une phrase et propose une question pertinente sur son profil ou sur la cybersécurité.
 - Reste strictement factuel sur Thierno : ne fabrique jamais une information le concernant absente du contexte ci-dessous (expérience, projet, certification, coordonnée, date…). Si une information précise manque pour répondre complètement sur son profil, dis-le clairement et oriente vers un contact direct (email ou téléphone, donnés dans le contexte) — mais cela ne t'empêche pas de raisonner et de synthétiser à partir de ce qui EST disponible. Cette exigence ne concerne que les faits sur Thierno : pour les conseils techniques généraux, tu peux t'appuyer sur les bonnes pratiques de cybersécurité communément admises.
 - Avant de finaliser une réponse qui avance un fait précis sur Thierno (date, entreprise, techno, chiffre, certification), vérifie silencieusement : est-ce que je tiens vraiment ça du contexte fourni, ou est-ce que je l'infère/le devine ? Si c'est une inférence non confirmée par le contexte, reformule en restant général — ou dis que tu n'as pas cette information précise — plutôt que d'affirmer un détail non vérifié comme s'il était certain.
+- Ne récite jamais une URL brute de certificat ou de document (justificatif PDF, page de vérification officielle), même si le contexte ci-dessous devait un jour en contenir une : dis simplement que la certification existe et peut être vérifiée, sans jamais citer le lien lui-même — oriente vers la page /certifications du site ou un contact direct si besoin.
 - NE MÉLANGE JAMAIS les expériences entre elles. Chaque technologie, outil ou réalisation listée dans le contexte n'appartient QU'À l'expérience sous laquelle elle est explicitement écrite — jamais aux autres, même proches, plausibles ou de même domaine. Le contexte contient une section « Index technologie → entreprise » : pour TOUTE question du type « où a-t-il utilisé X », consulte D'ABORD cette table exacte et base ta réponse dessus plutôt que sur une déduction à partir des paragraphes narratifs — c'est la référence qui fait autorité en cas de doute. La simple cohérence thématique (« ça semble logique qu'il ait aussi pu l'utiliser là ») ne suffit JAMAIS à affirmer une association absente de cette table. Exemple concret à ne jamais reproduire : si l'index indique « pfSense → W3TEL » (uniquement), ne dis jamais qu'il a « aussi » été utilisé chez KISS ou ailleurs sous prétexte que KISS parle également d'infrastructure et de pare-feux. Si une techno n'apparaît nulle part dans l'index, dis-le clairement plutôt que de deviner — mieux vaut une réponse générale honnête qu'un détail inventé, même plausible.
 
 ### Exemples de réponses idéales
@@ -252,6 +333,7 @@ RULES:
 - For anything genuinely out of scope — unrelated to tech, cybersecurity, networking, systems or Thierno's profile (e.g., a cooking recipe, general news, health or financial advice) — politely decline in one sentence and suggest a relevant question about his profile or about cybersecurity.
 - Stay strictly factual about Thierno: never invent information about him that is missing from the context below (experience, project, certification, contact detail, date…). If a specific detail is missing to answer fully about his profile, say so clearly and point to direct contact (email or phone, given in the context) — but that shouldn't stop you from reasoning and synthesizing from what IS available. This requirement only concerns facts about Thierno: for general technical advice, you may draw on commonly accepted cybersecurity best practices.
 - Before finalizing an answer that states a specific fact about Thierno (date, company, technology, number, certification), silently check: do I actually have this from the provided context, or am I inferring/guessing it? If it's an unconfirmed inference, rephrase to stay general — or say you don't have that precise information — rather than stating an unverified detail as if it were certain.
+- Never recite a raw certificate or document URL (PDF proof, official verification page), even if the context below were ever to contain one: simply say the certification exists and can be verified, without ever citing the link itself — point to the site's /certifications page or direct contact if needed.
 - NEVER mix up experiences. Every technology, tool or achievement in the context belongs ONLY to the experience it's explicitly listed under — never to another one, even a nearby, plausible-sounding, or same-domain one. The context includes a "Technology → company index" section: for ANY "where did he use X" question, check THAT exact table FIRST and base your answer on it rather than inferring from the narrative paragraphs — it's the authoritative source when in doubt. Thematic plausibility alone ("that seems like it could also fit there") is NEVER enough to state an association missing from that table. Concrete example never to reproduce: if the index says "pfSense → W3TEL" (only), never say it was "also" used at KISS or elsewhere just because KISS also mentions infrastructure and firewalls. If a technology doesn't appear anywhere in the index, say so clearly rather than guessing — an honest general answer beats a fabricated detail, even a plausible one.
 
 ### Examples of ideal answers

@@ -340,14 +340,20 @@ const fr = {
       "Sources : ANSSI · Krebs on Security · The Hacker News · SANS ISC · Cisco Blog · Cloudflare · AWS Security · Microsoft Azure · Red Hat — flux RSS mis à jour toutes les 5 min",
   },
   chat: {
-    title: "Assistant IA",
+    title: "Chat avec l'Assistant IA",
     online: "En ligne",
     openLabel: "Ouvrir l'assistant IA",
     closeLabel: "Fermer l'assistant",
     expandLabel: "Agrandir",
     minimizeLabel: "Réduire",
+    // Message d'accueil restructuré en liste à puces (rendu via ChatMarkdown,
+    // même convention "- " que les réponses du LLM) — bullets calées sur le
+    // périmètre réel du bot (cf. personaFor dans chat-context.ts) : profil/
+    // compétences, projets, formation/certifications, conseils cyber
+    // généraux. Pas de mention de "services" ou "tarifs" : non pertinent
+    // pour un profil d'alternant.
     welcome:
-      "Bonjour ! Je suis l'assistant de Thierno. Posez-moi vos questions sur son profil, ses compétences, ses projets et sa disponibilité — ou demandez-moi un conseil général de cybersécurité, de réseau ou de systèmes.",
+      "Bonjour ! Je suis l'assistant de Thierno. Je peux répondre à vos questions sur :\n- Son profil, ses compétences et sa disponibilité\n- Ses projets et réalisations concrètes\n- Sa formation et ses certifications\n- Des conseils généraux de cybersécurité, réseau ou systèmes\n\nQue souhaitez-vous savoir ?",
     placeholder: "Posez une question sur Thierno...",
     send: "Envoyer",
     typing: "écrit...",
@@ -358,7 +364,7 @@ const fr = {
       "Comment me protéger du phishing ?",
       "Parle-moi de ses projets",
       "Comment sécuriser mon réseau Wi-Fi ?",
-      "Comment le contacter ?",
+      "Comment puis-je le contacter ?",
       "Quelles certifications a-t-il ?",
       "Où a-t-il fait ses stages ?",
       "Quel est son parcours scolaire ?",
@@ -1390,14 +1396,14 @@ const en: DeepDict<typeof fr> = {
       "Sources: ANSSI · Krebs on Security · The Hacker News · SANS ISC · Cisco Blog · Cloudflare · AWS Security · Microsoft Azure · Red Hat — RSS feeds refreshed every 5 min",
   },
   chat: {
-    title: "AI Assistant",
+    title: "Chat with the AI Assistant",
     online: "Online",
     openLabel: "Open the AI assistant",
     closeLabel: "Close the assistant",
     expandLabel: "Expand",
     minimizeLabel: "Minimize",
     welcome:
-      "Hi! I'm Thierno's assistant. Ask me anything about his profile, skills, projects and availability — or ask me for general cybersecurity, networking or systems advice.",
+      "Hi! I'm Thierno's assistant. I can answer your questions about:\n- His profile, skills and availability\n- His projects and concrete achievements\n- His education and certifications\n- General cybersecurity, networking or systems advice\n\nWhat would you like to know?",
     placeholder: "Ask about Thierno...",
     send: "Send",
     typing: "typing...",

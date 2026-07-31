@@ -2,73 +2,90 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, Phone, MapPin, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionBackground } from "@/components/ui/section-background";
+import { cn } from "@/lib/utils";
 import { useI18n } from "@/i18n";
 import type { PersonalInfo } from "@/lib/data";
 
-// Badge carré-arrondi 40×40 : fond transparent, bordure fine, glow violet au
-// survol (même signature de glow que ContactCard sur /contact — cf.
-// contact-page-client.tsx). Icône en text-foreground plutôt qu'un blanc en
-// dur : blanc en thème sombre (comme demandé), mais reste lisible en clair
-// au lieu de disparaître sur fond blanc.
-function InfoBubble({
+// Carte info : même signature que ProjectCard/CertificationCard (bordure
+// fine → anneau dégradé violet→cyan au survol, léger lift au hover), mais
+// contenu texte centré et empilé (icône nue → libellé → valeur) plutôt que
+// la mise en page habituelle alignée à gauche. `href` optionnel : email/
+// téléphone restent cliquables (mailto/tel), localisation reste un <div>.
+function InfoCard({
   icon: Icon,
+  iconClassName,
   label,
   value,
   href,
 }: {
-  icon: typeof Mail;
+  icon: LucideIcon;
+  iconClassName: string;
   label: string;
   value: string;
   href?: string;
 }) {
-  const badge = (
-    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-border/60 transition-all duration-300 group-hover:border-violet-500/50 group-hover:shadow-[0_0_16px_rgba(139,92,246,0.3)]">
-      <Icon size={18} className="text-foreground" />
-    </span>
+  const content = (
+    <>
+      <Icon size={40} strokeWidth={1.5} className={cn("shrink-0", iconClassName)} />
+      <p className="font-bold text-foreground mt-3">{label}</p>
+      <p className="text-sm text-muted-foreground mt-1 break-all">{value}</p>
+    </>
   );
-  const text = (
-    <span className="text-left">
-      <span className="block text-xs text-muted-foreground">{label}</span>
-      <span className="block text-sm font-medium text-foreground">{value}</span>
-    </span>
-  );
+  const innerClassName =
+    "relative flex h-full flex-col items-center text-center rounded-[calc(1rem-1px)] bg-card p-6";
 
-  if (href) {
-    return (
-      <a href={href} className="group flex items-center gap-3">
-        {badge}
-        {text}
-      </a>
-    );
-  }
   return (
-    <div className="group flex items-center gap-3">
-      {badge}
-      {text}
-    </div>
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      whileHover={{ y: -6 }}
+      transition={{ type: "spring", stiffness: 260, damping: 18 }}
+      className="group relative h-full rounded-2xl p-[1px]"
+    >
+      {/* Bordure fine de base */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 rounded-2xl border border-border/50 transition-opacity duration-300 group-hover:opacity-0"
+      />
+      {/* Anneau dégradé violet→cyan au hover */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 rounded-2xl bg-gradient-to-br from-violet-500/70 to-cyan-400/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+      />
+      {href ? (
+        <a href={href} className={innerClassName}>
+          {content}
+        </a>
+      ) : (
+        <div className={innerClassName}>{content}</div>
+      )}
+    </motion.div>
   );
 }
 
 // Aperçu léger de la section Contact — même pattern « page dédiée + aperçu
-// home » que Projets/Certifications (cf. certifications-preview.tsx) : le
-// formulaire complet (+ carte contact rapide) vit désormais sur /contact
-// (src/app/contact/contact-page-client.tsx), déplacé tel quel depuis ce
-// fichier. Header identique à celui de la page dédiée (eyebrow/titre/
-// sous-titre partagés, même convention que Certifications). Enrichi de 3
-// bulles de contact rapide (email/téléphone/localisation) et d'un encart
-// CTA unique — id="contact" conservé pour l'ancrage retour depuis
+// home » que Projets/Certifications : le formulaire complet vit sur
+// /contact (src/app/contact/contact-page-client.tsx). Deux temps ici :
+// 1. Header + badge + 3 cartes de contact rapide (email/téléphone/
+//    localisation depuis personal_info), dans le container habituel.
+// 2. Bannière CTA plein fond violet→cyan, volontairement HORS du container
+//    (pleine largeur, sans le padding horizontal du site) pour trancher
+//    visuellement avec le reste de la home — pas un encart discret.
+// id="contact" conservé sur la section pour l'ancrage retour depuis
 // BackToHomeLink et les liens historiques vers "/#contact".
 export function Contact({ personalInfo }: { personalInfo: PersonalInfo }) {
   const { t, tx } = useI18n();
   const PHONE_HREF = `tel:+33${personalInfo.phone.replace(/\s/g, "").slice(1)}`;
 
   return (
-    <section className="relative overflow-hidden py-16 sm:py-20 lg:py-32" id="contact">
+    <section className="relative overflow-hidden" id="contact">
       <SectionBackground glowPosition="bottom-right" variant="cyan" />
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 lg:pt-28 pb-14 sm:pb-16 lg:pb-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -93,49 +110,54 @@ export function Contact({ personalInfo }: { personalInfo: PersonalInfo }) {
               {t.header.availableFull}
             </span>
           )}
-
-          {/* Bulles de contact rapide — valeurs depuis personal_info (Supabase) */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-5">
-            <InfoBubble
-              icon={Mail}
-              label={t.contact.emailLabel}
-              value={personalInfo.email}
-              href={`mailto:${personalInfo.email}`}
-            />
-            <InfoBubble
-              icon={Phone}
-              label={t.contact.phoneLabel}
-              value={personalInfo.phone}
-              href={PHONE_HREF}
-            />
-            <InfoBubble
-              icon={MapPin}
-              label={t.contact.locationLabel}
-              value={tx(personalInfo.location)}
-            />
-          </div>
-
-          {/* Encart CTA — dégradé violet→cyan sur le bouton, fond de carte +
-              bordure dégradée (même traitement que la carte "Profil en bref"
-              d'À propos), seul appel à l'action du teaser. */}
-          <div className="mt-10 w-full max-w-xl rounded-2xl p-[1px] bg-gradient-to-br from-violet-500/50 via-border/40 to-cyan-400/50">
-            <div className="rounded-[calc(1rem-1px)] bg-card/95 backdrop-blur-sm p-6 sm:p-8">
-              <h3 className="text-xl sm:text-2xl font-bold">{t.contact.ctaTitle}</h3>
-              <p className="text-sm text-muted-foreground mt-2">{t.contact.ctaSubtitle}</p>
-              <Button
-                size="lg"
-                asChild
-                className="mt-6 border-0 bg-gradient-to-r from-violet-600 to-cyan-500 text-white hover:shadow-[0_0_30px_rgba(139,92,246,0.4)] hover:scale-[1.02]"
-              >
-                <Link href="/contact">
-                  <Send size={18} />
-                  {t.contact.sendMessage}
-                </Link>
-              </Button>
-            </div>
-          </div>
         </motion.div>
+
+        {/* Cartes de contact rapide — 1 col mobile / 2 tablette / 3 desktop */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-4xl mx-auto mt-10">
+          <InfoCard
+            icon={Mail}
+            iconClassName="text-cyan-400"
+            label={t.contact.emailLabel}
+            value={personalInfo.email}
+            href={`mailto:${personalInfo.email}`}
+          />
+          <InfoCard
+            icon={Phone}
+            iconClassName="text-violet-400"
+            label={t.contact.phoneLabel}
+            value={personalInfo.phone}
+            href={PHONE_HREF}
+          />
+          <InfoCard
+            icon={MapPin}
+            iconClassName="text-cyan-400"
+            label={t.contact.locationLabel}
+            value={tx(personalInfo.location)}
+          />
+        </div>
       </div>
+
+      {/* Bannière CTA — fond dégradé plein, pleine largeur (hors container) */}
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        className="relative bg-gradient-to-br from-violet-600 to-cyan-500 py-16 sm:py-20 lg:py-24"
+      >
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h3 className="text-3xl sm:text-4xl font-bold text-white">
+            {t.contact.bannerTitle}
+          </h3>
+          <p className="text-white/85 mt-3 max-w-xl mx-auto">{t.contact.bannerSubtitle}</p>
+          <Button
+            size="lg"
+            asChild
+            className="mt-8 border-0 bg-white text-violet-700 shadow-lg hover:bg-white/90 hover:shadow-xl hover:scale-[1.02]"
+          >
+            <Link href="/contact">{t.contact.bannerCta}</Link>
+          </Button>
+        </div>
+      </motion.div>
     </section>
   );
 }

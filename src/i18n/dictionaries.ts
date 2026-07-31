@@ -238,12 +238,13 @@ const fr = {
     // Value qui sont des chaînes statiques distinctes.
     phoneLabel: "Téléphone",
     locationLabel: "Localisation",
-    // Bloc CTA "Prêt à..." du teaser home — remplace l'ancien bouton nu +
-    // légende responseTime (qui reste utilisée telle quelle sur /contact).
-    ctaTitle: "Prêt à sécuriser votre infrastructure ?",
-    ctaSubtitle:
+    // Bannière CTA plein fond du teaser home (hors container, pleine
+    // largeur) — remplace l'ancien encart carte ; responseTime reste
+    // utilisée telle quelle sur /contact, indépendamment de ces clés.
+    bannerTitle: "Prêt à rejoindre une équipe ?",
+    bannerSubtitle:
       "Toujours en veille, disponible dès septembre 2026 pour rejoindre votre équipe.",
-    sendMessage: "Envoyer un message",
+    bannerCta: "Discutons de votre besoin",
     quickTitle: "Contact rapide",
     quickAvailability: "Disponible dès septembre 2026",
     responseTime: "Prêt à en discuter dès maintenant",
@@ -1271,10 +1272,10 @@ const en: DeepDict<typeof fr> = {
     emailLabel: "Email",
     phoneLabel: "Phone",
     locationLabel: "Location",
-    ctaTitle: "Ready to secure your infrastructure?",
-    ctaSubtitle:
+    bannerTitle: "Ready to join a team?",
+    bannerSubtitle:
       "Always staying curious, available from September 2026 to join your team.",
-    sendMessage: "Send a message",
+    bannerCta: "Let's discuss your needs",
     quickTitle: "Quick contact",
     quickAvailability: "Available from September 2026",
     responseTime: "Ready to talk right now",

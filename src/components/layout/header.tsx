@@ -16,8 +16,11 @@ import { useRealtimeAvailability } from "@/hooks/use-realtime-availability";
 import { useHashLinkClick } from "@/hooks/use-hash-link-click";
 import { useThemedLogoSrc } from "@/hooks/use-themed-logo-src";
 
-// Sections de la home suivies par le scroll-spy (ordre du DOM)
-const SPY_SECTION_IDS = ["accueil", "about", "experience", "contact"];
+// Sections de la home suivies par le scroll-spy (ordre du DOM). "contact"
+// n'y figure plus : son entrée de nav pointe désormais vers /contact (page
+// dédiée, même pattern que Projets/Certifications) et non plus vers une
+// ancre de la home.
+const SPY_SECTION_IDS = ["accueil", "about", "experience"];
 
 // Séparateur vertical fin entre les groupes d'actions
 function VSeparator() {
@@ -75,20 +78,13 @@ function AvailabilityBadge({
   short?: boolean;
 }) {
   const { t } = useI18n();
-  const handleHashClick = useHashLinkClick();
 
   if (!available) return null;
 
   return (
     <Link
-      href="/#contact"
-      onClick={(e) => {
-        // onClick n'est fourni que par l'instance du menu mobile (ferme le
-        // menu) — dans ce cas, laisser sa transition de fermeture terminer
-        // avant de démarrer le scroll (voir commentaire dans le hook).
-        handleHashClick(e, "/#contact", onClick ? 320 : 0);
-        onClick?.();
-      }}
+      href="/contact"
+      onClick={() => onClick?.()}
       className={cn(
         // Seul CTA du header : hover affirmé (fond, bordure, halo)
         "items-center gap-2 px-3 py-1.5 rounded-full border border-green-500/30 bg-green-500/10 text-xs font-medium text-green-500 whitespace-nowrap transition-all hover:bg-green-500/25 hover:border-green-500/60 hover:shadow-[0_0_12px_rgba(34,197,94,0.3)]",

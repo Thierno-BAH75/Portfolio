@@ -1,6 +1,17 @@
-import { redirect } from "next/navigation";
+import type { Metadata } from "next";
+import { getPersonalInfo, getSocialLinks } from "@/lib/data";
+import { ContactPageClient } from "./contact-page-client";
 
-// La section Contact vit sur la home (architecture « vitrine à ancres »)
-export default function ContactPage() {
-  redirect("/#contact");
+export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Contactez Thierno BAH pour échanger sur une alternance, un projet réseau/sécurité ou une opportunité de collaboration.",
+};
+
+export default async function ContactPage() {
+  const [personalInfo, socialLinks] = await Promise.all([
+    getPersonalInfo(),
+    getSocialLinks(),
+  ]);
+  return <ContactPageClient personalInfo={personalInfo} socialLinks={socialLinks} />;
 }

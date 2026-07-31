@@ -9,7 +9,6 @@ import {
 } from "@/components/sections";
 import {
   getPersonalInfo,
-  getSocialLinks,
   getCertifications,
   getEducation,
   getExperiences,
@@ -22,7 +21,6 @@ import {
 export default async function Home() {
   const [
     personalInfo,
-    socialLinks,
     certifications,
     education,
     experiences,
@@ -32,7 +30,6 @@ export default async function Home() {
     allProjects,
   ] = await Promise.all([
     getPersonalInfo(),
-    getSocialLinks(),
     getCertifications(),
     getEducation(),
     getExperiences(),
@@ -59,7 +56,7 @@ export default async function Home() {
       <Experience education={education} experiences={experiences} />
       <CertificationsPreview certifications={certifications} />
       <Projects featuredProjects={featuredProjects} />
-      <Contact personalInfo={personalInfo} socialLinks={socialLinks} />
+      <Contact personalInfo={personalInfo} />
     </>
   );
 }

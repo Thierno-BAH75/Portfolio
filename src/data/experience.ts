@@ -390,7 +390,7 @@ export const navItems: NavItem[] = [
     href: "/certifications",
   },
   { label: { fr: "Veille", en: "Tech Watch" }, href: "/veille" },
-  { label: { fr: "Contact", en: "Contact" }, href: "/#contact" },
+  { label: { fr: "Contact", en: "Contact" }, href: "/contact" },
 ];
 
 export const personalInfo = {

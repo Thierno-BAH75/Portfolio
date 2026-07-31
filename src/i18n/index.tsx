@@ -63,6 +63,7 @@ const META_BY_PATH: Record<string, keyof Dictionary["meta"]> = {
   "/certifications": "certifications",
   "/outils": "outils",
   "/veille": "veille",
+  "/contact": "contact",
 };
 
 // Monté dans le layout racine : fait suivre la langue active à <html lang>

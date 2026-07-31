@@ -19,6 +19,7 @@ const fr = {
     certifications: "Certifications | Thierno BAH",
     outils: "Outils cybersécurité | Thierno BAH",
     veille: "Veille techno | Thierno BAH",
+    contact: "Contact | Thierno BAH",
   },
   header: {
     availableShort: "Disponible",
@@ -111,7 +112,7 @@ const fr = {
       notFound: "commande introuvable :",
       notFoundHint: "essayez 'help'",
       fetchError: "erreur : impossible de joindre l'API",
-      contactHint: "Formulaire complet dans la section Contact ci-dessous.",
+      contactHint: "Formulaire complet sur la page Contact.",
       help: [
         "skills [catégorie]    compétences (security, network, systems, cloud, tools, scripting, all)",
         "certifications        liste des certifications",
@@ -230,6 +231,11 @@ const fr = {
     titleGradient: "ensemble",
     subtitle:
       "Vous avez un projet en tête ? N'hésitez pas à me contacter. Je serai ravi de discuter de vos idées.",
+    // CTA du teaser home (src/components/sections/contact.tsx) vers /contact —
+    // même libellé que header.contact/hero.contact/about.contact (convention
+    // du dictionnaire : dupliquer la chaîne par section plutôt que de
+    // référencer une autre clé).
+    cta: "Me contacter",
     emailLabel: "Email",
     quickTitle: "Contact rapide",
     quickAvailability: "Disponible dès septembre 2026",
@@ -1044,6 +1050,7 @@ const en: DeepDict<typeof fr> = {
     certifications: "Certifications | Thierno BAH",
     outils: "Cybersecurity tools | Thierno BAH",
     veille: "Tech watch | Thierno BAH",
+    contact: "Contact | Thierno BAH",
   },
   header: {
     availableShort: "Available",
@@ -1136,7 +1143,7 @@ const en: DeepDict<typeof fr> = {
       notFound: "command not found:",
       notFoundHint: "try 'help'",
       fetchError: "error: could not reach the API",
-      contactHint: "Full form in the Contact section below.",
+      contactHint: "Full form on the Contact page.",
       help: [
         "skills [category]     skills (security, network, systems, cloud, tools, scripting, all)",
         "certifications        certification list",
@@ -1254,6 +1261,7 @@ const en: DeepDict<typeof fr> = {
     titleGradient: "together",
     subtitle:
       "Have a project in mind? Feel free to reach out — I'd be happy to discuss your ideas.",
+    cta: "Get in touch",
     emailLabel: "Email",
     quickTitle: "Quick contact",
     quickAvailability: "Available from September 2026",
